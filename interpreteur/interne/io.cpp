@@ -1,28 +1,28 @@
 /*
 
-Interpréteur GOTO++
+Interprï¿½teur GOTO++
 Copyright 2002 Sidoine de Wispelaere
 
 Ce programme est un logiciel libre ; vous pouvez le redistribuer
 et/ou le modifier sous les termes de la GNU General Public Licence
-telle que publiée par la Free Software Fundation ; soit dans la
-version 2 de la Licence, soit (à votre choix) dans une version
-ultérieure.
+telle que publiï¿½e par la Free Software Fundation ; soit dans la
+version 2 de la Licence, soit (ï¿½ votre choix) dans une version
+ultï¿½rieure.
 
-Ce programme est distribué dans l'espoir qu'il sera utile mais
-SANS AUCUNE GARANTIE ; sans même la garantie implicite qu'il soit
+Ce programme est distribuï¿½ dans l'espoir qu'il sera utile mais
+SANS AUCUNE GARANTIE ; sans mï¿½me la garantie implicite qu'il soit
 COMMERCIALISABLE ou ADEQUAT POUR UN USAGE PARTICULIER. Voir la
-GNU General Public Licence pour plus de détails.
+GNU General Public Licence pour plus de dï¿½tails.
 
-Vous devriez avoir reçu une copie de la GNU General Public Licence
-avec ce programme ; dans le cas contraire, écrivez à :
+Vous devriez avoir reï¿½u une copie de la GNU General Public Licence
+avec ce programme ; dans le cas contraire, ï¿½crivez ï¿½ :
 Free Software Fundation, Inc.
 59 Temple Place - Suite 330, Boston, MA  02111-1307, US
 
                           ****
 
-Définition des fonctions intégrées permettant de faire des appels
-au système (système de fichiers, date...).
+Dï¿½finition des fonctions intï¿½grï¿½es permettant de faire des appels
+au systï¿½me (systï¿½me de fichiers, date...).
 					 
 */
 
@@ -104,31 +104,31 @@ namespace DefBib
 	}
 
 /*AIDE fichier%OUVRIR
-Ouvrir un fichier en lecture ou en écriture
-\param nom chaine Nom du fichier à ouvrir.
-\param mode entier Mode d'ouverture : 0 en lecture (par défaut), 1 en écriture.
-\param binaire entier Par défaut, ouvre en tant que fichier texte. Mettre à 1 pour ouvrir un fichier binaire.
+Ouvrir un fichier en lecture ou en ï¿½criture
+\param nom chaine Nom du fichier ï¿½ ouvrir.
+\param mode entier Mode d'ouverture : 0 en lecture (par dï¿½faut), 1 en ï¿½criture.
+\param binaire entier Par dï¿½faut, ouvre en tant que fichier texte. Mettre ï¿½ 1 pour ouvrir un fichier binaire.
 \desc
-Quand le fichier est ouvert en écriture, si un fichier du même nom existait déjà,
-il est supprimé.
+Quand le fichier est ouvert en ï¿½criture, si un fichier du mï¿½me nom existait dï¿½jï¿½,
+il est supprimï¿½.
 
-Pour tester si le fichier a bien été ouvert, utiliser la fonction enentier :
-F enentier vaut 0 si le fichier n'a pas été ouvert, 1 sinon.
+Pour tester si le fichier a bien ï¿½tï¿½ ouvert, utiliser la fonction enentier :
+F enentier vaut 0 si le fichier n'a pas ï¿½tï¿½ ouvert, 1 sinon.
 
-En mode binaire, le fonctionnement des fonctions d'entrée/sortie est modifié :
-les valeurs sont enregistrées ou lues dans le fichier dans la même représentation
-qu'en mémoire et non en les convertissant en du texte.
+En mode binaire, le fonctionnement des fonctions d'entrï¿½e/sortie est modifiï¿½ :
+les valeurs sont enregistrï¿½es ou lues dans le fichier dans la mï¿½me reprï¿½sentation
+qu'en mï¿½moire et non en les convertissant en du texte.
 \exemple
 fichier F
-F@OUVRIR(«machin.txt»)
+F@OUVRIR(ï¿½machin.txtï¿½)
 GOTONONNULPOURLESNULS %erreur }F@Fin(){
 Ligne=F@LIREDUTEXTE()
 GOTOPRINT()
-F@OUVRIR(«nouveau.txt» *(1)) GOTO note : le fichier précédent est automatiquement refermé
+F@OUVRIR(ï¿½nouveau.txtï¿½ *(1)) GOTO note : le fichier prï¿½cï¿½dent est automatiquement refermï¿½
 F@ECRIREDUTEXTE(&Ligne)
 GOTOFIN
-§erreur 
-GOTOPRINTDUTEXTE() ; «Erreur en ouvrant le fichier»
+ï¿½erreur 
+GOTOPRINTDUTEXTE() ; ï¿½Erreur en ouvrant le fichierï¿½
 */
 	void Fichier::Ouvrir(int nParams, const chaineval * nom, int _acces, int _mode)
 	{
@@ -136,7 +136,7 @@ GOTOPRINTDUTEXTE() ; «Erreur en ouvrant le fichier»
 		acces=nParams>1?_acces:0;
 		mode=(Mode)(nParams>2?_mode:0);
 		if (nParams==0)
-			throw TXT("passez le nom du fichier en paramètre");
+			throw TXT("passez le nom du fichier en paramï¿½tre");
 
 		carac Md[3];
 		if (acces==0)
@@ -170,7 +170,7 @@ GOTOPRINTDUTEXTE() ; «Erreur en ouvrant le fichier»
 		if (mode==Binaire)
 		{
 			if (nCars==-1)
-				throw TXT("chaînes AZT en binaire non supportées");
+				throw TXT("chaï¿½nes AZT en binaire non supportï¿½es");
 			c=chaineval::Creer(nCars);
 			fread((carac*)c->c,nCars,1,F);
 		}
@@ -231,7 +231,7 @@ GOTOPRINTDUTEXTE() ; «Erreur en ouvrant le fichier»
 		{
 			wchar_t temp[11];
 			fgetws(temp,10,F);
-			i=_wtoi(temp);
+			i=wcstol(temp, NULL, 10);
 		}
 	#endif
 		return i;
@@ -269,8 +269,8 @@ Renvoie la taille du fichier.
 \retour entier La taille du fichiers, en octets.
 \desc
 Remarquez que cette valeur n'a de sens qu'en mode binaire. En mode texte,
-la taille renvoyée ne correspond pas nécessairement au nombre de caractères
-(et en fait, si vous ne voulez pas être la risée des gourous du GOTO++, ne
+la taille renvoyï¿½e ne correspond pas nï¿½cessairement au nombre de caractï¿½res
+(et en fait, si vous ne voulez pas ï¿½tre la risï¿½e des gourous du GOTO++, ne
 comptez pas dessus).
 */
 	int Fichier::Taille()
@@ -298,8 +298,8 @@ comptez pas dessus).
 
 	
 /*AIDE fichier%Fin
-Indique si la fin du fichier a été atteinte.
-\retour entier 1 si la fin du fichier a été atteinte, 0 sinon.
+Indique si la fin du fichier a ï¿½tï¿½ atteinte.
+\retour entier 1 si la fin du fichier a ï¿½tï¿½ atteinte, 0 sinon.
 */
 	int Fichier::Fin()
 	{
@@ -309,8 +309,8 @@ Indique si la fin du fichier a été atteinte.
 	
 
 /*AIDE fichier%ChangeMode
-Modifie le mode (binaire ou pas) de lecture ou d'écriture d'un fichier.
-Bien pratique pour manipuler l'entrée ou la sortie standard.
+Modifie le mode (binaire ou pas) de lecture ou d'ï¿½criture d'un fichier.
+Bien pratique pour manipuler l'entrï¿½e ou la sortie standard.
 \param mode entier 1 pour binaire, 0 pour texte.
 */
 	void Fichier::ChgMode(int _mode)

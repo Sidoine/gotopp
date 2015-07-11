@@ -1,0 +1,250 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug Sérieux|Win32">
+      <Configuration>Debug Sérieux</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{11AB3E98-23F3-4F12-8B69-B9B837FD51F7}</ProjectGuid>
+    <RootNamespace>Goto++</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Sérieux|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug Sérieux|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>14.0.22823.1</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>Debug\</OutDir>
+    <IntDir>Debug\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>Release\</OutDir>
+    <IntDir>Release\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Sérieux|Win32'">
+    <OutDir>Debug Sérieux\</OutDir>
+    <IntDir>Debug Sérieux\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>../../include;../../boehmgc/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_CRT_SECURE_NO_DEPRECATE;GC_OPERATOR_NEW_ARRAY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <DisableSpecificWarnings>4258;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <Lib>
+      <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
+      <AdditionalIncludeDirectories>../../include;../../boehmgc/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_CRT_SECURE_NO_DEPRECATE;GC_OPERATOR_NEW_ARRAY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Lib>
+      <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>libc.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Sérieux|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <OutputFile>Exemples/gpp.exe</OutputFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>$(OutDir)Goto++.pdb</ProgramDatabaseFile>
+      <SubSystem>Console</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\commun\chaine.cpp" />
+    <ClCompile Include="..\..\src\commun\erreur.cpp" />
+    <ClCompile Include="..\..\src\commun\expreg.cpp" />
+    <ClCompile Include="..\..\src\commun\global.cpp" />
+    <ClCompile Include="..\..\src\commun\hachval.cpp" />
+    <ClCompile Include="..\..\src\commun\mutex.cpp" />
+    <ClCompile Include="..\..\src\commun\outils.cpp" />
+    <ClCompile Include="..\..\src\commun\programme.cpp" />
+    <ClCompile Include="..\..\src\commun\sauveur.cpp" />
+    <ClCompile Include="..\..\src\commun\symbole.cpp" />
+    <ClCompile Include="..\..\src\commun\tabval.cpp" />
+    <ClCompile Include="..\..\src\commun\valeur.cpp" />
+    <ClCompile Include="..\..\src\commun\wlib.cpp" />
+    <ClCompile Include="..\..\src\compilateur\compilateur.cpp" />
+    <ClCompile Include="..\..\src\compilateur\compilateur2.cpp" />
+    <ClCompile Include="..\..\src\compilateur\instrconstr.cpp" />
+    <ClCompile Include="..\..\src\compilateur\optimiser.cpp" />
+    <ClCompile Include="..\..\src\machine\interpreteur.cpp" />
+    <ClCompile Include="..\..\src\machine\machine.cpp" />
+    <ClCompile Include="..\..\src\machine\modules.cpp" />
+    <ClCompile Include="..\..\src\machine\pile.cpp" />
+    <ClCompile Include="..\..\src\type\type.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\include\gotopp\appelfonction.h" />
+    <ClInclude Include="..\..\include\gotopp\base.h" />
+    <ClInclude Include="..\..\include\gotopp\compilateur.h" />
+    <ClInclude Include="..\..\include\gotopp\configwin.h" />
+    <ClInclude Include="..\..\include\gotopp\erreur.h" />
+    <ClInclude Include="..\..\include\gotopp\global.h" />
+    <ClInclude Include="..\..\include\gotopp\gppmodule.h" />
+    <ClInclude Include="..\..\include\gotopp\hachage.h" />
+    <ClInclude Include="..\..\include\gotopp\instruction.h" />
+    <ClInclude Include="..\..\include\gotopp\machine.h" />
+    <ClInclude Include="..\..\include\gotopp\pile.h" />
+    <ClInclude Include="..\..\include\gotopp\programme.h" />
+    <ClInclude Include="..\..\include\gotopp\symbole.h" />
+    <ClInclude Include="..\..\include\gotopp\tableaux.h" />
+    <ClInclude Include="..\..\include\gotopp\type\bebe.h" />
+    <ClInclude Include="..\..\include\gotopp\type\chaine.h" />
+    <ClInclude Include="..\..\include\gotopp\type\expreg.h" />
+    <ClInclude Include="..\..\include\gotopp\type\hachval.h" />
+    <ClInclude Include="..\..\include\gotopp\type\objetc.h" />
+    <ClInclude Include="..\..\include\gotopp\type\reference.h" />
+    <ClInclude Include="..\..\include\gotopp\type\tabval.h" />
+    <ClInclude Include="..\..\include\gotopp\type\type.h" />
+    <ClInclude Include="..\..\include\gotopp\type\valeur.h" />
+    <ClInclude Include="..\..\include\gotopp\version.h" />
+    <ClInclude Include="..\..\include\gotopp\wlib.h" />
+    <ClInclude Include="..\..\src\commun\classe.h" />
+    <ClInclude Include="..\..\src\commun\dbgassert.h" />
+    <ClInclude Include="..\..\src\commun\instr.h" />
+    <ClInclude Include="..\..\src\commun\regmagic.h" />
+    <ClInclude Include="..\..\src\commun\sauveur.h" />
+    <ClInclude Include="..\..\src\compilateur\compriv.h" />
+    <ClInclude Include="..\..\src\compilateur\instrconstr.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\exemples\bomberniac\bomberclient.gpp" />
+    <None Include="..\..\exemples\bomberniac\bomberserveur.gpp" />
+    <None Include="..\..\exemples\bomberniac\intro.baf" />
+    <None Include="..\..\exemples\bomberniac\ldv.bnp" />
+    <None Include="..\..\exemples\bomberniac\plan.bnp" />
+    <None Include="..\..\exemples\bomberniac\present.gpp" />
+    <None Include="..\..\exemples\bomberniac\RIDMI.html" />
+    <None Include="..\..\exemples\bomberniac\tennis.bnp" />
+    <None Include="..\..\exemples\divers\chainelib.gpp" />
+    <None Include="..\..\exemples\divers\marche.gpp" />
+    <None Include="..\..\exemples\divers\marche2.gpp" />
+    <None Include="..\..\exemples\divers\tresrapide.gpp" />
+    <None Include="..\..\exemples\jeux\aventure.gpp" />
+    <None Include="..\..\exemples\jeux\devineunnombre.gpp" />
+    <None Include="..\..\exemples\jeux\nombre.gpp" />
+    <None Include="..\..\exemples\jeux\snake.gpp" />
+    <None Include="..\..\exemples\maths\pi.gpp" />
+    <None Include="..\..\exemples\maths\pi3.gpp" />
+    <None Include="..\..\exemples\modules\client.gpp" />
+    <None Include="..\..\exemples\modules\serveur.gpp" />
+    <None Include="..\..\exemples\modules\tortueivre.gpp" />
+    <None Include="..\..\exemples\modules\troisde.gpp" />
+    <None Include="..\..\exemples\outils\adresse.gpp" />
+    <None Include="..\..\exemples\outils\cal.gpp" />
+    <None Include="..\..\exemples\outils\chainelib.gpp" />
+    <None Include="..\..\exemples\outils\ftp.gpp" />
+    <None Include="..\..\exemples\outils\monProxy.gpp" />
+    <None Include="..\..\exemples\outils\sendmail.gpp" />
+    <None Include="..\..\exemples\outils\telnet.gpp" />
+    <None Include="..\..\exemples\outils\tresrapide.gpp" />
+    <None Include="..\..\exemples\simple\entrenom.gpp" />
+    <None Include="..\..\exemples\simple\exemblebib.gpt" />
+    <None Include="..\..\exemples\simple\fichier.gpp" />
+    <None Include="..\..\exemples\simple\gotomultiple.gpp" />
+    <None Include="..\..\exemples\simple\hello.gpp" />
+    <None Include="..\..\exemples\simple\markov.gpp" />
+    <None Include="..\..\exemples\simple\premier.gpp" />
+    <None Include="..\..\exemples\simple\repertoire.gpp" />
+    <None Include="..\..\exemples\simple\tache2.gpp" />
+    <None Include="..\..\exemples\simple\texte.gpp" />
+    <None Include="..\..\exemples\simple\varargs.gpp" />
+    <None Include="..\..\exemples\tests\base.gpp" />
+    <None Include="..\..\exemples\tests\exemple.gpp" />
+    <None Include="..\..\include\gotopp\config.h.in" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\src\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BoehmGC\BoehmGC.vcxproj">
+      <Project>{1b6d5eed-c5fd-48d9-bf90-f4bcc50f9566}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{1B6D5EED-C5FD-48D9-BF90-F4BCC50F9566}</ProjectGuid>
+    <RootNamespace>BoehmGC</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>14.0.22823.1</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\..\boehmgc\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;SILENT;ALL_INTERIOR_POINTERS;GC_NOT_DLL;GC_WIN32_THREADS;__STDC__;GC_OPERATOR_NEW_ARRAY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Lib>
+      <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <AdditionalIncludeDirectories>..\..\boehmgc\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;SILENT;ALL_INTERIOR_POINTERS;GC_NOT_DLL;GC_WIN32_THREADS;__STDC__;GC_OPERATOR_NEW_ARRAY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Lib>
+      <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\boehmgc\src\allchblk.c" />
+    <ClCompile Include="..\..\boehmgc\src\alloc.c" />
+    <ClCompile Include="..\..\boehmgc\src\blacklst.c" />
+    <ClCompile Include="..\..\boehmgc\src\dbg_mlc.c" />
+    <ClCompile Include="..\..\boehmgc\src\dyn_load.c" />
+    <ClCompile Include="..\..\boehmgc\src\finalize.c" />
+    <ClCompile Include="..\..\boehmgc\src\gc_cpp.cpp" />
+    <ClCompile Include="..\..\boehmgc\src\headers.c" />
+    <ClCompile Include="..\..\boehmgc\src\mach_dep.c" />
+    <ClCompile Include="..\..\boehmgc\src\malloc.c" />
+    <ClCompile Include="..\..\boehmgc\src\mallocx.c" />
+    <ClCompile Include="..\..\boehmgc\src\mark.c" />
+    <ClCompile Include="..\..\boehmgc\src\mark_rts.c" />
+    <ClCompile Include="..\..\boehmgc\src\misc.c" />
+    <ClCompile Include="..\..\boehmgc\src\new_hblk.c" />
+    <ClCompile Include="..\..\boehmgc\src\obj_map.c" />
+    <ClCompile Include="..\..\boehmgc\src\os_dep.c" />
+    <ClCompile Include="..\..\boehmgc\src\ptr_chck.c" />
+    <ClCompile Include="..\..\boehmgc\src\reclaim.c" />
+    <ClCompile Include="..\..\boehmgc\src\stubborn.c" />
+    <ClCompile Include="..\..\boehmgc\src\typd_mlc.c" />
+    <ClCompile Include="..\..\boehmgc\src\win32_threads.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\boehmgc\include\cord.h" />
+    <ClInclude Include="..\..\boehmgc\include\ec.h" />
+    <ClInclude Include="..\..\boehmgc\include\gc.h" />
+    <ClInclude Include="..\..\boehmgc\include\gc_alloc.h" />
+    <ClInclude Include="..\..\boehmgc\include\gc_allocator.h" />
+    <ClInclude Include="..\..\boehmgc\include\gc_amiga_redirects.h" />
+    <ClInclude Include="..\..\boehmgc\include\gc_backptr.h" />
+    <ClInclude Include="..\..\boehmgc\include\gc_config_macros.h" />
+    <ClInclude Include="..\..\boehmgc\include\gc_cpp.h" />
+    <ClInclude Include="..\..\boehmgc\include\gc_gcj.h" />
+    <ClInclude Include="..\..\boehmgc\include\gc_inl.h" />
+    <ClInclude Include="..\..\boehmgc\include\gc_inline.h" />
+    <ClInclude Include="..\..\boehmgc\include\gc_local_alloc.h" />
+    <ClInclude Include="..\..\boehmgc\include\gc_mark.h" />
+    <ClInclude Include="..\..\boehmgc\include\gc_pthread_redirects.h" />
+    <ClInclude Include="..\..\boehmgc\include\gc_typed.h" />
+    <ClInclude Include="..\..\boehmgc\include\javaxfc.h" />
+    <ClInclude Include="..\..\boehmgc\include\leak_detector.h" />
+    <ClInclude Include="..\..\boehmgc\include\new_gc_alloc.h" />
+    <ClInclude Include="..\..\boehmgc\include\private\cord_pos.h" />
+    <ClInclude Include="..\..\boehmgc\include\private\darwin_semaphore.h" />
+    <ClInclude Include="..\..\boehmgc\include\private\darwin_stop_world.h" />
+    <ClInclude Include="..\..\boehmgc\include\private\dbg_mlc.h" />
+    <ClInclude Include="..\..\boehmgc\include\private\gcconfig.h" />
+    <ClInclude Include="..\..\boehmgc\include\private\gc_hdrs.h" />
+    <ClInclude Include="..\..\boehmgc\include\private\gc_locks.h" />
+    <ClInclude Include="..\..\boehmgc\include\private\gc_pmark.h" />
+    <ClInclude Include="..\..\boehmgc\include\private\gc_priv.h" />
+    <ClInclude Include="..\..\boehmgc\include\private\pthread_stop_world.h" />
+    <ClInclude Include="..\..\boehmgc\include\private\pthread_support.h" />
+    <ClInclude Include="..\..\boehmgc\include\private\solaris_threads.h" />
+    <ClInclude Include="..\..\boehmgc\include\private\specific.h" />
+    <ClInclude Include="..\..\boehmgc\include\weakpointer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\boehmgc\CMakeLists.txt" />
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

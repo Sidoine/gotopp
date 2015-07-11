@@ -153,7 +153,8 @@ by UseGC.  GC is an alias for UseGC, unless GC_NAME_CONFLICT is defined.
 #endif
 
 #if    ! defined ( __BORLANDC__ )  /* Confuses the Borland compiler. */ \
-    && ! defined ( __sgi )
+    && ! defined ( __sgi ) \
+    && false
 #  define GC_PLACEMENT_DELETE
 #endif
 

@@ -1,0 +1,377 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Fichiers sources">
+      <UniqueIdentifier>{d7938fff-aa97-4963-ac08-d650ebf98af9}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm</Extensions>
+    </Filter>
+    <Filter Include="Fichiers sources\compilateur">
+      <UniqueIdentifier>{93326fbb-6888-4836-b4e6-b3c575530faf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\commun">
+      <UniqueIdentifier>{4df70e0f-1333-4337-b233-7cb2572706d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\machine">
+      <UniqueIdentifier>{d72a086e-01fc-41fc-8917-9d64e2de3e0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\include">
+      <UniqueIdentifier>{d5a38a75-9821-4c2c-8984-f3b994f06d80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\type">
+      <UniqueIdentifier>{4dcf6ffe-5607-48d3-8a55-24fc7cf91016}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête">
+      <UniqueIdentifier>{a9eac11f-be92-45c3-b5db-60b58589b251}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc</Extensions>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\machine">
+      <UniqueIdentifier>{d3eaee7a-ac05-4b55-8e5a-a4e296bcdb70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\commun">
+      <UniqueIdentifier>{cbe5d4a7-205a-4b2a-b19f-4005638590b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\type">
+      <UniqueIdentifier>{b5e99c9f-91da-4d3b-9737-bd6d22875647}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\gotopp">
+      <UniqueIdentifier>{f059fb92-a944-408e-97e3-7ebf8ababf93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\compilateur">
+      <UniqueIdentifier>{d9a631f7-e6f6-4cf6-a934-5415272d7f5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers de ressources">
+      <UniqueIdentifier>{8a85dd31-77e3-40b6-9cf3-cc64decd56be}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
+    </Filter>
+    <Filter Include="Exemples">
+      <UniqueIdentifier>{b05309b6-59d4-4c08-b9a9-f008723a665b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Exemples\Tests">
+      <UniqueIdentifier>{a2fce223-ad1f-4fb3-a538-e72e9a699945}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Exemples\Modules">
+      <UniqueIdentifier>{c7d4cd67-a7ff-497b-853e-668f729d92f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Exemples\Bomberniac">
+      <UniqueIdentifier>{abaee1e8-079f-44dc-b148-a6579fcaaa19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Exemples\Divers">
+      <UniqueIdentifier>{b783f985-e467-43a6-8b35-897d8443b035}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Exemples\Jeux">
+      <UniqueIdentifier>{2191dc78-2782-4549-b7f1-d8e9517269df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Exemples\Maths">
+      <UniqueIdentifier>{34c54257-0842-43ed-b625-f4e97296264d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Exemples\Outils">
+      <UniqueIdentifier>{2eb9e140-d48e-4a49-b9fa-6721219674a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Exemples\Simple">
+      <UniqueIdentifier>{7e74c642-70f3-41d7-b403-b9408f4f643c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\compilateur\compilateur.cpp">
+      <Filter>Fichiers sources\compilateur</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\compilateur\compilateur2.cpp">
+      <Filter>Fichiers sources\compilateur</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\compilateur\instrconstr.cpp">
+      <Filter>Fichiers sources\compilateur</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\compilateur\optimiser.cpp">
+      <Filter>Fichiers sources\compilateur</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\commun\chaine.cpp">
+      <Filter>Fichiers sources\commun</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\commun\erreur.cpp">
+      <Filter>Fichiers sources\commun</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\commun\expreg.cpp">
+      <Filter>Fichiers sources\commun</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\commun\global.cpp">
+      <Filter>Fichiers sources\commun</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\commun\hachval.cpp">
+      <Filter>Fichiers sources\commun</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\commun\mutex.cpp">
+      <Filter>Fichiers sources\commun</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\commun\outils.cpp">
+      <Filter>Fichiers sources\commun</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\commun\programme.cpp">
+      <Filter>Fichiers sources\commun</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\commun\sauveur.cpp">
+      <Filter>Fichiers sources\commun</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\commun\symbole.cpp">
+      <Filter>Fichiers sources\commun</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\commun\tabval.cpp">
+      <Filter>Fichiers sources\commun</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\commun\valeur.cpp">
+      <Filter>Fichiers sources\commun</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\commun\wlib.cpp">
+      <Filter>Fichiers sources\commun</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\machine\interpreteur.cpp">
+      <Filter>Fichiers sources\machine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\machine\machine.cpp">
+      <Filter>Fichiers sources\machine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\machine\modules.cpp">
+      <Filter>Fichiers sources\machine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\machine\pile.cpp">
+      <Filter>Fichiers sources\machine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\type\type.cpp">
+      <Filter>Fichiers sources\type</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\commun\classe.h">
+      <Filter>Fichiers d%27en-tête\commun</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\commun\dbgassert.h">
+      <Filter>Fichiers d%27en-tête\commun</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\gotopp\global.h">
+      <Filter>Fichiers d%27en-tête\commun</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\commun\instr.h">
+      <Filter>Fichiers d%27en-tête\commun</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\commun\regmagic.h">
+      <Filter>Fichiers d%27en-tête\commun</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\commun\sauveur.h">
+      <Filter>Fichiers d%27en-tête\commun</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\gotopp\symbole.h">
+      <Filter>Fichiers d%27en-tête\commun</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\gotopp\type\bebe.h">
+      <Filter>Fichiers d%27en-tête\type</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\gotopp\type\chaine.h">
+      <Filter>Fichiers d%27en-tête\type</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\gotopp\type\expreg.h">
+      <Filter>Fichiers d%27en-tête\type</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\gotopp\type\hachval.h">
+      <Filter>Fichiers d%27en-tête\type</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\gotopp\type\objetc.h">
+      <Filter>Fichiers d%27en-tête\type</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\gotopp\type\reference.h">
+      <Filter>Fichiers d%27en-tête\type</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\gotopp\type\tabval.h">
+      <Filter>Fichiers d%27en-tête\type</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\gotopp\type\valeur.h">
+      <Filter>Fichiers d%27en-tête\type</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\gotopp\appelfonction.h">
+      <Filter>Fichiers d%27en-tête\gotopp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\gotopp\base.h">
+      <Filter>Fichiers d%27en-tête\gotopp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\gotopp\compilateur.h">
+      <Filter>Fichiers d%27en-tête\gotopp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\gotopp\configwin.h">
+      <Filter>Fichiers d%27en-tête\gotopp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\gotopp\erreur.h">
+      <Filter>Fichiers d%27en-tête\gotopp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\gotopp\gppmodule.h">
+      <Filter>Fichiers d%27en-tête\gotopp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\gotopp\hachage.h">
+      <Filter>Fichiers d%27en-tête\gotopp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\gotopp\instruction.h">
+      <Filter>Fichiers d%27en-tête\gotopp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\gotopp\machine.h">
+      <Filter>Fichiers d%27en-tête\gotopp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\gotopp\pile.h">
+      <Filter>Fichiers d%27en-tête\gotopp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\gotopp\programme.h">
+      <Filter>Fichiers d%27en-tête\gotopp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\gotopp\tableaux.h">
+      <Filter>Fichiers d%27en-tête\gotopp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\gotopp\type\type.h">
+      <Filter>Fichiers d%27en-tête\gotopp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\gotopp\version.h">
+      <Filter>Fichiers d%27en-tête\gotopp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\gotopp\wlib.h">
+      <Filter>Fichiers d%27en-tête\gotopp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\compilateur\compriv.h">
+      <Filter>Fichiers d%27en-tête\compilateur</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\compilateur\instrconstr.h">
+      <Filter>Fichiers d%27en-tête\compilateur</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\gotopp\config.h.in">
+      <Filter>Fichiers d%27en-tête\gotopp</Filter>
+    </None>
+    <None Include="..\..\exemples\tests\base.gpp">
+      <Filter>Exemples\Tests</Filter>
+    </None>
+    <None Include="..\..\exemples\tests\exemple.gpp">
+      <Filter>Exemples\Tests</Filter>
+    </None>
+    <None Include="..\..\exemples\modules\client.gpp">
+      <Filter>Exemples\Modules</Filter>
+    </None>
+    <None Include="..\..\exemples\modules\serveur.gpp">
+      <Filter>Exemples\Modules</Filter>
+    </None>
+    <None Include="..\..\exemples\modules\tortueivre.gpp">
+      <Filter>Exemples\Modules</Filter>
+    </None>
+    <None Include="..\..\exemples\modules\troisde.gpp">
+      <Filter>Exemples\Modules</Filter>
+    </None>
+    <None Include="..\..\exemples\bomberniac\bomberclient.gpp">
+      <Filter>Exemples\Bomberniac</Filter>
+    </None>
+    <None Include="..\..\exemples\bomberniac\bomberserveur.gpp">
+      <Filter>Exemples\Bomberniac</Filter>
+    </None>
+    <None Include="..\..\exemples\bomberniac\intro.baf">
+      <Filter>Exemples\Bomberniac</Filter>
+    </None>
+    <None Include="..\..\exemples\bomberniac\ldv.bnp">
+      <Filter>Exemples\Bomberniac</Filter>
+    </None>
+    <None Include="..\..\exemples\bomberniac\plan.bnp">
+      <Filter>Exemples\Bomberniac</Filter>
+    </None>
+    <None Include="..\..\exemples\bomberniac\present.gpp">
+      <Filter>Exemples\Bomberniac</Filter>
+    </None>
+    <None Include="..\..\exemples\bomberniac\RIDMI.html">
+      <Filter>Exemples\Bomberniac</Filter>
+    </None>
+    <None Include="..\..\exemples\bomberniac\tennis.bnp">
+      <Filter>Exemples\Bomberniac</Filter>
+    </None>
+    <None Include="..\..\exemples\divers\chainelib.gpp">
+      <Filter>Exemples\Divers</Filter>
+    </None>
+    <None Include="..\..\exemples\divers\marche.gpp">
+      <Filter>Exemples\Divers</Filter>
+    </None>
+    <None Include="..\..\exemples\divers\marche2.gpp">
+      <Filter>Exemples\Divers</Filter>
+    </None>
+    <None Include="..\..\exemples\divers\tresrapide.gpp">
+      <Filter>Exemples\Divers</Filter>
+    </None>
+    <None Include="..\..\exemples\jeux\aventure.gpp">
+      <Filter>Exemples\Jeux</Filter>
+    </None>
+    <None Include="..\..\exemples\jeux\devineunnombre.gpp">
+      <Filter>Exemples\Jeux</Filter>
+    </None>
+    <None Include="..\..\exemples\jeux\nombre.gpp">
+      <Filter>Exemples\Jeux</Filter>
+    </None>
+    <None Include="..\..\exemples\jeux\snake.gpp">
+      <Filter>Exemples\Jeux</Filter>
+    </None>
+    <None Include="..\..\exemples\maths\pi.gpp">
+      <Filter>Exemples\Maths</Filter>
+    </None>
+    <None Include="..\..\exemples\maths\pi3.gpp">
+      <Filter>Exemples\Maths</Filter>
+    </None>
+    <None Include="..\..\exemples\outils\adresse.gpp">
+      <Filter>Exemples\Outils</Filter>
+    </None>
+    <None Include="..\..\exemples\outils\cal.gpp">
+      <Filter>Exemples\Outils</Filter>
+    </None>
+    <None Include="..\..\exemples\outils\chainelib.gpp">
+      <Filter>Exemples\Outils</Filter>
+    </None>
+    <None Include="..\..\exemples\outils\ftp.gpp">
+      <Filter>Exemples\Outils</Filter>
+    </None>
+    <None Include="..\..\exemples\outils\monProxy.gpp">
+      <Filter>Exemples\Outils</Filter>
+    </None>
+    <None Include="..\..\exemples\outils\sendmail.gpp">
+      <Filter>Exemples\Outils</Filter>
+    </None>
+    <None Include="..\..\exemples\outils\telnet.gpp">
+      <Filter>Exemples\Outils</Filter>
+    </None>
+    <None Include="..\..\exemples\outils\tresrapide.gpp">
+      <Filter>Exemples\Outils</Filter>
+    </None>
+    <None Include="..\..\exemples\simple\entrenom.gpp">
+      <Filter>Exemples\Simple</Filter>
+    </None>
+    <None Include="..\..\exemples\simple\exemblebib.gpt">
+      <Filter>Exemples\Simple</Filter>
+    </None>
+    <None Include="..\..\exemples\simple\fichier.gpp">
+      <Filter>Exemples\Simple</Filter>
+    </None>
+    <None Include="..\..\exemples\simple\gotomultiple.gpp">
+      <Filter>Exemples\Simple</Filter>
+    </None>
+    <None Include="..\..\exemples\simple\hello.gpp">
+      <Filter>Exemples\Simple</Filter>
+    </None>
+    <None Include="..\..\exemples\simple\markov.gpp">
+      <Filter>Exemples\Simple</Filter>
+    </None>
+    <None Include="..\..\exemples\simple\premier.gpp">
+      <Filter>Exemples\Simple</Filter>
+    </None>
+    <None Include="..\..\exemples\simple\repertoire.gpp">
+      <Filter>Exemples\Simple</Filter>
+    </None>
+    <None Include="..\..\exemples\simple\tache2.gpp">
+      <Filter>Exemples\Simple</Filter>
+    </None>
+    <None Include="..\..\exemples\simple\texte.gpp">
+      <Filter>Exemples\Simple</Filter>
+    </None>
+    <None Include="..\..\exemples\simple\varargs.gpp">
+      <Filter>Exemples\Simple</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\src\CMakeLists.txt" />
+  </ItemGroup>
+</Project>

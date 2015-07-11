@@ -6,6 +6,8 @@
 #include <time.h>
 #ifdef _WIN32
 #	include <windows.h>
+#else
+#   include <unistd.h>
 #endif
 #include "../compilateur/compriv.h"
 #include "sauveur.h"
@@ -27,8 +29,8 @@ namespace GotoPP
 	Symbole * symboleMethodeGPP;
 	Symbole * symboleFonctionC;
 	Symbole * symboleMethodeC;
-	Symbole * symboleEtc; //pseudo-symbole, utilisé pour la définition de type
-	Symbole * symboleDebutParams; //pseudo-symbole, utilisé pour la définition de type
+	Symbole * symboleEtc; //pseudo-symbole, utilisï¿½ pour la dï¿½finition de type
+	Symbole * symboleDebutParams; //pseudo-symbole, utilisï¿½ pour la dï¿½finition de type
 	Symbole * symboleReference; //idem
 
 
@@ -47,8 +49,8 @@ namespace GotoPP
 
 	carac NomTypeAutre[][32]=
 	{
-		//Types pouvant être pris par un pingouin
-		//au cours de l'exécution mais n'étant
+		//Types pouvant ï¿½tre pris par un pingouin
+		//au cours de l'exï¿½cution mais n'ï¿½tant
 		//pas une classe en soi
 		//=>template
 		_T("HACHAGE"),
@@ -57,13 +59,13 @@ namespace GotoPP
 		_T("REFERENCE"),
 		_T("ETIQUETTE"),
 		_T("DEBUTPARAM"),
-		_T("FONCTION"),//Le numéro d'une fonction C
+		_T("FONCTION"),//Le numï¿½ro d'une fonction C
 		_T("TABLEAU"),//Tableau
 		
-		//Utilisé par "sauveur"
+		//Utilisï¿½ par "sauveur"
 		_T("BEBE"),
 			
-		//Types utilisés par le compilateur/désassembleur
+		//Types utilisï¿½s par le compilateur/dï¿½sassembleur
 		//(en fait des entiers)
 		_T("VARIABLE"),
 		_T("TYPE"),
@@ -198,7 +200,7 @@ const carac * GotoPP::NomType(type t)
 
 void ChercherChemin(carac *CheminModules)
 {
-	//On supprime le nom de l'exécutable
+	//On supprime le nom de l'exï¿½cutable
 	carac *c=CheminModules;
 	while (*c)
 		c++;

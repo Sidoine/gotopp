@@ -176,7 +176,7 @@ const chaineval * biEntreTonTexteFurtif()
 	
 	char Temp[128];
 #ifdef _WIN32
-	if (!gets(Temp))
+	if (!fgets(Temp, 127, stdin))
 		*Temp=0;
 #else
 	if (!CursesInit)

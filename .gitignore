@@ -27,3 +27,8 @@
 *.out
 *.app
 Thumbs.db
+bin
+*.suo
+Debug
+*.vcxproj.user
+*.*sdf

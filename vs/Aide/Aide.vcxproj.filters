@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{c696ef89-559f-4c1e-a631-1bb84662e80c}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{8b1bbfc6-be67-45cd-bd51-04112a5d73e1}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{fa7edfc8-9f4e-463d-a749-64d24ebd0aa0}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\doc\src\ass.txt">
+      <Filter>Source Files</Filter>
+    </Text>
+    <Text Include="..\..\doc\src\grammaire.txt">
+      <Filter>Source Files</Filter>
+    </Text>
+    <Text Include="..\..\doc\src\intro.txt">
+      <Filter>Source Files</Filter>
+    </Text>
+    <Text Include="..\..\doc\src\motsclefs.txt">
+      <Filter>Source Files</Filter>
+    </Text>
+    <Text Include="..\..\doc\src\operateurs.txt">
+      <Filter>Source Files</Filter>
+    </Text>
+    <Text Include="..\..\doc\src\technique.txt">
+      <Filter>Source Files</Filter>
+    </Text>
+    <Text Include="..\..\doc\src\utilisation.txt">
+      <Filter>Source Files</Filter>
+    </Text>
+    <Text Include="..\..\doc\src\variables.txt">
+      <Filter>Source Files</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\doc\asm.pl" />
+    <None Include="..\..\doc\creerdoc.pl" />
+  </ItemGroup>
+</Project>

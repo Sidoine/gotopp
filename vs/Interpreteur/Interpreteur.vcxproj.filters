@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source Files\gpp">
+      <UniqueIdentifier>{93882ca5-3d98-49c4-bc05-4d48ef11e267}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\interne">
+      <UniqueIdentifier>{3a50b1a3-48ee-40c1-98da-9656398bda2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Header Files\gpp">
+      <UniqueIdentifier>{b90cbb89-9bb5-4f24-b788-557bbf3fb1cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\interne">
+      <UniqueIdentifier>{8c8b168c-e0e3-4c68-bd9a-c7f6f15ec3e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx</Extensions>
+    </Filter>
+    <Filter Include="Exemples">
+      <UniqueIdentifier>{3bd86f63-d151-4c62-97da-a54a5d3f62b4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\interpreteur\princ\desass.cpp">
+      <Filter>Source Files\gpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\interpreteur\princ\gpp.cpp">
+      <Filter>Source Files\gpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\interpreteur\interne\chaines.cpp">
+      <Filter>Source Files\interne</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\interpreteur\interne\console.cpp">
+      <Filter>Source Files\interne</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\interpreteur\interne\divers.cpp">
+      <Filter>Source Files\interne</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\interpreteur\interne\hasard.cpp">
+      <Filter>Source Files\interne</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\interpreteur\interne\io.cpp">
+      <Filter>Source Files\interne</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\interpreteur\interne\maths.cpp">
+      <Filter>Source Files\interne</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\interpreteur\interne\systeme.cpp">
+      <Filter>Source Files\interne</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\interpreteur\interne\tableaux.cpp">
+      <Filter>Source Files\interne</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\interpreteur\princ\gpp.h">
+      <Filter>Header Files\gpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\interpreteur\interne\defbib.h">
+      <Filter>Header Files\interne</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\ressources\gotopp.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\ressources\srcgpp.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\exemples\modules\serveur.gpp">
+      <Filter>Exemples</Filter>
+    </None>
+    <None Include="..\..\exemples\tortueivre.gpp">
+      <Filter>Exemples</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\interpreteur\CMakeLists.txt" />
+  </ItemGroup>
+</Project>
