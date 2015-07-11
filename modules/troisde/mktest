@@ -1,0 +1,1 @@
+g++ -I/home/vulcain/sidoine/include -L/usr/X11R6/lib -lGL -lGLU -lglut -g -shared -o ../../lib/troisde.so troisde.cpp ../include/rienmodule.cpp

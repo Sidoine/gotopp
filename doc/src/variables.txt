@@ -1,0 +1,41 @@
+/*AIDE
+parametre
+$CATEG
+Diverses variables
+$DESC
+Troupeau contenant l'ensemble des paramètres passés au programme.
+
+parametre<*(0)> est le premier paramètre.
+*/
+
+/*AIDE
+entreestd
+$CATEG
+Diverses variables
+$DESC
+Fichier de l'entrée standard.
+*/
+
+/*AIDE
+sortiestd
+$CATEG
+Diverses variables
+$DESC
+Fichier de la sortie standard.
+*/
+
+/*AIDE
+erreurstd
+$CATEG
+Diverses variables
+$DESC
+Fichier de la sortie d'erreur standard.
+*/
+
+/*AIDE
+TexteErreur
+$CATEG
+Diverses variables
+$DESC
+Contient la valeur passée en paramètre à $GOTOerreur$.
+*/

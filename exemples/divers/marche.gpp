@@ -1,0 +1,19 @@
+MACHIN = *(0)
+§10
+GOTOGOTO() *(100) ?49 *(101) ?49
+
+GOTOPRINTDUTEXTE() *` ' *`:' *`t' *`a' *`t' *`l' *`u' *`s' *`e' *`R'
+GOTOPRINT()
+GOTOPRINTDUTEXTE() ;
+GOTOGOTO() *(102) ?100
+
+§100
+MACHIN = &MACHIN + *(1)
+GOTOGOTO() *(10) ?100
+
+§101
+MACHIN = &MACHIN - *(1)
+GOTOGOTO() *(10) ?100
+
+§102
+

@@ -1,0 +1,317 @@
+GOTO Carnet d'adresses / Par Tout
+GOTO Un application fonctionelle et utile
+GOTO   NIAC Software (c)CopyNIAC deux-zero-zero-deux 
+
+GOTO /!\ Attention ce code contient des vrais bouts de bonheur !
+
+GOTOPASMALIN %start
+
+GOTOBIBLIOTHEQUE tresrapide
+GOTOBIBLIOTHEQUE chainelib
+
+troupeau Gars
+  pingouin prenom
+  pingouin nom
+  pingouin tel
+  pingouin email
+  machineapingouins init
+  machineapingouins tochaine
+  machineapingouins edit
+  machineapingouins sendmail
+  machineapingouins quoitataille
+  machineapingouins maxtaille
+  machineapingouins retaille
+fintroupeau
+
+Gars Liste<>
+
+§init:ASV(v):Gars
+pingouin s
+pingouin i
+s == monpitipingouin
+i = *(0)
+§itemboucle
+s<&i> = &v
+i=+*(1)
+GOTOGOTO() %%itemboucle &nib - &i - *(1) MULTIPLICATION *(100) nimportequoitochances
+APLUS
+
+§tochaine:ASV(g):Gars
+pingouin s
+pingouin r
+pingouin i
+s == monpitipingouin
+r = «»
+i = *(0)
+§itemboucle
+r = &g _ &s<&i> _ &r
+i=+*(1)
+GOTOGOTO() %%itemboucle &nib - &i - *(1) MULTIPLICATION *(100) nimportequoitochances
+REGOTO &s<&nib - *(1)> _ &r
+APLUS
+
+§edit:ASV:Gars
+pingouin s
+pingouin i
+pingouin t
+s == monpitipingouin
+i = *(-1)
+§itemboucle
+i =+ *(1)
+GOTOGOTO() %%finboucle &i - &nib + *(1) MULTIPLICATION *(100) nimportequoitochances
+GOTOPRINTDUTEXTE() « -> Nouvelle valeur (rien laisse inchange) : » ; &s<&i> « : » &Liste<*(0)><&i>
+t = DecalageASki(}ENTRETONTEXTE(){ *`	' *`	' *` ')
+GOTOGOTO() %%itemboucle *(1) - t tailleenlongueur MULTIPLICATION *(100) nimportequoitochances
+s<&i> = &t
+GOTOPASMALIN %%itemboucle
+§finboucle
+APLUS
+
+§sendmail:ASV:Gars
+GOTOPRINTDUTEXTE() ; «Bon, ca marche qui si vous avez une commande mail et un interpreteur de commande qui fonctionne.»
+GOTOPRINTDUTEXTE() ; «Généralement, cela ne vaut que si vous etes sous un environnement UNIX.»
+GOTOPRINTDUTEXTE() ; «Au fait, un point (.) termine le mail que vous ecrivez.»
+pingouin adr
+adr = «>"» _ &email _ « <» _ &nom _ « » _ &prenom _ «"»
+GOTOPRINTDUTEXTE() ; adr
+GOTODOS(&adr _ «mail »)
+GOTOPRINTDUTEXTE() ; « de facon bien.» &adr «Mail envoyé à »
+APLUS
+
+§quoitataille:ASV:Gars
+pingouin s
+pingouin i
+Gars t
+s == monpitipingouin
+i = *(0)
+§itemboucle
+t<&i> = s<&i> tailleenlongueur
+i=+*(1)
+GOTOGOTO() %%itemboucle &nib - &i - *(1) MULTIPLICATION *(100) nimportequoitochances
+REGOTO &t
+APLUS
+
+§maxtaille:ASV(t):Gars
+Gars zap t
+pingouin s
+pingouin i
+s == monpitipingouin
+i = *(0)
+§itemboucle
+GOTOGOTO() %%ok &s<&i> - &t<&i> MULTIPLICATION *(100) nimportequoitochances
+s<&i> = &t<&i>
+§ok
+i=+*(1)
+GOTOGOTO() %%itemboucle &nib - &i - *(1) MULTIPLICATION *(100) nimportequoitochances
+APLUS
+
+§retaille:ASV(t):Gars
+Gars zap t
+pingouin s
+pingouin i
+s == monpitipingouin
+i = *(0)
+§itemboucle
+s<&i> = }%CaRpet(*` ' &t<&i> - s<&i> tailleenlongueur){ _ &s<&i>
+i=+*(1)
+GOTOGOTO() %%itemboucle &nib - &i - *(1) MULTIPLICATION *(100) nimportequoitochances
+APLUS
+
+§start
+
+GOTOPRINTDUTEXTE() ; «loading...»
+
+Liste<*(0)>@prenom = «Prenom»
+Liste<*(0)>@nom = «Nom»
+Liste<*(0)>@tel = «Telephone»
+Liste<*(0)>@email = «E-Mail»
+
+nib = Liste<*(0)> tailleenlongueur
+
+
+
+fich = «adresse.dat»
+GOTOCHEPA() %load ?100
+GOTOPASMALIN %affichemenu
+
+§load:ASV
+fichier F()
+F@OUVRIR(&fich)
+GOTONONNULPOURLESNULS %%ficherreur }F@Fin(){
+nb=F@LIREUNNOMBRE()
+GOTOPASMALIN %%testload
+§loaditem
+ligne=F@LIREDUTEXTE(&F)
+i=*(0)
+§itemboucle
+trouve=OUQUILESTLETEXTE(&ligne «	»)
+Liste<&nb><&i>=PrendsUnMorceau(&ligne *(0) &trouve)
+ligne = PrendsUnMorceau(&ligne }&trouve + *(1){ *(0))
+i=+*(1)
+GOTOGOTO() %%itemboucle &nib - &i MULTIPLICATION *(100) nimportequoitochances
+nb=-*(1)
+§testload
+GOTONONNULPOURLESNULS %%loaditem &nb
+F = *(0)
+GOTOPRINTDUTEXTE() ; «" a ete charge de facon bien.» &fich «  -> Le fichier "»
+REGOTO
+§ficherreur
+GOTOPRINTDUTEXTE() ; «" n'existe pas.» &fich «/!\ Le fichier "»
+F=*(0)
+REGOTO
+APLUS
+
+§save:ASV
+nb = Liste tailleenlongueur - *(1)
+GOTOPRINTDUTEXTE() ; &nb «NB 2 : "»
+GOTOPRINTDUTEXTE() ; &fich «Fich : "»
+fichier F()
+F@OUVRIR(&fich *(1))
+GOTOPRINTDUTEXTE() ; &nb «NB 3 : "»
+GOTOPRINTDUTEXTE() ; &nb &F
+GOTOPRINTDUTEXTE() ; &nb «NB 4 : "»
+GOTOPASMALIN %%testsave
+§saveitem
+GOTOPRINTDUTEXTE() &Liste<&nb>@tochaine(«	») &F
+GOTOPRINTDUTEXTE() ; &F
+nb=-*(1)
+§testsave
+GOTOPRINTDUTEXTE() ; &nb «NB 5 : "»
+GOTONONNULPOURLESNULS %%saveitem &nb
+GOTOPRINTDUTEXTE() ; &nb «NB 6 : "»
+F = *(0)
+GOTOPRINTDUTEXTE() ; «Attention, vous devez quitter prorement le programme si vous ne voulez pas perdre vos donnees.» ; «" a ete sauve de facon bien.» &fich «  -> Le fichier "»
+REGOTO
+APLUS
+
+§menu
+GOTOPRINTDUTEXTE() «[appuyez sur <Entree> pour continuer]» ;
+ENTREUNNOMBRE()
+§affichemenu
+INITIALISATION() sortirhe
+INITIALISATION() sortirhehe
+INITIALISATION() sortirhehehe
+sortirhe = } &sortirhe + }&sortirhehe MULTIPLICATION *(100){ + }&sortirhehehe MULTIPLICATION *(10000){ { enentier
+GOTOPRINTDUTEXTE() ; «*************** v 0.11b**» ; «*** CARNET D'ADRESSES ***» ; «*************************» ;;;
+GOTOPRINTDUTEXTE() ; ; « entree(s) dans la base.» }Liste tailleenlongueur - *(1){ «Il y a »
+GOTOPRINTDUTEXTE() ; «[0] - Afficher le carnet d'adresses (par defaut).»
+GOTOPRINTDUTEXTE() ; «[1] - Ajouter une entree.»
+GOTOPRINTDUTEXTE() ; «[2] - Trier.»
+GOTOPRINTDUTEXTE() ; «[3] - Sauvegarder le carnet d'adresses.»
+GOTOPRINTDUTEXTE() ; «[4] - L'envoyer a spamlist@niacland.org (a venir).»
+GOTOPRINTDUTEXTE() ; «] - Quitter ce programme drolement utile (marche pas parfois).» &sortirhe «[»
+GOTOPRINTDUTEXTE() «  -> Votre choix : » ;
+choix = ENTREUNNOMBRE()
+GOTOPRINTDUTEXTE() ;
+
+GOTOGOTO() %exit *(1) - } tOUTeNpLUS(&choix - &sortirhe)  { MULTIPLICATION *(50) nimportequoitochances
+GOTOGOTO() %err ~ &choix MULTIPLICATION *(100) nimportequoitochances
+GOTOGOTO() %err &choix - *(5) MULTIPLICATION *(100) nimportequoitochances
+
+GOTOGOTO() &choix ?100
+
+§err
+GOTOPRINTDUTEXTE() ; «/!\ Choix invalide espece de gnou !!!»
+GOTOPASMALIN %menu
+
+§0
+max = Liste tailleenlongueur - *(1)
+GOTONONNULPOURLESNULS %affiche &max
+GOTOPRINTDUTEXTE() ; «/!\ Le carnet est vide !!!»
+GOTOPASMALIN %menu
+§affiche
+Gars taille
+taille@init(*(0))
+nb=*(-1)
+§calctaille
+nb=+*(1)
+taille@maxtaille(&Liste<&nb>@quoitataille())
+GOTOGOTO() %calctaille &max - &nb MULTIPLICATION *(100) nimportequoitochances
+Gars cur
+cur = &Liste<*(0)>
+cur@retaille(&taille)
+GOTOPRINTDUTEXTE() ; ; «*************************» ; «*** CARNET D'ADRESSES ***» ; «*************************» ;;;
+GOTOPRINTDUTEXTE() ; ; cur@tochaine(«   ») «	»
+nb=*(0)
+§afficheitem
+nb=+*(1)
+cur = &Liste<&nb>
+cur@retaille(&taille)
+GOTOPRINTDUTEXTE() ; cur@tochaine(« | ») «]	» &nb «[»
+GOTOGOTO() %afficheitem &max - &nb MULTIPLICATION *(100) nimportequoitochances
+GOTOPRINTDUTEXTE() ; «[0] - Revenir au menu principal (par defaut).»
+GOTOPRINTDUTEXTE() «  -> Entrez un numéro pour envoyer un mail ou son negatif pour editer : » ;
+choix = ENTREUNNOMBRE()
+GOTOPRINTDUTEXTE() ;
+GOTOGOTO() %err ~ &choix - &max MULTIPLICATION *(100) nimportequoitochances
+GOTOGOTO() %err &choix - &max MULTIPLICATION *(100) nimportequoitochances
+GOTOGOTO() %edit ~ &choix MULTIPLICATION *(100) nimportequoitochances
+GOTOGOTO() %affichemenu *(1) - &choix MULTIPLICATION *(100) nimportequoitochances
+Liste<&choix>@sendmail()
+GOTOPASMALIN %0
+§edit
+Liste<~ &choix>@edit()
+GOTOPASMALIN %0
+
+§1
+max = Liste tailleenlongueur
+INITIALISATION() Liste<&max><*(0)>
+&Liste<&max>@edit()
+GOTOPASMALIN %menu
+
+§tri:ASV(a b)
+Gars zap a
+Gars zap b
+GOTOGOTO() %%rand *(0) - &trigparam MULTIPLICATION *(100) nimportequoitochances
+GOTOGOTO() %%rand &trigparam - &nib + *(1) MULTIPLICATION *(100) nimportequoitochances
+REGOTO Compare(&a<&trigparam> &b<&trigparam>) MULTIPLICATION &trigparamo
+§rand
+INITIALISATION() a
+REGOTO &a
+APLUS
+
+§2
+max = Liste tailleenlongueur - *(1)
+GOTONONNULPOURLESNULS %options &max
+GOTOPRINTDUTEXTE() ; «/!\ Le carnet est vide !!!»
+GOTOPASMALIN %menu
+§options
+GOTOPRINTDUTEXTE() ; ; «*************************» ; «***       TRIER       ***» ; «*************************» ;;;
+nb=*(0)
+§trichamp
+GOTOPRINTDUTEXTE() ; &Liste<*(0)><&nb> «] - Tri croissant : » }}&nb MULTIPLICATION *(2){ + *(1){ «[»
+GOTOPRINTDUTEXTE() ; &Liste<*(0)><&nb> «] - Tri decroissant : » }}&nb MULTIPLICATION *(2){ + *(2){ «[»
+nb=+*(1)
+GOTOGOTO() %trichamp &nib - &nb MULTIPLICATION *(100) nimportequoitochances
+GOTOPRINTDUTEXTE() ; «[9] - Tri croissant : Portnawak .»
+GOTOPRINTDUTEXTE() ; «[10] - Tri decroissant : Portnawak .»
+GOTOPRINTDUTEXTE() ; «[0] - Revenir au menu principal (par defaut).»
+GOTOPRINTDUTEXTE() «  -> Votre choix : » ;
+choix = ENTREUNNOMBRE()
+GOTOPRINTDUTEXTE() ;
+
+GOTOGOTO() %err ~ &choix MULTIPLICATION *(100) nimportequoitochances
+GOTOGOTO() %err &choix - }&nib MULTIPLICATION *(2){ - *(2) MULTIPLICATION *(100) nimportequoitochances
+GOTOGOTO() %affichemenu *(1) - &choix MULTIPLICATION *(100) nimportequoitochances
+
+trigparam = &choix - *(1) : ?2
+trigparamo = }&trigparam - &trigparam enentier MULTIPLICATION *(4){ enentier - *(1)
+trigparam = &trigparam enentier
+GOTOPRINTDUTEXTE(«Calcul en cours...;n»)
+RangeCa(&Liste %tri *(1) Liste tailleenlongueur - *(1))
+GOTOPASMALIN %affiche
+
+§3
+GOTOCHEPA() %save ?100
+GOTOPASMALIN %menu
+
+§4
+GOTOPRINTDUTEXTE() ; «Pas implémenté, désolé...»
+GOTOPASMALIN %menu
+
+§5
+GOTOPRINTDUTEXTE() ; «Mais Mais Mais ?!? Comment êtes-vous venu ici ?»
+GOTOPASMALIN %menu
+
+§exit
+GOTOPRINTDUTEXTE() « Au revoir ! Vous avez de la chance que je sois magnanime et que je ne formate pas votre disque dur !;n» ;

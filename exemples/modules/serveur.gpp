@@ -1,0 +1,55 @@
+GOTO - daoijazdojidazjio -
+
+GOTOMODULE chaussettes
+
+Chaussure serveur()
+serveur@Cordonnier(*(1255))
+entier NombreClients
+NombreClients=*(0)
+
+%Serveur()
+GOTOFIN
+
+§Serveur:ASV
+	Chaussette sauvage conn
+	encasderreurGOTO %%Fin
+
+	§Debut
+		conn=serveur@Chausser()
+		%Client(&conn)
+	GOTOPASMALIN %%Debut
+	
+	§Fin
+APLUS
+
+§Client:ASV(Conn)
+	Chaussette zap Conn
+	entier noc
+	
+	noc=&NombreClients
+	NombreClients=+*(1)
+	
+	GOTOUNIVERSPARALLELEouizzz %%Tache
+	REGOTO
+	
+	§Tache
+	encasderreurGOTO %%Fin
+	
+	%Zut()
+	
+	GOTOPRINTDUTEXTE(«Nouveau client...;n»)
+	§Debut
+		Reponse=Conn@LireLigne()
+		GOTOPRINTDUTEXTE(&Reponse « : » &noc «Reçu du client »)
+		Conn@Remplir(«Ouais, c'est ça.;n»)
+	GOTOPASMALIN %%Debut
+	
+	§Fin
+	GOTOPRINTDUTEXTE(« déconnecté...;n» &noc «Client »)
+	GOTOFINTACHE
+APLUS
+
+
+§Zut:ASV
+
+APLUS

@@ -1,0 +1,12 @@
+niveaugourou 0
+
+GOTOMODULE troisde
+
+FonctionSpeciale(%special)
+Onyva()
+
+GOTOFIN
+
+§special:ASV(k x y)
+	GOTOPRINTDUTEXTE(; &k « k=» &y « y=» &x « x=»)
+APLUS

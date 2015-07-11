@@ -1,0 +1,235 @@
+$Opérateurs mathématiques
+
+Les opérateurs mathématiques permettent en principe de faire des opérations mathématiques.
+
+#table
+3
+Opérateur
+Priorité
+Effet
++
+5
+Additionne deux nombres.
+-
+5
+Fait la différence entre deux nombres
+:
+8
+Fait le rapport entre deux nombres (division)
+MULTIPLICATION
+8
+Fait le produit de deux nombres
+++
+5
+Cet opérateur est comme le +, mais il est défini pour plus de types de variable (notamment pour les références).
+~
+3
+Renvoie l'opposé d'un nombre.
+~~
+3
+Renvoie l'opposé de l'opposé d'un nombre. Je vois de nombreux regards interrogateurs dans l'assistance. Quel est l'intérêt d'un tel opérateur ? Je vous laisse deviner. Indice : il y en a un.
+RESTEDELADIVISIONPAR
+8
+Renvoie le modulo, c'est à dire le reste de la division.
+|*
+13
+ET binaire.
+|+
+12
+OU binaire
+|<
+7
+Décalage binaire à gauche.
+|>
+7
+Décalage binaire à droite.
+
+table#
+
+#exemple
+GOTO On additionne deux nombres
+GOTOPRINTDUTEXTE() }*(12)+?3,5{
+GOTO Affiche 15.5
+exemple#
+
+Remarquez que contrairement aux mathématiques traditionnelles, les mathématiques
+du GOTO++, héritées d'une culture fort différente, ont une conception différente
+de l'associativité : les additions et soustractions sont effectuées avant les
+multiplication et les divisions.
+
+#exemple
+GOTOPRINTDUTEXTE(*(3) MULTIPLICATION *(4) + *(3))
+GOTO Affiche 21
+exemple#
+
+#exemple
+J BOITEAPINGOUINS(*(2) *(4) *(15))
+Z=J<*(0)>
+Z=&Z++1
+GOTOPRINTDUTEXTE() &Z GOTO Affiche 4
+F=*`a'
+F=&F++1
+GOTOPRINT() GOTO Affiche b
+exemple#
+
+$Opérateurs d'affectation
+
+#table
+3
+Opérateur
+Priorité
+Effet
+==
+15
+Met une instance d'une autre variable dans une variable, ou copie la valeur si ce n'est pas approprié.
+=
+15
+Modifie la valeur d'une variable.
+=+
+15
+Ajoute un nombre à la valeur d'une variable.
+=-
+15
+Soustrait un nombre à la valeur d'une variable.
+*=
+15
+Multiplie la valeur d'une variable par un nombre.
+:=
+15
+Divise la valeur d'une variable par un nombre.
+table#
+
+Les opérateurs du style =+ sont des raccourci pour £variable£=&£variable£+£nombre£.
+
+#exemple
+j=*(3)
+j=-*(5)
+GOTOPRINTDUTEXTE() &j GOTO Affiche -2
+j=*(13)
+j:=*(5)
+GOTOPRINTDUTEXTE() &j GOTO Affiche 2
+exemple#
+
+L'opérateur £==£ ne doit pas être confondu avec £=£. Contrairement à £=£, la valeur n'est
+pas copiée : c'est le même tableau, le même troupeau ou la même table de hachage qui est 
+stockée dans la nouvelle variable. Modifier le tableau contenu dans une des deux
+variables revient à modifier le tableau dans l'autre variable. Dit de façon plus
+technique, une instance du même troupeau est stockée dans la variable.
+
+En réalité, de manière générale, utilisez £==£ plutôt que £=£ qui n'est utile que dans des
+cas rares.
+
+#exemple
+GOTOPASMALIN %debut
+
+troupeau Machin
+	pingouin Herbert
+	berger
+fintroupeau
+
+§0:ASV(x):Machin
+	Herbert=&x
+APLUS
+
+§debut
+Machin Coco(*(2))
+Machin Bob
+Bob==&Coco
+Bob@Herbert=*(5)
+GOTOPRINTDUTEXTE() ; &Coco@Herbert «Coco=»
+GOTOPRINTDUTEXTE() ; &Bob@Herbert «Bob=»
+exemple#
+
+$Opérateurs divers
+
+#table
+3
+Opérateur
+Priorité
+Effet
+"
+1
+Récupère la clef d'une paire clef/valeur. Opère uniquement sur les références sur un élément d'une table de hachage.
+#
+1
+Renvoie la valeur référencée.
+_
+9
+Acolle deux chaînes pour en former une nouvelle (notez que cette description ne précise pas dans quel ordre les deux chaînes sont acollées).
+table#
+
+
+Quand vous avez une référence sur un élément d'une table de hachage, vous
+souhaitez peut-être connaître le nom de clef et pas seulement la valeur.
+Pour cela utilisez l'opérateur £"£. C'est particulièrement utile quand vous vous déplacez d'une paire à l'autre à
+l'aide de l'opérateur £++£.
+
+#exemple
+Hache[«Bonjour»]=*(3)
+GOTOPRINTDUTEXTE() Hache[«Bonjour»]"
+GOTO Affiche Bonjour.
+J=Hache[«Bonjour»]
+GOTOPRINTDUTEXTE() &J"
+GOTO Affiche aussi Bonjour.
+exemple#
+
+#exemple
+J=A
+K=J
+A=*(1)
+GOTOPRINTDUTEXTE() &K ## GOTO Affiche 1
+#! En effet K est une référence sur J
+donc &K renvoie la référence sur J.
+Alors &K # renvoie la valeur de J qui
+est une référence sur A. Le second #
+permet de prendre la valeur de A.!#
+exemple#
+
+$Opérateurs logiques
+
+#table
+3
+Opérateur
+Priorité
+Effet
+ou
+16
+Exécute ce qui se trouve à sa gauche. Si la valeur renvoyée est nulle, exécute ce qui se trouve à droite et renvoie sa valeur, sinon renvoie un et ignore ce qui se trouve à droite.
+et
+17
+Exécute ce qui se trouve à sa gauche. Si la valeur renvoyée est non nulle, exécute ce qui se trouve à droite et renvoie sa valeur, sinon renvoie zéro et ignore ce qui se trouve à droite.
+non
+4
+Renvoie un si le paramètre est nul, zéro sinon.
+table#
+
+$Opérateurs de comparaison
+
+#table
+3
+inf
+14
+Compare deux nombres en regardant si celui de gauche est inférieur à celui de droite.
+sup
+14
+Compare deux nombres en regardant si celui de gauche est supérieur à celui de droite.
+diff
+14
+Compare deux nombres en regardant si celui de gauche est différent de celui de droite.
+eg
+14
+Compare deux nombres en regardant si celui de gauche est égal à celui de droite.
+infeg
+14
+Compare deux nombres en regardant si celui de gauche est inférieur ou égal à celui de droite.
+supeg
+14
+Compare deux nombres en regardant si celui de gauche est supérieur ou égal à celui de droite.
+table#
+
+$Opérateurs de conversion de type
+
+Les opérateurs de conversion de type sont enentier et nimportequoitochances, qui convertissent
+respectivement en entier et en chances. Ils ont tous deux une priorité de 1.
+
+$

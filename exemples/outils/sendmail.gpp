@@ -1,0 +1,23 @@
+GOTOMODULE chaussettes
+
+Chaussette Client
+Client@Tricoter(«localhost» *(25))
+Reponse=Client@Vider()
+Client@Remplir(«EHLO sidotron;r;n»)
+Reponse=Client@Vider()
+GOTOPRINTDUTEXTE() &Reponse
+Client@Remplir(«MAIL FROM: <sidoine@wanadoo.fr>;r;n»)
+Reponse=Client@Vider()
+GOTOPRINTDUTEXTE() &Reponse
+Client@Remplir(«RCPT TO: <sidoine@wanadoo.fr>;r;n»)
+Reponse=Client@Vider()
+GOTOPRINTDUTEXTE() &Reponse
+Client@Remplir(«DATA;r;n»)
+Reponse=Client@Vider()
+GOTOPRINTDUTEXTE() &Reponse
+Client@Remplir(«From: sidoine@ldv.univ-montp2.fr;r;nSubject:GOTO++;r;n;r;nCe message a été envoyé par un envoyeur de courrier en GOTO++;r;n.;r;n»)
+Reponse=Client@Vider()
+GOTOPRINTDUTEXTE() &Reponse
+Client@Remplir(«QUIT;r;n»)
+Reponse=Client@Vider()
+GOTOPRINTDUTEXTE() &Reponse

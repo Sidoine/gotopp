@@ -1,0 +1,732 @@
+$Présentation
+Tout langage a une syntaxe grâce à laquelle il peut contenir des informations.
+
+Contrairement à ce qu'on pourrait croire à priori, le GOTO++ possède une syntaxe.
+Etrangère à l'esprit borné d'un petit programmeur formé au Visual Basic,
+(ou pire, au Java) mais tout à fait adaptée au cerveau
+d'un gourou qui programmait en assembleur MIPS quand il était petit.
+
+Dans ce qui suit, de nombreux exemples seront présentés, pour les comprendre
+il est nécessaire de savoir que GOTO indique un commentaire : tout le reste
+de la ligne est ignoré. De plus $GOTOPRINT$ affiche la valeur de la dernière
+variable modifiée par un =.
+
+Par exemple :
+
+#exemple
+J=*(5)
+GOTOPRINT()
+exemple#
+
+Dans cet exemple, la première affecte une valeur à J, qui vaudra alors 5 (la notation
+*(5) est celle d'un nombre entier). $GOTOPRINT$ affiche cette même valeur, les parenthèses
+servant à exécuter la fonction (ce qui la différencie ainsi de J : le compilateur
+saura que J n'est pas une fonction).
+
+$Notions de base
+Les instructions sont placées à raison d'une par ligne. Si on veut qu'une instruction
+se continue sur plusieurs lignes, on rajoute ^ en fin de ligne.
+
+On peut placer des commentaires. Soit en mettant GOTO, auquel cas tout est ignoré
+jusqu'à la fin de la ligne, soit en mettant #!, auquel cas tout est ignoré
+jusqu'à ce qu'on rencontre !#, sur la même ligne ou sur une ligne suivante.
+
+Les mots-clefs, les fonctions, les variables, etc. sont constitués de lettres
+uniquement (pas de chiffres). Le fait que ces lettres soient minuscule ou majuscule
+est important : ainsi MachiN n'est pas la même chose que mACHIN.
+
+Les fonctions sont appelées en les faisant suivre d'une (. On referme
+à l'aide d'une autre parenthèse. Quand la priorité le permet,
+on n'est pas obligé de mettre les paramètres de la fonction
+entre les parenthèses, le tout est qu'ils suivent la parenthèses ouvrante.
+
+Les mots-clefs ne doivent pas être suivis de parenthèses.
+
+Pour prendre la valeur d'une variable, on la fait précéder du signe &.
+
+Pour regrouper des expressions, on utilise } et {. Par exemple :
+
+#exemple
+GOTOPRINTDUTEXTE() }*(3) + *(5){ *(6)
+GOTO Affiche 6 et 8.
+exemple#
+
+Remarquez que si dans l'exemple précédent les accolades n'étaient pas là,
+l'opération + se ferait entre 5 et 6 pour des raisons
+de priorité. Les opérateurs prennent en priorité leurs
+arguments à droite, c'est uniquement si ils n'ont pas
+suffisemment de paramètres disponibles à droite qu'ils prennent
+leurs paramètres à leur gauche.
+
+Ainsi les opérations suivantes sont toutes équivalentes :
+
+#exemple
+GOTOPRINTDUTEXTE() + *(2) *(3) *(5)
+GOTOPRINTDUTEXTE() *(2) + *(3) *(5)
+GOTOPRINTDUTEXTE() *(2) *(3) + *(5)
+GOTOPRINTDUTEXTE() *(2) *(3) *(5) +
+GOTO Affiche à chaque fois 8 et 2.
+exemple#
+
+Notez que comme les + sont prioritaires sur les fonctions telles que $GOTOPRINTDUTEXTE$,
+les additions sont effectuées avant
+l'affichage, ce qui explique qu'il n'est pas nécessaires de mettre les arguments
+entre les parenthèses, il suffit qu'ils soient après la parenthèse ouvrante.
+
+$Types
+Il existe un grand nombre de types de variables.
+
+#titre
+Entiers
+titre#
+
+Les entiers sont des nombres entiers positif ou négatifs. On les place
+dans le code en utilisant la syntaxe *(...) où ... est une suite de lettres
+ou de chiffres, éventuellement précédés d'un signe -.
+
+#exemple
+J=*(3)+*(5)
+GOTOPRINT() GOTO Affiche 8
+exemple#
+
+#titre
+Chances
+titre#
+
+Les chances sont des nombres à virgules. On les note d'un ? suivi éventuellement
+d'un signe -, puis de chiffres,
+éventuellement d'une virgule et encore de chiffres. On peut même rajouter un
+exposant, éventuellement précédé d'un -. On indique cet exposant en le séparant
+du reste du nombre avec ê ou Ê.
+
+#exemple
+J=?-90,5 + ?2ê-18
+exemple#
+
+#titre
+Caractère
+titre#
+
+Un caractère c'est une lettre, un signe de ponctuation, un chiffre... On les note
+avec *`...' où ... est le caractère en question. Notez que le délimiteur de
+gauche est un accent grave et que le délimiteur de droite est une apostrophe.
+
+#exemple
+J=*`a'
+exemple#
+
+#titre
+Caractère de contrôle
+titre#
+
+On peut également donner des constantes de caractères qui ne sont pas imprimables.
+Pour ce faire on met un point virgule puis éventuellement une lettre ou un chiffre.
+En l'absence d'une lettre ou d'un chiffre, on considère que c'est un retour à la ligne.
+
+#table
+2
+Caractère
+Signification
+n
+Ligne suivante
+r
+Début de ligne
+t
+Tabulation
+0
+Caractère nul
+table#
+
+#titre
+Chaîne de caractères
+titre#
+
+Les chaînes de caractères sont des chaînes de caractères. Difficile d'être
+plus clair. Elles permettent de stocker du texte. Elles commencent par
+« et se terminent par ». Par exemple :
+
+#exemple
+J=«Ceci est du texte»
+exemple#
+
+Les chaînes de caractères peuvent s'étendre sur plusieurs lignes, il peut
+y avoir n'importe quoi entre « et ». Pour insérer un » faites-le précéder
+d'un point-virgule.
+
+Vous pouvez mettre des caractères de contrôle directement dans la chaîne.
+Pour insérer un point virgule, doublez-le. 
+
+#exemple
+J=«Un exemple avec une tabulation ;t et un retour à la ligne ;n et un point virgule
+;;.»
+exemple#
+
+$Etiquettes
+Les étiquettes permettent de marquer la position de morceaux de code.
+En règle générale, les lignes sont exécutées de haut en bas mais
+à l'aide de commandes telles que $GOTOGOTO$ ou $GOTOPASMALIN$
+il est possible de se rendre
+directement à une autre étiquette (qu'elle se situe avant ou après).
+
+Les étiquettes doivent se trouver au début d'une ligne et son notées
+à l'aide d'un § suivi de lettres et de chiffres. Ces lettres et ces
+chiffres sont transformés en un nombre, qui doit être unique.
+
+Pour faire référence à une étiquette globale on met un % suivi de son nom.
+
+#exemple
+GOTO Etape 1
+GOTOPASMALIN %2
+§1 GOTO Etape 3
+GOTOFIN
+
+§2 GOTO Etape 2
+GOTOPASMALIN %1
+exemple#
+
+Optionnellement, une étiquette peut être suivie de :ASV. Toutes les lignes
+suivantes jusqu'à £APLUS£ forment un bloc local. Toutes les variables
+déclarées dans un bloc local sont des variables locales, c'est à dire qu'on ne
+peut pas y accéder depuis l'extérieur du bloc. Toutes les
+étiquettes déclarées dans un bloc local sont des étiquettes locales.
+
+Pour faire référence à une étiquette locale, on met deux % suivis de son nom.
+
+Pour déclarer une variable locale, on met £pingouin£ suivi de son nom. On peut aussi
+utiliser un nom de troupeau suivi de son nom.
+
+Il est fortement déconseillé de se rendre à une étiquette de ce type en utilisant
+autre chose que l'appel direct d'étiquettes ou un $GOTOCHEPA$. L'appel direct
+consiste à mettre directement le nom de l'étiquette suivi de parenthèses.
+Quand l'exécution en arrive à £APLUS£, le programme reprend où il en était avant
+d'arriver à l'étiquette. On peut aussi utiliser $REGOTO$ pour revenir à partir
+de n'importe quel point du bloc.
+
+#exemple
+a=*(1)
+GOTO Etape 1
+%truc()
+GOTO Etape 5 
+GOTOPRINTDUTEXTE() &a GOTO Affiche 1
+GOTOFIN
+
+§truc:ASV
+	GOTO Etape 2
+	pingouin a GOTO Cette variable est locale
+	GOTOPASMALIN %%2
+§1	GOTO Etape 4
+	REGOTO
+§2	GOTO Etape 3
+	a=*(5)
+	GOTOPASMALIN %%1
+APLUS
+exemple#
+
+Après ASV il est également possible d'ajouter des paramètres entre parenthèses. 
+Ces paramètres prendront la valeur de ce qui a été mis entre parenthèses lors
+de l'appel direct.
+
+De plus, il est possible de mettre une valeur après le $REGOTO$, qui sera renvoyée
+par l'appel direct ou le $GOTOCHEPA$.
+
+#exemple
+J=%truc(*(3))
+GOTOPRINT() GOTO Affiche 9
+GOTOFIN
+
+§truc:ASV(x)
+	REGOTO &x MULTIPLICATION dup
+APLUS
+exemple#
+
+$Troupeaux
+Les troupeaux permettent de regrouper plusieurs pingouins. On distingue
+deux types de troupeaux : les troupeaux de pingouins anonymes et les
+troupeaux de pingouins déclarés.
+
+#titre
+Troupeaux de pingouins anonymes
+titre#
+
+Toute variable est potentiellement un troupeau de pingouins. Si vous
+la considérez en tant que tel, alors ce sera un troupeau de pingouins.
+Pour accéder à un pingouin du troupeau, il suffit de donner son numéro
+entre < et > (le premier pingouin a le numéro 0). Exemple :
+
+#exemple
+J=*(3) GOTO Là J est un entier
+J<*(3)>=*(5) GOTO Maintenant J est un troupeau
+GOTO Le quatrième pingouin vaut 5
+Z=&J<*(3)>
+GOTO Z vaut à présent 5
+Z=&J<*(2)+*(1)>
+GOTO Là aussi...
+exemple#
+
+#titre
+Troupeaux de pingouins déclarés
+titre#
+
+Pour déclarer un troupeau de pingouin, il faut utiliser le mot-clef £troupeau£. On
+donne ensuite le nom de tous les pingouins, dans l'ordre.
+
+Plutôt qu'un long discours, donnons un exemple, dans lequel on définit un type
+de troupeau nommé Machin.
+
+#exemple
+troupeau Machin
+	pingouin Jules
+	pingouin Gustave
+	pingouin Bertrand
+fintroupeau
+exemple#
+
+Autrement dit, on écrit sur chaque ligne £pingouin£ puis le nom du pingouin.
+Quand on a fini la description on met une ligne avec écrit £fintroupeau£.
+
+Ensuite il faut déclarer que la variable est un troupeau de type Machin (on
+peut avoir autant de troupeaux du même type que l'on souhaite). Pour cela
+on met le nom du type de troupeau suivis du nom de la variable. Par exemple :
+
+#exemple
+Machin MonTroupeau
+exemple#
+
+Pour accéder à un pingouin du troupeau, on peut faire comme au paragraphe précédent,
+en utilisant le numéro du pingouin, mais évidemment c'est sans intérêt. Tout le truc
+c'est qu'à présent on peut accéder à un pingouin particulier en utilisant son nom :
+pour cela on met le nom du troupeau, le symbole @ puis enfin le nom du pingouin.
+Par exemple :
+
+#exemple
+MonTroupeau@Bertrand=*(5)
+GOTOPRINTDUTEXTE() ; &MonTroupeau@Bertrand
+GOTO ... ce qui affiche 5.
+exemple#
+
+Mais ce n'est pas si simple. D'abord on peut très bien mettre des troupeaux
+dans d'autres troupeaux, en mettant le nom du troupeau à la place de £pingouin£.
+Par exemple :
+
+#exemple
+troupeau GrandTroupeau
+	pingouin Lechef
+	Machin Lesvieux
+	Truc Lesjeunes
+	pingouin Lesouschef
+fintroupeau
+
+GrandTroupeau GT
+GT@Lesvieux@Bertrand=*(5)
+exemple#
+
+#titre
+Troupeau anonyme de troupeaux déclarés
+titre#
+
+Mais là ne s'arrêtent pas là les possibilités incroyables du GOTO++ car il est
+tout à fait possible de mettre dans une variable un troupeau anonyme de troupeaux
+déclarés. Ou des troupeaux déclarés dans des troupeaux anonymes de troupeaux anonymes.
+Ou... Pour cela on utilise <> qu'on rajoute autant de fois que nécessaire après
+le nom de la variable quand on la déclare :
+
+#exemple
+Machin TroupeauDeTroupeauxDeTroupeaux<><>
+TroupeauDeTroupeauxDeTroupeaux<*(1)><*(18)>@Bertrand=*(5)
+exemple#
+
+Et bien sûr il est tout à fait possible de mettre ces troupeaux anonymes dans
+des troupeaux déclarés :
+
+#exemple
+troupeau Complique
+	Machin Troupeau<>
+	pingouin Charles
+fintroupeau
+
+Complique Aie<>
+Aie<*(2)>@Troupeau<*(5)>@Bertrand=*(5)
+exemple#
+
+#titre
+Machines à pingouins
+titre#
+
+GOTO++ mérite son nom acquis de fière lutte de langage objet grâce à certaines
+particularités.
+
+La première est qu'il est possible de rajouter des machines à pingouins dans
+un troupeau. En gros ce sont des fonctions qui agissent directement sur les pingouins
+du troupeau. Pour ce faire il faut rajouter le mot-clef £machineapingouins£ dans
+la déclaration du troupeau, suivis de son nom. Ce nom, accolé au nom du type
+de troupeau, sera une étiquette qui pourra être la cible d'un appel de fonction
+qui est particulier car la fonction peut directement accéder aux pingouins membre
+du troupeau. Comme ce n'est pas clair, voici un exemple :
+
+#exemple
+troupeau MonTroupeau
+	pingouin Albert
+	pingouin Bertrand
+	machineapingouins Glagla
+fintroupeau
+
+MonTroupeau J
+J@Albert=2
+J@Bertrand=1
+J@Glagla(*(3))
+GOTOPRINTDUTEXTE() ; J@Albert GOTO Affiche 5
+GOTOFIN
+
+§Glagla:ASV(a):MonTroupeau
+	Albert=+&a
+	Bertrand=+&a
+APLUS
+exemple#
+
+Vous avez sûrement remarqué qu'il faut rajouter : puis le nom du troupeau après
+le mot-clef ASV de la fonction.
+
+Remarquez qu'un pingouin peut être transformé en machine à pingouin. C'est cruel,
+mais utile. Pour cela rajouter un pingouin dans la structure puis affectez lui une étiquette. 
+Par exemple :
+
+#exemple
+troupeau MonTroupeau
+	pingouin Albert
+	pingouin Bertrand
+	pingouin Glagla
+fintroupeau
+
+MonTroupeau Bof
+Bof@Glagla=%3MonTroupeau
+Bof@Glagla(*(5))
+GOTOFIN
+
+§3:ASV(x):MonTroupeau
+	Albert=&x
+	Bertrand=&x
+APLUS
+exemple#
+
+#titre
+Dérivation de troupeau
+titre#
+
+Un troupeau peut être vilement copié sur un autre troupeau, vous lui rajoutez
+simplement de nouveaux pingouins. Pour cela après le nom du type de troupeau,
+rajoutez : puis le nom du type de troupeau de base.
+
+#exemple
+troupeau Test:MonTroupeau
+	pingouin Gerard
+fintroupeau
+
+Test Arg
+Arg@Albert=*(5)
+Arg@Gerard=*(6)
+exemple#
+
+#titre
+Berger
+titre#
+
+Cerise sur le gâteau au pingouin, une machine à troupeau peut être appelée lors de la déclaration
+d'une variable comme étant de ce type de troupeau. Pour cela rajoutez £berger£ 
+n'importe où dans la définition du troupeau. La méthode 0NomDuTroupeau sera automatiquement
+appelée à l'endroit où vous déclarez la variable.
+
+#exemple
+troupeau Glop
+	pingouin Youpi
+	berger
+fintroupeau
+
+Glop Z
+GOTO Z@Youpi vaut à présent 3.
+GOTOFIN
+
+§0:ASV:Glop
+	Youpi=*(3)
+APLUS
+exemple#
+
+#titre
+Pingouins givré
+titre#
+
+Un pingouin givré est partagé par tous les troupeaux d'un même type.
+Pour dire qu'un pingouin d'un type de troupeau est givré, il faut rajouter
+£GIVRE£ avant son nom.
+
+#exemple
+troupeau Glop
+	pingouin GIVRE Albert
+fintroupeau
+
+Glop Blub
+Blub@Albert=*(10)
+Glob Blob
+GOTOPRINTDUTEXTE() ; &Blob@Albert
+GOTO Affiche 10
+exemple#
+
+Une machine à pingouin peut être givrée elle aussi, auquel cas elle ne peut
+accéder qu'aux pingouins givrés. Il faut également rajouter le mot-clef
+£GIVRE£ avant son nom.
+
+#exemple
+troupeau Glop
+	pingouin GIVRE Albert
+	machineapingouins GIVRE Multiplicatrice
+fintroupeau
+
+Glop Blub
+Blub@Albert=*(10)
+Glob Blob
+Blob@Multiplicatrice()
+GOTO Affiche 10
+GOTOFIN
+
+Multiplicatrice:ASV:Glop
+	GOTOPRINTDUTEXTE() ; &Albert
+APLUS
+exemple#
+
+Le berger peut aussi être givré : il est alors appelé à l'endroit où le troupeau
+est défini.
+
+Vous pouvez rajouter le mot-clef £GIVRE£ directement avant le nom
+du type de troupeau, auquel cas tous les pingouins, toutes les 
+machines à pingouin et l'éventuel berger seront givrés.
+
+Remarque : il est aussi possible d'accéder à un pingouin givré ou à une machine
+à pingouin givrée en remplaçant le nom du troupeau par le nom du type de troupeau.
+Ainsi dans l'exemple précédent on aurait pu mettre Glop@Multiplicatrice à la
+place de Blob@Multiplicatrice.
+
+$Tables de hachage
+Les tables de hachage servent à hacher des pingouins, dans le jargon du
+GOTO++ (ce n'est pas à prendre au sens propre). Autrement dit, cela permet
+de créer un troupeau de pingouins où l'on associe dynamiquement un pingouin
+à une étiquette texte. Pour créer un dictionnaire, en quelque sorte.
+
+La notation utilisée ressemble à celle d'un troupeau anonyme, mis à part
+que les indices sont entre crochets et que ces indices doivent être
+du texte.
+
+#exemple
+J[«Albert»]=«vert»
+J[«Bertrand»]=«rouge à pois bleus»
+GOTOPRINTDUTEXTE() ; &J[«Bertrand»] «Bertrand est un pingouin »
+GOTO Affiche Bertrand est un pingouin rouge à pois bleus.
+exemple#
+
+Remarquez qu'à partir d'une référence, on peut non seulement accéder
+à la valeur mais aussi à la clef (la clef c'est l'indice d'une table
+de hachage, Bertrand ou Albert dans l'exemple précédent). Pour cela
+on utilise l'opérateur $"$.
+
+#exemple
+Z=J[«Albert»]
+GOTOPRINTDUTEXTE() ; &Z" « est un pingouin » &Z#
+exemple#
+
+Pour parcourir les différents éléments d'une table de hachage on utilise
+l'opérateur $++$. Pour se placer sur le premier élément de la table
+on utilise la fonction $PremierPingouin$.
+
+#exemple
+Z=PremierPingouin(J)
+Taille=tailleenlongueur J
+§1	GOTOPRINTDUTEXTE() ; &Z" « est un pingouin » &Z#
+	Taille=-*(1)
+	Z=&Z++*(1)
+	GOTONONNULPOURLESNULS %1 &Taille
+exemple#
+$Les modules
+
+Les modules rajoutent des fonctions à l'interpréteur GOTO++. Pour charger un
+module, il faut utiliser l'instruction $GOTOMODULE$.
+
+Ces modules contiennent essentiellement des types de troupeaux proposant
+des machines à pingouins.
+
+$Trucs avancés
+#titre
+Probabilité de sauter une ligne
+titre#
+
+Pour qu'une ligne ait une certaine probabilité de ne pas être exécutée, 
+rajouter ! immédiatemment suivi de chiffres. Ces chiffres sont la probabilité
+en pourcentage que la ligne ne soit pas exécutée.
+
+#exemple
+!25 GOTOPRINTDUTEXTE() «Trois chances sur quatre d'être affiché»
+!75 GOTOPRINTDUTEXTE() «Une chance sur quatre d'être affiché»
+exemple#
+
+#titre
+Changement de type de troupeau
+titre#
+
+Vous pouvez indiquer le type d'un troupeau existant
+en rajoutant le mot-clef £zap£ après le type de troupeau.
+
+#exemple
+troupeau Essai
+	pingouin a
+fintroupeau
+
+i<*(0)>=*(10)
+Essai zap i
+GOTOPRINTDUTEXTE() ; &i@a
+GOTO Affiche 10
+exemple#
+
+#titre
+Numéro d'une propriété
+titre#
+
+La syntaxe Classe^^Propriété permet de connaître le numéro de la propriété.
+
+#exemple
+troupeau Test
+	pingouin a
+	pingouin b
+fintroupeau
+
+Test t
+t@a=*(4)
+GOTOPRINTDUTEXTE(;&t<Test^^a>) GOTO Affiche 4
+exemple#
+
+#titre
+Machins en vrac
+titre#
+
+Quand on déclare une variable, on peut l'initialiser :
+
+#exemple
+pingouin a=*(5)
+exemple#
+
+Il y a quelques classes par défaut : entier, chaine, chances...
+
+Les variables locales peuvent être aussi bien locales à des
+fonctions qu'à des boucles, des AUTOGOTOZ, etc.
+
+$Les expressions régulières
+
+Les expressions régulières sont reprises telles quelles du Perl, ce qui
+est en quelque sorte une marque de respect pour elles. Elles servent
+à repérer des motifs complexes dans du texte.
+
+#titre
+Création
+titre#
+
+Les expressions régulières sont des valeurs scalaires, semblables aux
+entiers ou aux chaînes de caractères. Vous pouvez entrer directement
+une expression régulière constante en la faisant commencer par le symbole
+^ suivi d'un délimiteur quelconque. Ce délimiteur indiquera également
+la fin de l'expression régulière. Par exemple, si on choisit le délimiteur
+/ on écrira :
+
+#exemple
+a=^/abc/
+exemple#
+
+Vous pouvez également créer une expression régulière à partir d'une chaîne
+de caractère en utilisant la fonction TuerOgre@Compiler() (TuerOgre
+est un type de troupeau et Compiler est une machine à pingouin givrée). Exemple :
+
+#exemple
+a=TuerOgre@Compiler(«abc»)
+exemple#
+
+#titre
+Utilisation
+titre#
+
+L'expression régulière peut être utilisée dans les fonctions $OUQUILESTLETEXTE$
+et $bananasplit$ à la place du motif.
+
+#titre
+Syntaxe
+titre#
+
+Les expressions régulières du GOTO++ sont basées sur le code de Henry Spencer.
+Quelques possibilités y ont été rajoutées, mais on est loin de pouvoir faire
+tout ce qu'on peut faire en Perl.
+
+#titre2
+Classes de caractères
+titre2#
+
+Vous pouvez utiliser des classes de caractères, genre [a-z02-9], qui signifie
+« un caractère entre a et z ou un 0 ou un caractère entre 2 et 9 ». Vous
+pouvez aussi utiliser sa négation, en rajoutant au début un ^, genre [^a-z02-9].
+
+#titre2
+Parenthèses
+titre2#
+
+Vous pouvez mettre des bidules entre parenthèses, et séparer plusieurs choix
+avec |. Par exemple (abc|def|ghi) signifie « abc ou def ou ghi ». En plus
+la machine d'expression régulière se rappelera de ce qui correspond au machin
+entre parenthèses et vous pourrez y faire référence par la suite en utilisant
+un numéro de 1 à 9.
+
+#liste
+- soit dans l'expression régulière elle-même avec \1 à \9 ;
+- soit en dehors de l'expression régulière avec la machine à pingouin givrée
+Valeur de TuerOgre, à laquelle il faut passer le numéro des parenthèses en
+paramètre.
+liste#
+
+#exemple
+a=^/([a-z][a-z])\1/
+GOTO Cette expression régulière repère deux paires identiques de lettres
+GOTO qui se suivent genre «bfbf».
+OUQUILESTLETEXTE(«azertrty» &a)
+GOTOPRINTDUTEXTE(;TuerOgre@Valeur(*(1))) GOTO Affiche rt
+exemple#
+
+#titre2
+Répétitions
+titre2#
+
+Vous pouvez indiquer qu'un motif (un caractère, un truc entre parenthèses ou
+une classe de caractères) se répète. Si vous mettez +, il se répète une
+ou plusieurs fois, si vous mettez *, soit il est absent soit il se répète
+une ou plusieurs fois. Enfin le ? indique que le motif est optionnel.
+
+#exemple
+^/ab?c/ GOTO OK pour machin et abcdef
+^/(ab)+/ GOTO OK pour abababab
+^/ab*c/ GOTO OK pour machin et zabbbbc
+exemple#
+
+#titre2
+Caractères spéciaux
+titre2#
+
+Ils commencent par \.
+#liste
+- \t est la tabulation ;
+- \n est la nouvelle ligne ;
+- \r est le retour chariot ;
+- \\ est \ ;
+- \0 est le caractère nul ;
+liste#
+
+Il y a aussi les classes de caractères :
+#liste
+- \w est équivalent à [0-9a-z_] ;
+- \W est équivalent à [^0-9a-z_] ;
+- \s est équivalent à [\n\r\t ] ;
+- \S est équivalent à [^\n\r\t ] ;
+- \d est équivalent à [0-9] ;
+- \D est équivalent à [^0-9]. 
+liste#
+$

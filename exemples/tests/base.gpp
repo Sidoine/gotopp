@@ -1,0 +1,141 @@
+#! Batterie de tests des objets
+Par Sidoine !#
+
+pastrespermissif
+GOTOPASMALIN %Debut
+
+troupeau Deux
+	pingouin propa
+	machineapingouins mapa
+fintroupeau
+
+§mapa:ASV(par):Deux
+	GOTOPRINTDUTEXTE(; &propa &par «Màp du deuxième troupeau appelée / »)
+APLUS
+
+troupeau Un
+	pingouin propa
+	pingouin GIVRE propb
+	pingouin propc
+	pingouin propd
+	Deux prope
+	
+	pingouin taba<>
+	Deux tabb<>
+	
+	machineapingouins mapa
+	machineapingouins mapb GIVRE
+	machineapingouins mapc
+	machineapingouins mapd
+	machineapingouins mape
+fintroupeau
+
+§mapa:ASV:Un
+	GOTOPRINTDUTEXTE(«Ok test méthode sans paramètre et sans local;n»)
+APLUS
+
+§mapb:ASV(x y):Un
+	GOTOPRINTDUTEXTE(; &x &y &propb «Ok test méthode givrée / »)
+APLUS
+
+§mapc:ASV(x):Un
+	pingouin l
+	propa=« propa»
+	l=« local»_&x
+	GOTOPRINTDUTEXTE(; &propa &propc &l &x«Ok test méthode / »)
+APLUS
+
+§mapd:ASV(x):Un
+	GOTOPRINTDUTEXTE(« appel...»)
+	mapc(&x)	
+APLUS
+
+§Debut
+Un un
+un@propa=«Ok test propriété;n»
+GOTOPRINTDUTEXTE(«Lecture par objet :»)
+GOTOPRINTDUTEXTE(&un@propa)
+GOTOPRINTDUTEXTE(;)
+
+un@propb=«Ok test propriété givrée, écriture par objet;n»
+GOTOPRINTDUTEXTE(«Lecture par objet :»)
+GOTOPRINTDUTEXTE(&un@propb)
+GOTOPRINTDUTEXTE(«Lecture par classe :»)
+GOTOPRINTDUTEXTE(&Un%propb)
+GOTOPRINTDUTEXTE(;)
+
+Un%propb=«Ok test propriété givrée, écriture par classe;n»
+GOTOPRINTDUTEXTE(«Lecture par classe :»)
+GOTOPRINTDUTEXTE(&Un%propb)
+GOTOPRINTDUTEXTE(«Lecture par objet :»)
+GOTOPRINTDUTEXTE(&un@propb)
+GOTOPRINTDUTEXTE(;)
+
+#!un<*(0)>=«Ok test propriété, écriture par indice;n»
+GOTOPRINTDUTEXTE(«Lecture par indice :»)
+GOTOPRINTDUTEXTE(&un<*(0)>)
+GOTOPRINTDUTEXTE(«Lecture par propriété :»)
+GOTOPRINTDUTEXTE(&un@propa)
+GOTOPRINTDUTEXTE(;)!#
+
+GOTOPRINTDUTEXTE(«Par appel direct :»)
+Un%mapa()
+GOTOPRINTDUTEXTE(«Passant par un objet :»)
+un@mapa()
+un@propa=Un%mapa
+GOTOPRINTDUTEXTE(«Méthode virtuelle :»)
+GOTO &un@propa()
+#!GOTOPRINTDUTEXTE(«Méthode virtuelle par indice :»)
+un<*(0)>()
+GOTOPRINTDUTEXTE(;)!#
+
+Un%propb=«prop givrée»
+GOTOPRINTDUTEXTE(«Par classe :»)
+Un%mapb(« par 1» « par 2»)
+GOTOPRINTDUTEXTE(«Par objet :»)
+un@mapb(« par 1» « par 2»)
+GOTOPRINTDUTEXTE(;)
+
+GOTOPRINTDUTEXTE(«Passant par un objet :»)
+un@propc=« propc»
+un@mapc(« par»)
+Un unautre
+unautre@propc=« propc2»
+GOTOPRINTDUTEXTE(«Passant par un autre objet :»)
+unautre@mapc(« par»)
+GOTOPRINTDUTEXTE(«Virtuel :»)
+un@propd=Un%mapc
+GOTO &un@propd(« par»)
+#!GOTOPRINTDUTEXTE(«Virtuel par indice:»)
+un<*(3)>(« par»)
+GOTOPRINTDUTEXTE(;)!#
+
+GOTOPRINTDUTEXTE(«Appel d'une méthode appelant une autre :»)
+un@mapd(« par»)
+GOTOPRINTDUTEXTE(;)
+
+un@taba<*(10)>=«Ecriture dans un élément du tableau»
+GOTOPRINTDUTEXTE(«Lecture du tableau :»)
+GOTOPRINTDUTEXTE(;&un@taba<*(10)>)
+GOTOPRINTDUTEXTE(;)
+
+un@prope@propa=«Ecriture dans Deux»
+GOTOPRINTDUTEXTE(«Lecture de Deux :»)
+GOTOPRINTDUTEXTE(;&un@prope@propa)
+#!GOTOPRINTDUTEXTE(«Par indice :»)
+GOTOPRINTDUTEXTE(;&un@prope<*(0)>)
+GOTOPRINTDUTEXTE(«Par indice et indice :»)
+GOTOPRINTDUTEXTE(;&un<*(4)><*(0)>)!#
+GOTOPRINTDUTEXTE(;)
+
+un@prope@propa=«propa »
+un@prope@mapa(«par »)
+GOTOPRINTDUTEXTE(;)
+
+un@tabb<*(1)>@propa=«proPa »
+un@tabb<*(1)>@mapa(«paR »)
+un@tabb<*(2)>@propa=«proPa2 »
+un@tabb<*(2)>@mapa(«paR2 »)
+GOTOPRINTDUTEXTE(;)
+
+*(2) *(3) + *(5) *(8)

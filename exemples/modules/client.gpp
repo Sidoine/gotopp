@@ -1,0 +1,13 @@
+GOTO -t estes ts-
+
+GOTOMODULE chaussettes
+
+Chaussette Client
+Client@Tricoter(«localhost» *(1255))
+GOTOPRINTDUTEXTE(«Connecté;n»)
+§Boucle
+	a=ENTRETONTEXTE()
+	Client@Remplir(«;n»_&a)
+	texte=Client@LireLigne()
+	GOTOPRINTDUTEXTE() ; &texte «Reçu : »
+GOTOPASMALIN %Boucle

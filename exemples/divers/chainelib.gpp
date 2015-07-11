@@ -1,0 +1,118 @@
+GOTO chainelib.gcc : Bibliotheque de fontion avancées pour manipulation de chaines de caracteres
+GOTO par Tout
+GOTO   NIAC Software (c)CopyNIAC deux-zero-zero-deux 
+
+GOTO Compare (chaine1 chaine2) -> chance
+GOTO   Compare deux chaines dans l'ordre lexicographique
+GOTO   Retourne :
+GOTO     un truc >= 100,0 si chaine1 > chaine2
+GOTO             =  0,0   si chaine1 = chaine2 
+GOTO            =< -100,0 si chaine1 < chaine2
+
+GOTO DecalageASki (chaine borneinf bornesup nouvelleborneinf) -> chaine
+GOTO   Pour toutes les lettres de la chaine comprise entre borneinf et bornesup, on decale en se basant sur la nouvelle borne inf
+GOTO   Pour les autres lettres on fait rien
+GOTO   Exemple : DecalageASki(«Avion Rouge» *`a' *`z' *`A') -> «AVION ROUGE»
+GOTO   Remarque : On peut les enchainer pour traiter plusieurs intervales (traiter les accents par exemple)
+GOTO   Remarque2 : On peut aussi traiter des caracteres isolés. DecalageASki(«fichier_musical.mp3» *`_' *`_' *` ')
+GOTO   Remarque3 : Vous pouvez faire de la cryptographie avancee avec un truc du genre DecalageASki(&c *(2) *(255) *(1))
+
+GOTO CaRpet (chaine entier) -> chaine
+GOTO   repete une chaine un certain nombre de fois
+
+GOTO GOTO GOTO GOTO GOTO GOTO GOTO GOTO OTOG OTOG OTOG OTOG OTOG OTOG OTOG OTOG
+
+Compare = %Compare
+DecalageASki = %DecalageASki
+CaRpet = %CaRpet
+
+GOTO GOTO GOTO GOTO GOTO GOTO GOTO GOTO OTOG OTOG OTOG OTOG OTOG OTOG OTOG OTOG
+
+GOTOPASMALIN %ChainelibFin
+GOTOPASMALIN %ChainelibExemple
+
+§Compare:ASV(a b)
+pingouin va
+pingouin vb
+pingouin la
+pingouin lb
+pingouin ia
+pingouin ib
+la = tailleenlongueur a
+lb = tailleenlongueur b
+ia = *(1)
+ib = *(1)
+§boucle
+va = LeCaracNumero() &a &ia
+vb = LeCaracNumero() &b &ib
+GOTOGOTO() %%fina &ia - &la MULTIPLICATION *(100) nimportequoitochances
+GOTOGOTO() %%finb &ib - &lb MULTIPLICATION *(100) nimportequoitochances
+GOTONONNULPOURLESNULS %%sort }&va - &vb{
+ia = &ia + *(1)
+ib = &ib + *(1)
+GOTOPASMALIN %%boucle
+§sort
+REGOTO &va - &vb MULTIPLICATION *(100) nimportequoitochances
+§fina
+REGOTO ~ } &lb - &ib + *(1) MULTIPLICATION *(100){ nimportequoitochances
+§finb
+REGOTO &la - &ia + *(1) MULTIPLICATION *(100) nimportequoitochances
+APLUS
+
+§DecalageASki:ASV(c i s d)
+pingouin r
+pingouin l
+pingouin a
+d =- &i
+l = tailleenlongueur c
+r = «»
+§boucle
+GOTONONNULPOURLESNULS %%suite &l
+REGOTO &r
+§suite
+a = LeCaracNumero() &c &l
+GOTOGOTO() %%normal &i - &a MULTIPLICATION *(100) nimportequoitochances
+GOTOGOTO() %%normal &a - &s MULTIPLICATION *(100) nimportequoitochances
+a = }&a + &d{ encaractere
+§normal
+r = &r _ &a
+l =- *(1) 
+GOTOPASMALIN %%boucle
+APLUS
+
+§CaRpet:ASV(c i)
+pingouin r
+r = «»
+GOTOPASMALIN %%hop
+§traite
+r = &r _ &c
+i =- *(1)
+§hop
+GOTOGOTO() %%traite &i MULTIPLICATION *(100) nimportequoitochances
+REGOTO &r
+APLUS
+
+§ChainelibExemple
+
+GOTO GOTO GOTO GOTO GOTO GOTO GOTO GOTO OTOG OTOG OTOG OTOG OTOG OTOG OTOG OTOG
+
+chi = «Ceci est une belle chaine»
+chii = «Ceci est une belle chaine»
+chiii = «Ceci est une autre belle chaine»
+chiv = «Ceci est une belle chaine mais plus longue»
+chv = «Le bo n'Avion Avec du MiXeD case et de la ponctuation !:;;,.?#%{}»
+
+GOTOPRINTDUTEXTE() ; Compare(&chi &chii) «chi <=> chii : »
+GOTOPRINTDUTEXTE() ; Compare(&chi &chiii) «chi <=> chiii : »
+GOTOPRINTDUTEXTE() ; Compare(&chi &chiv) «chi <=> chiv : »
+
+GOTOPRINTDUTEXTE() ; DecalageASki(&chv *`a' *`z' *`A') «chv : »
+GOTOPRINTDUTEXTE() ; DecalageASki(&chv *` ' *` ' *`_') «chv : »
+GOTOPRINTDUTEXTE() ; DecalageASki(DecalageASki(&chv *`a' *`z' *`A') *` ' *` ' *`_') «chv : »
+GOTOPRINTDUTEXTE() ; DecalageASki(&chv *(1) *(250) *(3)) «chv : »
+
+GOTOPRINTDUTEXTE() ; CaRpet(&chv *(0)) «chv : »
+GOTOPRINTDUTEXTE() ; CaRpet(&chv *(1)) «chv : »
+GOTOPRINTDUTEXTE() ; CaRpet(&chv *(2)) «chv : »
+
+§ChainelibFin

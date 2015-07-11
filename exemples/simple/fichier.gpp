@@ -1,0 +1,15 @@
+pastrespermissif
+niveaugourou 0
+
+fichier f()
+
+f@OUVRIR(«hello.gpp»)
+TantQue } non f@Fin(){
+	chaine c=f@LIREDUTEXTE()
+	GOTOPRINT()
+FinTantQue
+f@fermer()
+
+f@OUVRIR(«test.txt» *(1))
+f@ECRIREDUTEXTE(;«blob» *(8) *(12) ;«Schloup»)
+

@@ -1,0 +1,12 @@
+c=«bonjour»
+§1
+GOTOPRINTDUTEXTE() ;&c
+Markov() %1 c *`a' *`z' «**» «-»
+Markov() %1 c *`a' *`z' «-a» «a-»
+Markov() %1 c *`a' *`z' «-*» «-»
+Markov() %2 c *`a' *`z' «-» «»
+Markov() %1 c *`a' *`z' «*ab» «b*a»
+Markov() %1 c *`a' *`z' «» «*»
+§2
+GOTOPRINTDUTEXTE() ;&c
+GOTO affiche «roujnob»

@@ -1,0 +1,174 @@
+#!
+
+	Le premier jeu de rôle en GOTO++
+
+!#
+
+GOTOPRINTDUTEXTE() ; « Bienvenue dans le super jeu.»
+
+troupeau CLieu
+	pingouin Texte
+	pingouin Choix
+fintroupeau
+
+CLieu Lieu<>
+
+Lieu<*(0)>@Texte=^
+«Un château se dresse à l'horizon sur une colline.
+Un chemin s'y rend. Vous pouvez l'emprunter (1) ou vous perdre dans
+la campagne (2).»
+Lieu<*(0)>@Choix==BOITEAPINGOUINS(*(1) *(2))
+
+Lieu<*(1)>@Texte=^
+«Bon, sur le chemin vous devez traverser un pont qui surplombe
+un gouffre.
+Est-ce que vous le traversez en courant (3) ou est-ce que vous y
+allez en sifflottant la chanson populaire "Je ne crains pas
+les trolls qui puent et qui sont bêtes" (4) ?»
+Lieu<*(1)>@Choix==BOITEAPINGOUINS(*(3) *(4))
+
+Lieu<*(2)>@Texte=^
+«Etant donné que vous avez autant de sens de l'orientation
+qu'un poulet décapité, vous ne tardez pas à vous perdre et à
+mourrir de faim.
+Allez en 0 pour recommencer.»
+Lieu<*(2)>@Choix==BOITEAPINGOUINS(*(0))
+
+Lieu<*(3)>@Texte=^
+«Alors que vous commenciez à traverser le pont à toute allure,
+un troll qui était dissimulé dessous grimpe la pente, une énorme
+massue à la main.
+Vous pouvez aller le frapper (5) ou continuer à fuir (6)
+en criant "Au secours !".»
+Lieu<*(3)>@Choix==BOITEAPINGOUINS(*(5) *(6))
+
+Lieu<*(4)>@Texte=^
+«Un troll surgit de sous le pont et court vers toi en hurlant
+sa rage, une énorme massue à la main. Avant que tu n'aies
+réagi, tu es mort.
+Il ne reste plus qu'à retourner en 0.»
+Lieu<*(4)>@Choix==BOITEAPINGOUINS(*(0))
+
+Lieu<*(5)>@Texte=^
+«Tu réussis ton attaque et tu lui causes 1 point de blessure.
+Il te frappe à son tour, tu arrives à éviter le coup. Tu contrattaques
+et tu manques ton coup. Il attaque et te cause 19083 points de
+blessure.
+Si tu es mort, retourne en 0. Sinon va en 7 pour continuer le combat.»
+Lieu<*(5)>@Choix==BOITEAPINGOUINS(*(0) *(7))
+
+Lieu<*(6)>@Texte=^
+«Le troll rechigne à s'éloigner de son pont, tu arrives donc
+à le semer.
+Tu arrives bientôt au pont-levis qui mène au château. Un garde
+te regardes avec méfiance.
+Tu tues le garde (8) ou tu lui demandes poliment si tu peux
+passer (9) ?»
+Lieu<*(6)>@Choix==BOITEAPINGOUINS(*(8) *(9))
+
+Lieu<*(7)>@Texte=^
+«Tu attaques à ton tour. Ton coup porte de justesse
+mais est entièrement absorbé par l'armure du troll.
+Et en fait tu te fais mal au poing (4 points de blessure).
+Le troll se venge et te frappe à la tête, causant
+983002 points de blessure.
+Si tu es encore en vie, venge-toi en 5, sinon tu es mort et donc,
+comme d'habitude, tu vas en 0.»
+Lieu<*(7)>@Choix==BOITEAPINGOUINS(*(5) *(0))
+
+Lieu<*(8)>@Texte=^
+«Tu frappes le garde qui tombe dans les douves à sec. Il se brise
+le crâne et meurt. Tu gagnes 890 points d'expérience.
+Tu peux le fouiller (10) ou rentrer dans le château (11).»
+Lieu<*(8)>@Choix==BOITEAPINGOUINS(*(10) *(11))
+
+Lieu<*(9)>@Texte=^
+«Le garde manquait justement de 3 points d'expérience pour passer
+au niveau suivant, et pouvoir ainsi commencer à développer
+la classe "pêcheur en eau douce". Donc il te tue.
+Retourne en 0.»
+Lieu<*(9)>@Choix==BOITEAPINGOUINS(*(0))
+
+Lieu<*(10)>@Texte=^
+«Malheureusement tu as raté ton épreuve d'adresse+3 avec modificateur
+-5 pour douves en pentes raides (voir tableau 3b en p.945).
+Tu dérapes et tu tapes ta tête contre une pierre, ce qui provoque
+un dégât critique de la table des coups contondents. 
+Hmmm, voyons... Pas de chance ! Tu as une hémoragie et tu perdras 
+donc 3 points de vie par tour jusqu'à ta mort.
+Bref, est-ce que tu insistes et tu vas fouiller le garde (12)
+ou tu regrimpes pour entrer dans le château (11) ?»
+Lieu<*(10)>@Choix==BOITEAPINGOUINS(*(11) *(12))
+
+Lieu<*(11)>@Texte=^
+«Tu es accueillis par 1000 chevaliers en armure qui te regardent
+d'un air mauvais. Ils ont l'air méchant.
+Tu les attaques (13) ou tu t'enfuis (14) ?»
+Lieu<*(11)>@Choix==BOITEAPINGOUINS(*(13) *(14))
+
+Lieu<*(12)>@Texte=^
+«Tu trouves sur le garde une super épée runique magique et
+trois pièces d'or. Tu empoches le tout puis tu rentres
+dans le château, rendez-vous en 11.»
+Lieu<*(12)>@Choix==BOITEAPINGOUINS(*(11))
+
+Lieu<*(13)>@Texte=^
+«Tu sors ta super épée runique (je t'épargne d'avoir à tout
+recommencer si tu ne l'as pas trouvée) et tu te rues
+sur le premier chevalier en hurlant ton cri de guerre.
+Rendez-vous en 15.»
+Lieu<*(13)>@Choix==BOITEAPINGOUINS(*(15))
+
+Lieu<*(14)>@Texte=^
+«La grille du château s'est refermée derrière toi. Tu es fait
+comme un rat ! Avant que tu n'aies le temps de dégainer ton
+arme, un chevalier te coupe la tête.»
+Lieu<*(14)>@Choix==BOITEAPINGOUINS(*(0))
+
+Lieu<*(15)>@Texte=^
+«Tu tues un chevalier d'un seul coup d'épée.
+Si il reste des chevaliers, va en 15, sinon va en 16.»
+Lieu<*(15)>@Choix==BOITEAPINGOUINS(*(15) *(16))
+
+Lieu<*(16)>@Texte=^
+«Tous les chevaliers sont morts. Tu gagnes 1903890 points
+d'expérience. Tu peux les dépenser pour changer de niveau.
+Quand c'est fait, tu grimpes les escaliers du donjon et
+tu délivres la princesse qui y était prisonnière.
+Tu as gagné, bravo !
+Si tu veux rejouer, pour découvrir ce que tu n'as pas encore
+découvert, n'hésite pas à aller en 0.»
+Lieu<*(16)>@Choix==BOITEAPINGOUINS(*(0))
+
+GOTO Bon, la fonction principale
+
+	l=*(0)
+	
+§debut
+	GOTOPRINTDUTEXTE(;&Lieu<&l>@Texte)
+§choix
+	nChoix=tailleenlongueur Lieu<&l>@Choix
+	c=&nChoix-*(1)
+	GOTOPRINTDUTEXTE() &Lieu<&l>@Choix<&c> *`['
+	GOTONONNULPOURLESNULS %bouclechoix &c
+	GOTOPASMALIN %suite
+§bouclechoix
+	c=-*(1)
+	GOTOPRINTDUTEXTE() &Lieu<&l>@Choix<&c> *`|'
+	GOTONONNULPOURLESNULS %bouclechoix &c
+§suite
+	GOTOPRINTDUTEXTE() «] »
+	Choix=ENTREUNNOMBRE()
+	c=&nChoix
+§verifie
+	c=-*(1)
+	z=&Choix-&Lieu<&l>@Choix<&c>
+	GOTONONNULPOURLESNULS %verifie2 &z
+	GOTOPASMALIN %suite2
+§verifie2
+	GOTONONNULPOURLESNULS %verifie &c
+	GOTOPASMALIN %choix
+§suite2
+	l=&Choix
+	GOTOPASMALIN %debut
+GOTOFIN

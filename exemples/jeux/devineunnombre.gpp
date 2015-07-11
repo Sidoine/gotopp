@@ -1,0 +1,23 @@
+GOTO Premier jeu en Goto++
+nombre = &nombre enentier
+score = *(0)
+§1
+score = &score + *(1)
+GOTOPRINTDUTEXTE() ; «Entre un nombre:»
+essai = ENTREUNNOMBRE()
+dif = &essai - &nombre
+dif = tOUTeNpLUS(&dif)
+GOTOGOTO() *(2) &dif nimportequoitochances
+test = &dif MULTIPLICATION *(100)
+GOTOGOTO() *(100) ?100 *(3) &test nimportequoitochances
+§3
+GOTOPRINTDUTEXTE() ; «Tu te rapproches.»
+GOTOGOTO() *(1) ?100
+§2
+GOTOPRINTDUTEXTE() ; «Tu t'eloignes.»
+GOTOGOTO() *(1) ?100
+§100
+GOTOPRINTDUTEXTE() ; «Tu as gagne.»
+GOTOPRINTDUTEXTE() ; &score «Ton score: »
+GOTOFIN
+

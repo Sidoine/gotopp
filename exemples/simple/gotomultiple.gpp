@@ -1,0 +1,23 @@
+niveaugourou 0
+
+a=*(110)
+
+GOTOMULTIPLE &a
+	?*(4)? 
+		GOTOPRINTDUTEXTE(«Quatre»)
+		GOTOPASMALIN %Fin
+	?*(1)? 
+		GOTOPRINTDUTEXTE(«Un»)
+		GOTOPASMALIN %Fin
+	?*(0)? 
+		GOTOPRINTDUTEXTE(«Zéro»)
+		GOTOPASMALIN %Fin
+	?défaut?
+		GOTOPRINTDUTEXTE(«Défaut»)
+		GOTOPASMALIN %Fin
+	?*(100)?
+		GOTOPRINTDUTEXTE(«Cent»)
+		GOTOPASMALIN %Fin
+FINGOTOMULTIPLE
+
+§Fin

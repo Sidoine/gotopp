@@ -1,0 +1,1156 @@
+niveaugourou 0
+GOTOMODULE chaussettes
+pastrespermissif
+
+entier largeur = *(21)
+entier hauteur = *(21)
+entier longmin = *(4)
+entier longmax = *(8)
+entier ndefbombes = *(1)
+entier avantexplo = *(6)
+entier nbvict = *(5)
+entier nVivants = *(0)
+entier nClients = *(0)
+bush MABDepart = *(50)
+bush menufin = *(1)
+entier Tour=*(0)
+bush Bonus=*(10)
+bush nBonus=*(5)
+bush TempsVol= *(5)
+entier PartieEncours=*(0)
+chances RatioMurs=?50
+chances RatioBonus=?50
+entier Record[]
+entier DefPeutLancer=*(0)
+
+bush VIDE=*(0)
+bush INCASSABLE=*(1)
+bush CASSABLE=*(2) 
+bush FLAMME=*(3)
+bush RUINE=*(4)
+bush VIDEOUCASSABLE=*(5)
+
+bush TLANCER=*(0)
+bush TBOMBE=*(1)
+bush TDROITE=*(2)
+bush TGAUCHE=*(3)
+bush TBAS=*(4)
+deubeulyou THAUT=*(5)
+
+chaine NomBonus<>
+chances ChanceBonus<>
+chaine Decors<>
+
+%ValeursDefaut()
+
+NomBonus==   tab(«:(» «BO» «FL» «VI» «PO» «LA» «AR»)
+Decors==	   tab(«  » «##» «[]» «<>» «::»)
+
+Chaussure Serveur
+
+troupeau Point
+	entier x
+	entier y
+fintroupeau
+
+Point PosDepart<>
+
+troupeau Bombe
+	entier x
+	entier y
+	entier vx
+	entier vy
+	entier cycle
+	entier poseur
+	machineapingouins Effacer
+	entier LongFlamme
+	machineapingouins Pousser
+	entier Vol
+fintroupeau
+
+troupeau Joueur
+	entier x
+	entier y
+	entier avx
+	entier avy
+	entier vx
+	entier vy
+	chaine fig
+	entier nPoints
+	entier Vivant
+	machineapingouins EcrirePoints
+	entier MalusAntiBombe
+	machineapingouins Init
+	machineapingouins Deplace
+	machineapingouins Mort
+	machineapingouins Ecrire
+	entier nBombes
+	entier nBombesPosees
+	entier LongFlamme
+	entier Rapide
+	entier Utilise
+	entier PeutPousser
+	entier PeutLancer
+	entier Armure
+	entier Numero
+	entier Touches[]
+	Chaussette c
+fintroupeau
+
+Joueur joueur<>
+Bombe LesBombes<>
+entier carte<><>
+entier plan<><>
+
+%ChargerRecords()
+MontrerCurseur(*(0))
+
+GOTOUNIVERSPARALLELEouizzz %TacheServeur
+%LancerMenu()
+%SauverRecords()
+GOTOFIN
+
+§TacheServeur
+Serveur@Cordonnier(*(1257))
+%LancerServeur()
+GOTOFINTACHE
+
+troupeau Menu
+	chaine titre
+	chaine nom<>
+	chaine valeur<>
+	entier pos
+	machineapingouins Afficher
+	machineapingouins Deplacer
+	machineapingouins ModifierVal
+fintroupeau
+
+§Afficher:ASV:Menu
+	NettoyerEcran()
+
+	gotoXY(*(3) *(0))
+	GOTOPRINTDUTEXTE() &titre
+	
+	PouCharque chaine n &nom
+		gotoXY(*(3) $ &indice+*(2))
+		GOTOPRINTDUTEXTE() &n
+		gotoXY(*(30) $ &indice+*(2))
+		GOTOPRINTDUTEXTE(&valeur<&indice>)
+	FinTantQue
+APLUS
+
+§Deplacer:ASV:Menu
+	§Debut
+	gotoXY(*(1) $ &pos +*(2))
+	GOTOPRINTDUTEXTE() *`>'
+	entier t=TapeUneTouche()
+	gotoXY(*(1) $ &pos +*(2))
+	GOTOPRINTDUTEXTE() *` '
+
+	GOTOMULTIPLE &t
+	?&TOUCHEHAUT?
+		pos=-*(1)
+		AUTOGOTOZ } &pos eg *(-1){/pos=}nom tailleenlongueur{-*(1)
+		arret
+	?&TOUCHEBAS?
+		pos=+*(1)
+		AUTOGOTOZ } &pos eg }nom tailleenlongueur{{/pos=*(0)
+		arret
+	?défaut?
+		REGOTO &t
+	FINGOTOMULTIPLE
+	GOTOPASMALIN %%Debut
+APLUS
+
+§ModifierVal:ASV(numero nouveau):Menu
+	gotoXY(*(30) $ &numero+*(2))
+	GOTOPRINTDUTEXTE(BEGUEBEGUE(« » $ NombreDeLettres(&valeur<&numero>)))
+	gotoXY(*(30) $ &numero+*(2))
+	valeur<&numero>=&nouveau
+	GOTOPRINTDUTEXTE() &nouveau
+APLUS
+
+§MenuPlanDefaut:ASV
+	Menu m
+
+	m@pos=*(0)
+	m@titre=«Configuration du plan»
+	m@nom==tab(«Lancer !» «Largeur» «Hauteur» «Min flamme» «Max flamme» «Bombes depart» ^
+		«Duree bombe» )
+	m@valeur==tab(«» &largeur &hauteur &longmin &longmax &ndefbombes &avantexplo )
+	m@Afficher()
+	
+	§DebutMenu
+	
+	entier touc=m@Deplacer()
+	entier modif=*(0)
+	
+	GOTOMULTIPLE &touc
+	?&TOUCHEDROITE?
+		modif = *(1)
+		arret
+	?&TOUCHEGAUCHE?
+		modif = *(-1)
+		arret
+	?*`q' enentier?
+	?&TOUCHEECHAP?
+		REGOTO *(0)
+	?;r enentier?
+		AUTOGOTOZ } &m@pos eg *(0) {
+			REGOTO *(1)
+		AC
+		arret
+	FINGOTOMULTIPLE
+	
+	AUTOGOTOZ }&modif diff *(0) {
+		GOTOMULTIPLE &m@pos
+		?*(1)?
+			largeur =+ &modif
+			AUTOGOTOZ } &largeur inf *(11) {/largeur = *(11)
+			AUTOGOTOZ } &largeur sup *(31) {/largeur = *(31)
+			m@ModifierVal(&m@pos &largeur)
+			arret
+		?*(2)?
+			hauteur =+ &modif
+			AUTOGOTOZ } &hauteur inf *(11) {/hauteur = *(11)
+			AUTOGOTOZ } &hauteur sup *(31) {/hauteur = *(31)
+			m@ModifierVal(&m@pos &hauteur)
+			arret
+		?*(3)?
+			longmin =+ &modif
+			AUTOGOTOZ } &longmin inf *(2) { /longmin = *(2)
+			AUTOGOTOZ } &longmin sup &longmax {/longmin = &longmax
+			m@ModifierVal(&m@pos &longmin)
+			arret
+		?*(4)?
+			longmax =+ &modif
+			AUTOGOTOZ } &longmax inf &longmin {/longmax = &longmin
+			AUTOGOTOZ } &longmax sup *(30) {/longmax = *(30)
+			m@ModifierVal(&m@pos &longmax)
+			arret
+		?*(5)?
+			ndefbombes =+ &modif
+			AUTOGOTOZ } &ndefbombes inf *(1) {/ndefbombes = *(1)
+			AUTOGOTOZ } &ndefbombes sup *(10) {/ndefbombes = *(10)
+			m@ModifierVal(&m@pos &ndefbombes)
+			arret
+		?*(6)?
+			avantexplo =+ &modif
+			AUTOGOTOZ } &avantexplo inf *(2) {/avantexplo = *(2)
+			AUTOGOTOZ } &avantexplo sup *(20) {/avantexplo = *(20)
+			m@ModifierVal(&m@pos &avantexplo)
+			arret
+		FINGOTOMULTIPLE
+	AC
+	GOTOPASMALIN %%DebutMenu
+APLUS
+
+§LancerMenu:ASV
+	Menu m
+
+	m@pos=*(0)
+	m@titre=«BOMBERNIAC - GOTO++»
+	m@nom==tab(«Plan...» «Plan par défaut...» «Points pour la victoire» )
+	m@valeur==tab(«» «» &nbvict)
+	m@Afficher()
+
+	entier modif
+	entier touc
+
+	§DebutMenu
+	
+	touc=m@Deplacer()
+	
+	GOTOMULTIPLE &touc
+	?&TOUCHEDROITE?
+		modif = *(1)
+		arret
+	?&TOUCHEGAUCHE?
+		modif = *(-1)
+		arret
+	?*`q' enentier?
+	?&TOUCHEECHAP?
+		REGOTO
+	?;r enentier?
+		AUTOGOTOZ } &m@pos eg *(0) {
+			chaine c=%ListePlans()
+			AUTOGOTOZ } c tailleenlongueur {
+				%ChargerPlan(&c)
+				%LanceJeu()
+			AC
+			m@Afficher()
+		AC
+		ACAC/AUTOGOTOZ } &m@pos eg *(1){
+			AUTOGOTOZ }%MenuPlanDefaut(){
+				%PlanDefaut()
+				%LanceJeu()
+			AC
+			m@Afficher()
+		AC
+		arret
+	FINGOTOMULTIPLE
+	AUTOGOTOZ }&modif diff *(0) {
+		GOTOMULTIPLE &m@pos
+		?*(2)?
+			nbvict=+&modif
+			AUTOGOTOZ }&nbvict inf *(1){/nbvict=*(1)
+			AUTOGOTOZ }&nbvict sup *(99){/nbvict=*(99)
+			m@ModifierVal(&m@pos &nbvict)
+			arret
+		FINGOTOMULTIPLE
+	AC
+	GOTOPASMALIN %%DebutMenu
+APLUS
+
+§ListePlans:ASV
+	Repertoire rep()
+	chaine Plan<>
+	
+	NettoyerEcran()
+	costaud rep@ChercherPremier(RepCourant()) / non rep@Fini() / rep@ChercherSuivant()
+		AUTOGOTOZ } OUQUILESTLETEXTE(&rep@LireNom() $ ^/\.bnp$/) { /^
+			Pousse(Plan $ rep@LireNom())
+	faiblard
+	
+	PouCharque chaine c &Plan
+		gotoXY(*(3) &indice)
+		GOTOPRINTDUTEXTE(&c)
+	FinTantQue
+	
+	entier i=*(0)
+	
+	TantQue } *(1) {
+		gotoXY(*(0) &i)
+		GOTOPRINTDUTEXTE(*`>')
+		entier touc=}TapeUneTouche(){ enentier
+		gotoXY(*(0) &i)
+		GOTOPRINTDUTEXTE(*` ')
+		GOTOMULTIPLE &touc
+		?&TOUCHEHAUT?
+			AUTOGOTOZ }&i sup *(0){/i=-*(1)
+			arret
+		?&TOUCHEBAS?
+			AUTOGOTOZ }&i inf }Plan tailleenlongueur - *(1){{/i=+*(1)
+			arret
+		?;r enentier?
+			REGOTO &Plan<&i>
+		?*`q' enentier?
+		?&TOUCHEECHAP?
+			REGOTO «»
+		FINGOTOMULTIPLE
+	FinTantQue
+APLUS
+
+§ChargerPlan:ASV(nomplan)
+	%ValeursDefaut()
+	
+	fichier F()
+	F@OUVRIR(&nomplan)
+	largeur=*(0)
+	hauteur=*(0)
+	TantQue}non }F@Fin(){{
+		chaine ligne=F@LIREDUTEXTE()
+		AUTOGOTOZ } OUQUILESTLETEXTE(&ligne ^/^plan$/) {
+			entier y=*(0)
+			TantQue}non} F@Fin(){{
+				ligne=F@LIREDUTEXTE()
+				AUTOGOTOZ }ORDRALPHABETIX(&ligne «fin») eg *(0){/arret
+	
+				AUTOGOTOZ }&largeur eg *(0){/largeur=ligne tailleenlongueur
+				AUTOGOTOZ }&largeur diff }ligne tailleenlongueur{{/GOTOerreur(«la largeur n'est pas constante»)
+				costaud entier x=*(0)/&x inf &largeur/x=+*(1)
+					GOTOMULTIPLE }LeCaracNumero(&ligne $ &x+*(1)){
+					?*` ' enentier?
+						plan<&x><&y>=&VIDE
+						arret
+					?*`.' enentier?
+						plan<&x><&y>=&VIDEOUCASSABLE
+						arret
+					?*`#' enentier?
+						plan<&x><&y>=&INCASSABLE
+						arret	
+					?*`[' enentier?
+						plan<&x><&y>=&CASSABLE
+						arret
+					?*`1' enentier?
+						plan<&x><&y>=&VIDE
+						PosDepart<*(0)>=tab(&x &y)
+						arret
+					?*`2' enentier?
+						plan<&x><&y>=&VIDE
+						PosDepart<*(1)>=tab(&x &y)
+						arret
+					?*`3' enentier?
+						plan<&x><&y>=&VIDE
+						PosDepart<*(2)>=tab(&x &y)
+						arret		
+					?*`4' enentier?
+						plan<&x><&y>=&VIDE
+						PosDepart<*(3)>=tab(&x &y)
+						arret										
+					?défaut?
+						GOTOerreur(«caractère non reconnu dans le plan»)
+					FINGOTOMULTIPLE
+				faiblard	
+				y=+*(1)		
+			FinTantQue
+			hauteur=&y
+		AC
+		ACAC/AUTOGOTOZ } OUQUILESTLETEXTE(&ligne ^/^(\w+)=(.+)$/){
+			chaine clef=TuerOgre%DerValeur(*(1))
+			chaine valeur=TuerOgre%DerValeur(*(2))
+			AUTOGOTOZ } ORDRALPHABETIX(&clef «ndefbombes») eg *(0){
+				ndefbombes=&valeur enentier
+			AC
+			ACAC/AUTOGOTOZ } ORDRALPHABETIX(&clef «lflammesmin») eg *(0){/^
+				longmin=&valeur enentier
+			ACAC/AUTOGOTOZ } ORDRALPHABETIX(&clef «lflammesmax») eg *(0){/^
+				longmax=&valeur enentier
+			ACAC/AUTOGOTOZ } ORDRALPHABETIX(&clef «tempsmine») eg *(0){/^
+				avantexplo=&valeur enentier
+			ACAC/AUTOGOTOZ } ORDRALPHABETIX(&clef «ratiomurs») eg *(0){/^
+				RatioMurs=&valeur nimportequoitochances					
+			ACAC/AUTOGOTOZ } ORDRALPHABETIX(&clef «chancesbonus») eg *(0){/^
+				ChanceBonus=bananasplit(&valeur ^/\s+/)
+			ACAC/AUTOGOTOZ } ORDRALPHABETIX(&clef «ratiobonus») eg *(0){/^
+				RatioBonus=&valeur nimportequoitochances
+			ACAC/AUTOGOTOZ } ORDRALPHABETIX(&clef «peutlancer») eg *(0){/^
+				DefPeutLancer=&valeur enentier
+			ACAC/GOTOerreur(« inconnu»_&clef_«Mot-clef »)
+			
+		AC
+		ACAC/AUTOGOTOZ } non}ligne tailleenlongueur eg *(0){{/^
+			GOTOerreur(«] invalide»_&ligne_«Ligne [»)		
+	FinTantQue
+APLUS
+
+§LanceJeu:ASV
+	NettoyerEcran()
+ 	%NouvellePartie()
+	PartieEncours=*(1)
+	GOTOUNIVERSPARALLELEouizzz %%Stop
+ 	%Jeu()
+	%EffacerEcran()
+	%Ecrire(*(5) *(10) «Partie arrêtée...»)
+	%Ecrire(*(5) *(11) «Patience, jeune BomberNIAC»)
+	REGOTO
+	
+	§Stop
+	TapeUneTouche()
+	PartieEncours=*(0)
+	GOTOFINTACHE
+APLUS
+
+§LancerServeur:ASV
+	Chaussette sauvage Conn
+	
+	§Debut
+		Conn=Serveur@Chausser()
+		%Client(&Conn)
+	GOTOPASMALIN %%Debut
+APLUS
+
+§Client:ASV(Conn)
+	Chaussette zap Conn
+	entier noc
+
+	noc=joueur tailleenlongueur
+	PouCharque Joueur j &joueur
+		AUTOGOTOZ }&j@Utilise eg *(0){
+			noc=&indice
+			arret
+		AC
+	FinTantQue
+
+	AUTOGOTOZ } &noc sup *(3) {
+		REGOTO
+	AC
+		
+	AUTOGOTOZ } &PartieEncours {/	nVivants=+*(1)
+	nClients=+*(1)
+		
+	joueur<&noc>@Utilise=*(1)
+	joueur<&noc>@c=&Conn
+	joueur<&noc>@fig=}&noc+*(1){_«@»
+	joueur<&noc>@nPoints=*(0)
+	joueur<&noc>@Vivant=&PartieEncours
+	joueur<&noc>@Init(&noc)
+	
+
+	GOTOUNIVERSPARALLELEouizzz %%DebutClavier
+	REGOTO
+	
+	§Erreur
+	joueur<&noc>@c=*(1)
+	joueur<&noc>@Vivant=*(0)
+	joueur<&noc>@Utilise=*(0)
+	nVivants=-*(1)
+	nClients=-*(1)
+	%Ecrire(&joueur<&noc>@x &joueur<&noc>@y «  »)
+	%EffacerPoints(&noc)
+	GOTOFINTACHE
+	
+	§DebutClavier
+	encasderreurGOTO %%Erreur
+	gotoXY(*(20) *(0))
+	
+	AUTOGOTOZ } &PartieEncours {
+		%Positionner(&noc)
+		%EnvoyerCarte(&Conn)
+		%Ecrire(&joueur<&noc>@x &joueur<&noc>@y &joueur<&noc>@fig)
+		joueur<&noc>@EcrirePoints(&noc)
+	AC
+	ACAC
+		joueur<&noc>@Ecrire(*(5) *(10) «Pas de partie en cours...»)
+		joueur<&noc>@Ecrire(*(5) *(11) «Patience, jeune BomberNIAC»)
+	AC
+	Joueur jo==&joueur<&noc>
+
+	§Clavier
+
+	pingouin c
+
+	c=Conn@LireLigne()
+	jo@vx=*(0)
+	jo@vy=*(0)
+
+	AUTOGOTOZ }OUQUILESTLETEXTE(&c ^/^~/){
+		c=PrendsUnMorceau(&c *(2) *(0))
+		jo@Touches=bananasplit(&c «,»)
+		GOTOPASMALIN %%Clavier
+	AC
+	
+	entier touche=*(-1)
+	
+	PouCharque entier t &jo@Touches
+		AUTOGOTOZ } &t eg &c {
+			touche=&indice
+			arret
+		AC
+	FinTantQue
+			
+	GOTONULPOURLESNULS %%Clavier } &joueur<&noc>@Vivant {
+
+	GOTOMULTIPLE &touche
+	?&THAUT?
+		AUTOGOTOZ }&joueur<&noc>@y sup *(0) { /jo@vy=*(-1)
+		arret
+	?&TBAS?
+		AUTOGOTOZ }&joueur<&noc>@y inf } &hauteur-*(1){{/jo@vy=*(1)
+		arret
+	?&TDROITE?
+		AUTOGOTOZ }&joueur<&noc>@x inf } &largeur-*(1){{/jo@vx=*(1)
+		arret
+	?&TGAUCHE?
+		AUTOGOTOZ }&joueur<&noc>@x sup *(0) { /jo@vx=*(-1)
+		arret
+	?&TLANCER?
+		AUTOGOTOZ } &jo@PeutLancer et &jo@MalusAntiBombe eg *(0) et ^
+			&jo@nBombesPosees inf &jo@nBombes {
+			%LancerBombe(&noc)
+		AC
+		arret
+	?&TBOMBE?
+		AUTOGOTOZ } &jo@MalusAntiBombe eg *(0) et ^
+			&jo@nBombesPosees inf &jo@nBombes {
+			%AjouteBombe(&noc)
+		AC
+		arret
+	FINGOTOMULTIPLE
+
+	GOTOPASMALIN %%Clavier
+APLUS
+
+§Deplace:ASV:Joueur
+	AUTOGOTOZ } &vx eg *(0) et &vy eg *(0) {/REGOTO
+
+	entier svx = &x + &vx
+	entier svy = &y + &vy
+
+
+	PouCharque Joueur j &joueur
+		AUTOGOTOZ }&j@Vivant et &svx eg &j@x et &svy eg &j@y{/REGOTO
+	FinTantQue
+
+	PouCharque Bombe b &LesBombes
+		AUTOGOTOZ }&b@cycle diff *(-1) et &b@Vol eg *(0) et &svx eg &b@x et &svy eg &b@y{
+			AUTOGOTOZ } non &PeutPousser ou non }b@Pousser(&vx &vy){{/^
+				REGOTO
+		AC
+	FinTantQue
+
+	avx=&vx
+	avy=&vy
+	vx=*(0)
+	vy=*(0)
+
+	AUTOGOTOZ }}&carte<&svx><&svy> eg &INCASSABLE{ ou }&carte<&svx><&svy> eg &CASSABLE{{
+		REGOTO
+	AC
+	ACAC/AUTOGOTOZ }&carte<&svx><&svy> eg &FLAMME ou &carte<&svx><&svy> eg &RUINE{
+		Mort()
+	AC
+	ACAC/AUTOGOTOZ }&carte<&svx><&svy> diff &VIDE{
+		GOTOMULTIPLE }&carte<&svx><&svy> - &Bonus{
+		?*(0)? GOTO Interdit de poser des bombes
+			MalusAntiBombe=&MABDepart
+			arret
+		?*(1)? GOTO Nouvelle bombe
+			nBombes=+*(1)
+			arret
+		?*(2)? GOTO Flammes plus grandes
+			AUTOGOTOZ }&LongFlamme inf &longmax{/^
+				LongFlamme=+*(1)
+			arret
+		?*(3)? GOTO Rapide
+			Rapide=*(1)
+			arret
+		?*(4)? GOTO Peut pousser
+			PeutPousser=*(1)
+			arret
+		?*(5)?
+			PeutLancer=*(1)
+			arret
+		?*(6)?
+			Armure=*(1)
+			fig=}&Numero+*(1){_«§»
+			arret
+		?défaut?
+			GOTOerreur(«Bonus inconnu»)
+		FINGOTOMULTIPLE
+		carte<&svx><&svy>=*(0)
+	AC
+
+	%Ecrire(&x &y «  »)
+	x=&svx / y=&svy
+	%Ecrire(&x &y &fig)
+APLUS
+
+§Mort:ASV():Joueur
+	AUTOGOTOZ } &Armure {
+		Armure=*(0)
+		fig=}&Numero+*(1){_«@»
+		%Ecrire(&x &y &fig)
+		REGOTO
+	AC
+	Vivant=*(0)
+	nVivants=-*(1)
+APLUS
+
+§NouvellePartie:ASV()
+	PouCharque Joueur j &joueur
+		AUTOGOTOZ } &j@Utilise {
+			AUTOGOTOZ } &j@Vivant { / j@nPoints=+*(1)
+			AUTOGOTOZ } &j@nPoints supeg &nbvict {
+				%EffaceScore()
+				%Ecrire(*(0) $ &hauteur $ « remporte la VICTOIRE !»_}&indice +^
+				*(1){_«Joueur »)
+				DODO(*(2000))
+				%EffaceScore()
+				PouCharque Joueur k &joueur
+					k@nPoints = *(0)
+				FinTantQue
+			AC
+			%Positionner(&indice)
+			j@Vivant=*(1)
+			j@Init(&indice)
+		AC
+	FinTantQue
+	PouCharque Joueur j &joueur /^
+		j@EcrirePoints(&indice)
+			
+	nVivants=&nClients
+	%NouvelleCarte()
+APLUS
+
+§EffaceScore:ASV()
+	entier i
+	TantQue } &i inf &largeur {
+		%Ecrire(&i $ &hauteur $ «  »)
+		i =+ *(1)
+	FinTantQue
+APLUS
+
+§Positionner:ASV(noc)
+	joueur<&noc>@x=&PosDepart<&noc>@x
+	joueur<&noc>@y=&PosDepart<&noc>@y	
+APLUS
+
+§Jeu:ASV
+	§DebutJeu
+	AUTOGOTOZ } non &PartieEncours { /REGOTO
+	
+	GOTOMULTIPLE &nClients
+	?*(0)?
+		arret
+	?*(1)?
+		AUTOGOTOZ } &nVivants inf *(1) { / %NouvellePartie()
+		arret
+	?défaut?
+		AUTOGOTOZ } &nVivants inf *(2) { / %NouvellePartie()
+	FINGOTOMULTIPLE
+
+	PouCharque Joueur j &joueur
+		AUTOGOTOZ } &j@Rapide ou }}&Tour RESTEDELADIVISIONPAR *(2){ eg *(0){{/^
+			j@Deplace()
+		AUTOGOTOZ }&j@MalusAntiBombe{/^
+			j@MalusAntiBombe=-*(1)
+	FinTantQue
+
+	PouCharque Bombe b &LesBombes
+			AUTOGOTOZ } non &b@Vol {/continue
+			GOTO Effacer la bombe
+			%Ecrire(&b@x &b@y $ %SymboleCarte(&b@x &b@y))
+			b@x=+&b@vx
+			b@y=+&b@vy
+			AUTOGOTOZ } &b@x inf *(0) {/b@x=&largeur-*(1)
+			AUTOGOTOZ } &b@y inf *(0) {/b@y=&hauteur-*(1)
+			AUTOGOTOZ } &b@x eg &largeur {/b@x=*(0)
+			AUTOGOTOZ } &b@y eg &hauteur {/b@y=*(0)
+			%Ecrire(&b@x &b@y «()»)
+			AUTOGOTOZ } &b@Vol sup *(1) {
+				b@Vol=-*(1)
+				GOTO Si il y a un joueur, il prend la bombe dans la tête
+				PouCharque Joueur j &joueur
+					AUTOGOTOZ } &j@Vivant et &j@x eg &b@x et &j@y eg &b@y {/^
+						b@Vol=*(0)
+				FinTantQue
+			AC
+			ACAC
+				PouCharque Bombe bo &LesBombes
+					AUTOGOTOZ } &bo@cycle sup *(-1) et &bo@Vol eg *(0) et &bo@x eg &b@x et &bo@y eg &b@y{
+						GOTOPASMALIN %%Sauter
+					AC
+				FinTantQue
+				AUTOGOTOZ }&carte<&b@x><&b@y> eg &VIDE{/b@Vol=*(0)
+				§Sauter
+			AC
+	FinTantQue
+	
+	AUTOGOTOZ } }&Tour RESTEDELADIVISIONPAR *(5){ eg *(0) {
+		PouCharque Bombe b &LesBombes
+			AUTOGOTOZ } &b@Vol {/continue
+			
+			AUTOGOTOZ } &b@cycle sup *(0) {
+				AUTOGOTOZ }&carte<&b@x><&b@y> eg *(3){
+					b@cycle = *(0)
+					continue
+				AC
+				AUTOGOTOZ }}&b@cycle RESTEDELADIVISIONPAR *(2){ eg *(0){ /^
+					%Ecrire(&b@x &b@y «()»)
+				ACAC/^
+					%Ecrire(&b@x &b@y «{}»)
+	
+				b@cycle =- *(1)
+				AUTOGOTOZ }&b@cycle eg *(0){
+					GOTO Première étape : on explose
+					AUTOGOTOZ }&carte<&b@x><&b@y> diff *(3){
+						%Explose(&b@x &b@y *(1) &b@LongFlamme)
+					AC
+				AC
+			AC
+			ACAC
+				AUTOGOTOZ } &b@cycle eg *(0) {
+					GOTO Deuxième étape : on efface
+					%Explose(&b@x &b@y *(0) &b@LongFlamme)
+					b@Effacer()
+				AC
+			AC
+		FinTantQue
+		
+		PouCharque Bombe b &LesBombes
+			AUTOGOTOZ } &b@cycle eg *(-2) {/b@cycle=*(0)
+		FinTantQue
+	AC
+
+	DODO(*(100))
+	Tour=+*(1)
+	GOTOPASMALIN %%DebutJeu
+APLUS
+
+§AfficherCarte:ASV
+	entier i
+	entier j
+
+	i=*(0)
+	TantQue } &i inf &largeur {
+		j=*(0)
+GOTO		GOTOPRINTDUTEXTE() &i
+		TantQue } &j inf &hauteur {
+			GOTOMULTIPLE &carte<&i><&j>
+			?*(0)?
+				%Ecrire(&i &j «  »)
+				arret
+			?*(1)?
+				%Ecrire(&i &j «##»)
+				arret
+			?*(2)?
+				%Ecrire(&i &j «[]»)
+				arret
+			FINGOTOMULTIPLE
+			j=+*(1)
+		FinTantQue
+		i=+*(1)
+	FinTantQue
+APLUS
+
+§AjouteBombe:ASV(noc)
+	Joueur j==&joueur<&noc>
+	
+	entier i=LesBombes tailleenlongueur
+	PouCharque Bombe b &LesBombes
+		AUTOGOTOZ } }&b@cycle diff *(-1){ et &b@x eg &j@x et &b@y eg &j@y {/^
+			REGOTO
+	FinTantQue
+	
+	PouCharque Bombe b &LesBombes
+		AUTOGOTOZ } &b@cycle eg *(-1) {
+			i=&indice
+			arret
+		AC
+	FinTantQue
+	LesBombes<&i>@x=&j@x
+	LesBombes<&i>@y=&j@y
+	LesBombes<&i>@cycle=&avantexplo
+	LesBombes<&i>@Vol=*(0)
+	LesBombes<&i>@poseur=&noc
+	LesBombes<&i>@LongFlamme=&j@LongFlamme
+	j@nBombesPosees=+*(1)
+	REGOTO &i
+APLUS
+
+§LancerBombe:ASV(noc)
+	entier i=%AjouteBombe(&noc)
+	LesBombes<&i>@Vol=&TempsVol
+	LesBombes<&i>@vx=&joueur<&noc>@avx
+	LesBombes<&i>@vy=&joueur<&noc>@avy
+	LesBombes<&i>@x=+&LesBombes<&i>@vx
+	LesBombes<&i>@y=+&LesBombes<&i>@vy
+	%Ecrire(&LesBombes<&i>@x &LesBombes<&i>@y «()»)
+APLUS
+
+§Effacer:ASV:Bombe
+	cycle = *(-1)
+	joueur<&poseur>@nBombesPosees=-*(1)
+APLUS
+
+§Pousser:ASV(vx vy):Bombe
+	entier svx=&x+&vx
+	entier svy=&y+&vy
+	AUTOGOTOZ } &carte<&svx><&svy> diff &VIDE { / REGOTO *(0)
+	PouCharque Joueur j &joueur
+		AUTOGOTOZ } &j@Utilise et &j@x eg &svx et &j@y eg &svy {/REGOTO *(0)
+	FinTantQue
+	
+	PouCharque Bombe b &LesBombes
+		AUTOGOTOZ } &b@cycle diff *(-1)et &b@Vol eg *(0) et &b@x eg &svx et &b@y eg &svy {
+			AUTOGOTOZ b@Pousser(&vx &vy)
+				x=&svx/y=&svy
+				REGOTO *(1)
+			AC
+			REGOTO *(0)
+		AC
+	FinTantQue
+	x=&svx
+	y=&svy
+	%Ecrire(&x &y «()»)
+	REGOTO *(1)
+APLUS
+
+§EnleveBombe:ASV(x y)
+	PouCharque Bombe b &LesBombes
+		AUTOGOTOZ } &b@x eg &x et &b@y eg &y {
+			b@Effacer()
+			REGOTO
+		AC
+	FinTantQue
+APLUS
+
+§Explose:ASV(a b type long)
+	entier zap a
+	entier zap b
+	entier zap long
+	
+	chaine texpl
+	
+	AUTOGOTOZ } &type eg *(1) {
+		texpl = «<>»
+	AC
+	ACAC
+		texpl = «  »
+	AC
+	entier i
+	entier j
+	%ExplCase(&a &b &type &texpl)
+	i=&a-*(1)
+	j=&b
+	TantQue } }&a - &i{ inf &long {
+		AUTOGOTOZ } &carte<&i><&j> eg *(1) {
+			arret
+		AC
+		AUTOGOTOZ }%ExplCase(&i &j &type &texpl) eg *(1){
+			arret
+		AC
+		i =- *(1)
+	FinTantQue
+	i=&a+*(1)
+	j=&b
+	TantQue } }&i - &a{ inf &long {
+		AUTOGOTOZ } &carte<&i><&j> eg *(1) {
+			arret
+		AC
+		AUTOGOTOZ }%ExplCase(&i &j &type &texpl) eg *(1){
+			arret
+		AC
+		i =+ *(1)
+	FinTantQue
+	i=&a
+	j=&b-*(1)
+	TantQue } }&b - &j{ inf &long {
+		AUTOGOTOZ } &carte<&i><&j> eg *(1) {
+			arret
+		AC
+		AUTOGOTOZ }%ExplCase(&i &j &type &texpl) eg *(1){
+			arret
+		AC
+		j =- *(1)
+	FinTantQue
+	i=&a
+	j=&b+*(1)
+	TantQue } }&j - &b{ inf &long {
+		AUTOGOTOZ } &carte<&i><&j> eg *(1) {
+			arret
+		AC
+		AUTOGOTOZ }%ExplCase(&i &j &type &texpl) eg *(1){
+			arret
+		AC
+		j =+ *(1)
+	FinTantQue
+APLUS
+
+§ExplCase:ASV(a b type texpl)
+	AUTOGOTOZ }&type eg *(0){ GOTO On efface les flammes
+		PouCharque Joueur j &joueur
+	        	AUTOGOTOZ }&j@Vivant et &a eg &j@x et &b eg &j@y{
+				carte<&a><&b>=&VIDE
+     	   		REGOTO *(0)
+			AC
+     	FinTantQue
+		
+        	AUTOGOTOZ }&carte<&a><&b> eg &FLAMME{
+        		%Ecrire(&a &b &texpl)
+        		carte<&a><&b>=&VIDE
+ 	       	REGOTO *(0)
+        	AC
+        	ACAC/AUTOGOTOZ }&carte<&a><&b> eg &RUINE{
+        		GOTOGOTO() %%PasBonus &RatioBonus
+        		BLOC
+        			entier nb=ChoisisUnEntier(&ChanceBonus)
+        			carte<&a><&b>=&nb+&Bonus
+        			%Ecrire(&a &b &NomBonus<&nb>)
+        			REGOTO *(1)
+        		FINBLOC
+        		§PasBonus
+			%Ecrire(&a &b &texpl)
+        		carte<&a><&b>=&VIDE
+			REGOTO *(1)
+        	AC
+		
+		REGOTO *(0)
+	AC
+	   
+	GOTO On crée une flamme
+	AUTOGOTOZ } &carte<&a><&b> eg &RUINE {
+		REGOTO *(1)
+	AC
+	AUTOGOTOZ } &carte<&a><&b> eg &CASSABLE {
+        	%Ecrire(&a &b «::»)
+        	carte<&a><&b>=&RUINE
+		REGOTO *(1)
+     AC
+	%Ecrire(&a &b &texpl)
+	carte<&a><&b>=&FLAMME
+
+	PouCharque Joueur j &joueur
+		AUTOGOTOZ }&j@Utilise et &a eg &j@x et &b eg &j@y{
+			j@Mort()
+		AC
+	FinTantQue
+
+	PouCharque Bombe bo &LesBombes
+		AUTOGOTOZ } &bo@cycle sup *(0) et &bo@Vol eg *(0) et ^
+				&bo@x eg &a et &bo@y eg &b {
+			bo@cycle=*(-2)
+			%Explose(&bo@x &bo@y *(1) &bo@LongFlamme)
+		AC
+	FinTantQue
+	REGOTO *(0)
+APLUS
+
+§Ecrire:ASV(x y quoi):Joueur
+	entier zap x
+	entier zap y
+	AUTOGOTOZ } &Utilise { /	c@Remplir(«;r;n»_&quoi_«,»_&y_«,»_&x)
+APLUS
+
+§EffacerEcran:ASV
+	PouCharque Joueur j &joueur
+		AUTOGOTOZ } &j@Utilise { /j@c@Remplir(«;r;n»)
+	FinTantQue
+APLUS
+
+§Ecrire:ASV(x y quoi)
+	entier zap x
+	entier zap y
+	gotoXY(}&x MULTIPLICATION *(2){ &y)
+	GOTOPRINTDUTEXTE(&quoi)
+	
+	PouCharque Joueur j &joueur
+		j@Ecrire(&x &y &quoi)
+	FinTantQue
+APLUS
+
+§SymboleCarte:ASV(x y)
+	entier e=&carte<&x><&y>
+	AUTOGOTOZ }&e supeg &Bonus {/^
+		REGOTO &NomBonus<&e-&Bonus>
+	ACAC/REGOTO &Decors<&e>
+APLUS
+
+§EnvoyerCarte:ASV(Conn)
+	Chaussette zap Conn
+	
+	chaine reponse=«»
+
+	costaud entier j=*(0) / &j inf &hauteur / j=+*(1)
+		reponse=«,»_&j_«0,»_&reponse
+		costaud entier i=*(0) / &i inf &largeur / i=+*(1)
+			reponse= }%SymboleCarte(&i &j){_&reponse
+		faiblard
+		reponse=«;r;n»_&reponse
+	faiblard
+
+	Conn@Remplir(&reponse)
+	
+	PouCharque Joueur j &joueur
+		AUTOGOTOZ } &j@Vivant {
+			Conn@Remplir(«;r;n»_&j@fig_«,»_&j@y_«,»_&j@x)
+		AC
+	FinTantQue
+APLUS
+
+§EcrirePoints:ASV(i):Joueur
+	%Ecrire(}&i MULTIPLICATION } &largeur : *(4){{ $ &hauteur $ &nPoints_« : »_}&i+*(1){)
+APLUS		
+
+§EffacerPoints:ASV(i)
+	chaine c=«»
+	costaud entier i=*(0) / &i inf } &largeur : *(4) { / i=+*(1) /^
+		c=« »_&c
+	%Ecrire(}&i MULTIPLICATION } &largeur : *(4){{ $ &hauteur $ &c)
+APLUS
+
+§PlanDefaut:ASV
+
+	costaud entier i=*(0) / &i inf &largeur / i=+*(1)
+		costaud entier j=*(0) / &j inf &hauteur / j=+*(1)
+			plan<&i><&j>=&VIDEOUCASSABLE
+			AUTOGOTOZ }}&i RESTEDELADIVISIONPAR *(2){ eg *(0){
+				AUTOGOTOZ }}&j RESTEDELADIVISIONPAR *(2){ eg *(0){
+					plan<&i><&j>=&INCASSABLE
+				AC
+			AC
+		faiblard
+	faiblard
+
+	costaud entier i=*(0) / &i inf &largeur / i=+*(1)
+		plan<&i><*(0)>=*(1)
+		plan<&i><&hauteur-*(1)>=*(1)
+	faiblard
+
+	costaud entier j=*(0) / &j inf &hauteur / j=+*(1)
+		plan<*(0)><&j>=*(1)
+		plan<&largeur-*(1)><&j>=*(1)
+	faiblard
+
+	GOTO On vide les coins
+	plan<*(1)><*(1)>=&VIDE
+	plan<*(2)><*(1)>=&VIDE
+	plan<*(1)><*(2)>=&VIDE
+	plan<&largeur-*(2)><*(1)>=&VIDE
+	plan<&largeur-*(3)><*(1)>=&VIDE
+	plan<&largeur-*(2)><*(2)>=&VIDE
+	plan<*(1)><&hauteur-*(2)>=&VIDE
+	plan<*(2)><&hauteur-*(2)>=&VIDE
+	plan<*(1)><&hauteur-*(3)>=&VIDE
+	plan<&largeur-*(2)><&hauteur-*(2)>=&VIDE
+	plan<&largeur-*(3)><&hauteur-*(2)>=&VIDE
+	plan<&largeur-*(2)><&hauteur-*(3)>=&VIDE
+
+	PosDepart<*(0)>==tab(*(1) *(1))
+	PosDepart<*(1)>==tab(&largeur-*(2) $ &hauteur -*(2))
+	PosDepart<*(2)>==tab(&largeur-*(2) $ *(1))	
+	PosDepart<*(3)>==tab(*(1) $ &hauteur -*(2))
+APLUS
+
+§NouvelleCarte:ASV
+	LesBombes=*(0)
+	
+	costaud entier i=*(0) / &i inf &largeur / i=+*(1)
+		costaud entier j=*(0) / &j inf &hauteur / j=+*(1)
+			carte<&i><&j>=&plan<&i><&j>
+			AUTOGOTOZ }&carte<&i><&j> eg &VIDEOUCASSABLE{
+				carte<&i><&j>=&VIDE
+				GOTOGOTO() %%Saut &RatioMurs
+					carte<&i><&j>=&CASSABLE
+				§Saut
+			AC
+		faiblard
+	faiblard
+	%AfficherCarte()
+	
+	PouCharque Joueur j &joueur / AUTOGOTOZ } &j@Utilise { / %EnvoyerCarte(&j@c)
+APLUS
+
+§Init:ASV(num):Joueur
+	Numero=&num
+	fig=}&Numero+*(1){_«@»
+	MalusAntiBombe=*(0)
+	nBombes=&ndefbombes
+	nBombesPosees=*(0)
+	LongFlamme=&longmin
+	Rapide=*(0)
+	PeutPousser=*(0)
+	PeutLancer=&DefPeutLancer
+	Armure=*(0)
+APLUS
+
+§ValeursDefaut:ASV
+	longmin = *(4)
+	longmax = *(8)
+	ndefbombes = *(1)
+	avantexplo = *(6)	
+	ChanceBonus==tab(?20  ?10  ?20  ?30  ?1   ?1 ?2)
+	RatioMurs=?50
+	RatioBonus=?50
+	DefPeutLancer=*(0)
+APLUS
+
+§ChargerRecords:ASV
+#!	fichier F
+	F@OUVRIR(ConcatRep(ETTelephone(«bomberniac») $ «records.txt»))
+	TantQue}non F@Fin(){
+		chaine ligne=F@LIREDUTEXTE()
+		AUTOGOTOZ }OUQUILESTLETEXTE(&ligne ^/^(\w)+=(\d+)$/){
+			Record[TuerOgre@Valeur(*(1))]=TuerOgre@Valeur(*(2)) enentier
+		AC
+	FinTantQue!#
+APLUS
+
+§SauverRecords:ASV
+#!	fichier F
+	F@OUVRIR(ConcatRep(ETTelephone(«bomberniac») $ «records.txt») $ *(1))
+	costaud pingouin z=PremierPingouin(Record)/&z estrefvalide/z=&z++*(1)
+		F@ECRIREDUTEXTE(; &z# «=» &z")
+	faiblard!#
+APLUS

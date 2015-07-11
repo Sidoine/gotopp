@@ -1,0 +1,24 @@
+#!/usr/bin/gpp
+Calcul de pi (3ème méthode) - Par Tout !#
+facteur=*(10000)
+n=*(0)
+b=*(0)
+§1
+INITIALISATION()h
+INITIALISATION()f
+h=}MULTIPLICATION&h&facteur{enentier
+f=}MULTIPLICATION&f&facteur{enentier
+§3
+GOTOGOTO()*(2)MULTIPLICATION?100*(1)-&f
+r=&h-}}&h:&f{MULTIPLICATION&f{
+h=&f
+f=&r
+GOTOGOTO()*(3)?100
+§2
+n=+*(1)
+GOTOGOTO()*(1)}*(2)-&h{MULTIPLICATION?100
+b=+*(1)
+GOTOGOTO()*(1)?99
+GOTOPRINTDUTEXTE();&pi
+pi=}&pi:?2{+}MULTIPLICATION?3&n:&b:&pi{
+GOTOGOTO()*(1)?100

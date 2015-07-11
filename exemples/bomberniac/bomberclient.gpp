@@ -1,0 +1,62 @@
+niveaugourou 0
+pastrespermissif
+GOTOPASMALIN %Debut
+
+GOTOMODULE chaussettes
+GOTOBIBLIOTHEQUE present
+
+§Debut
+
+%Presentation()
+MontrerCurseur(*(0))
+NettoyerEcran()
+
+chaine serveur
+entier port
+
+AUTOGOTOZ }}parametre tailleenlongueur{ inf *(1) {
+	serveur = «»
+AC
+ACAC
+	serveur = &parametre<*(0)>
+AC
+AUTOGOTOZ }}parametre tailleenlongueur{ inf *(2) {
+	port = *(1257)
+AC
+ACAC
+	port = &parametre<*(1)>
+AC
+
+AUTOGOTOZ }NombreDeLettres(&serveur) eg *(0){
+	gotoXY(*(0) *(0))
+	GOTOPRINTDUTEXTE(«Serveur (localhost) : »)
+	serveur=ENTRETONTEXTE()
+AC
+AUTOGOTOZ }NombreDeLettres(&serveur) eg *(0){/^
+	serveur=«localhost»
+
+Chaussette Client
+Client@Tricoter(&serveur &port)
+GOTO GOTOPRINTDUTEXTE(«Connecté;n»)
+Client@Remplir(; _&TOUCHEHAUT_«,»_&TOUCHEBAS_«,»_&TOUCHEGAUCHE_«,» ^
+	_&TOUCHEDROITE_«,»_}*` ' enentier{_«,»_}*`x' enentier{_«~»)
+GOTO GOTOPRINTDUTEXTE(«Attente de la réponse;n»)
+
+
+GOTOUNIVERSPARALLELEouizzz %Touches
+
+§Affichage
+	chaine Ligne
+	Ligne=Client@LireLigne()
+	chaine truc<>
+	AUTOGOTOZ } OUQUILESTLETEXTE(chomp(&Ligne) $ ^/^(\d+),(\d+),(.*)$/) {
+		gotoXY(}}TuerOgre%DerValeur(*(1)){ MULTIPLICATION *(2){ TuerOgre%DerValeur(*(2)))
+		GOTOPRINTDUTEXTE(TuerOgre%DerValeur(*(3)))
+	AC
+	ACAC/NettoyerEcran()
+GOTOPASMALIN %Affichage
+
+§Touches
+entier touche=}TapeUneTouche(){ enentier
+Client@Remplir(«;n»_&touche)
+GOTOPASMALIN %Touches

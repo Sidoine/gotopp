@@ -1,0 +1,28 @@
+GOTO Premier jeu en Goto++
+
+GOTOPRINTDUTEXTE() ; «Le jeu du [cherche un nombre entre 1 et 100] version 1.1:»
+nombre = &nombre enentier
+score = *(0)
+§1
+score = &score + *(1)
+GOTOPRINTDUTEXTE() ; «Entre un nombre:» ;
+essai = ENTREUNNOMBRE()
+dif = &essai - &nombre
+test = &dif + *(100)
+test = &test : *(100)
+test = &test enentier
+test = &test MULTIPLICATION *(100)
+GOTOGOTO() *(2) &test nimportequoitochances
+GOTOPRINTDUTEXTE() ; «C'est plus.»
+GOTOGOTO() *(1) ?100
+GOTO pour la forme
+§2
+dif = &dif MULTIPLICATION *(100)
+GOTOGOTO() *(100) ?100 *(3) &dif nimportequoitochances
+§3
+GOTOPRINTDUTEXTE() ; «C'est moins.»
+GOTOGOTO() *(1) ?100
+§100
+GOTOPRINTDUTEXTE() ; &score «Bravo ! Ton score est de : »
+GOTOFIN
+GOTO ouais y a meme des trucs apres la fin

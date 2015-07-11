@@ -1,0 +1,84 @@
+GOTO Calendrier vaguement perpetuel (par Tout)
+janvier = *(1)
+GOTOPRINTDUTEXTE() ; «Entre un mois de 2002 (en numero... le truc ou on met 1 pour janver, 2 pour fevrier, 3 pour avril, euh...)»
+fevrier = *(2)
+GOTO Goto++
+moisnormaux = *(31)
+mois = ENTREUNNOMBRE()
+moisnormauxaussimaismoins = *(30)
+mois = &mois - *(1)
+GOTOPRINTDUTEXTE() ; «Entre un jour de ton mois, mais en lettres ! nan, j'deconne, entre-le en chiffre aussi.»
+jour = ENTREUNNOMBRE()
+oldmois = &mois
+jour = &jour + &janvier
+GOTO set firstdayofjanuary2002 = #{«Mardi»}
+decal = &mois MULTIPLICATION &moisnormaux
+moisnormauxaussimaismoins = *(31) - &moisnormauxaussimaismoins
+test = *(8) - &oldmois
+test = &test MULTIPLICATION *(100)
+GOTOGOTO() *(10) &test nimportequoitochances
+jour = &jour + *(1)
+mois = &mois + *(1)
+§10
+mois = &mois : *(2)
+decaldeux = &mois MULTIPLICATION &moisnormauxaussimaismoins
+decal = &decal - &decaldeux
+jour = &jour + &decal
+test = *(2) - &oldmois
+test = &test MULTIPLICATION *(100)
+GOTOGOTO() *(20) &test nimportequoitochances
+GOTOPRINTDUTEXTE() ; «Calcul en cours..... »
+GOTOPRINTDUTEXTE() ; «.. si si, c'est vrai »
+jour = &jour - &fevrier
+§20
+test = &jour - *(7)
+test = &test MULTIPLICATION *(100)
+GOTOGOTO() *(29) &test nimportequoitochances
+test = &jour - *(3)
+test = &test MULTIPLICATION *(100)
+GOTOGOTO() *(21) &test nimportequoitochances
+test = &jour - *(2)
+test = &test MULTIPLICATION *(100)
+GOTOGOTO() *(103) &test nimportequoitochances
+test = *(2) - &jour
+test = &test MULTIPLICATION *(100)
+GOTOGOTO() *(102) ?100 *(101) &test nimportequoitochances
+§21
+test = *(6) - &jour
+test = &test MULTIPLICATION *(100)
+GOTOGOTO() *(22) &test nimportequoitochances
+test = *(7) - &jour
+test = &test MULTIPLICATION *(100)
+GOTOGOTO() *(107) ?100 *(106) &test nimportequoitochances
+§22
+test = *(5) - &jour
+test = &test MULTIPLICATION *(100)
+GOTOGOTO() *(105) ?100 *(104) &test nimportequoitochances
+§29
+jour = &jour - *(7)
+GOTOGOTO() *(20) ?100
+§101
+GOTOPRINTDUTEXTE() ; «Lundi ! Lisez le JODN !»
+GOTOGOTO() *(110) ?100
+§102
+GOTOPRINTDUTEXTE() ; «Mardi ! Payez plus d'impots !»
+GOTOGOTO() *(110) ?100
+§103
+GOTOPRINTDUTEXTE() ; «Mercredi ! Le paldamel a un gros nez (message subliminal lent) !»
+GOTOGOTO() *(110) ?100
+§104
+GOTOPRINTDUTEXTE() ; «Jeudi ! Vive Jesus2NIAC !»
+GOTOGOTO() *(110) ?100
+§105
+GOTOPRINTDUTEXTE() ; «Vendredi ! Mangez du zan !»
+GOTOGOTO() *(110) ?100
+§106
+GOTOPRINTDUTEXTE() ; «Samedi ! Jouez a MIN !»
+GOTOGOTO() *(110) ?100
+§107
+GOTOPRINTDUTEXTE() ; «Dimanche ! SegmentationfaultGOTOGOTO()»
+GOTOPRINTDUTEXTE() ; «*(100) ?100 *(5) &test nimportequoitochances»
+GOTOPRINTDUTEXTE() ; «test = &largeur MULTIPLICATION *(100)»
+GOTOPRINTDUTEXTE() ; «0%"$$*#### (c)NIAC Software bug-system (brevet depose).»
+GOTOGOTO() *(110) ?100
+§110

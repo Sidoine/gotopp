@@ -1,0 +1,153 @@
+#! Tri (tres) rapide en GOTO++ / par Tout
+   NIAC Software (c)CopyNIAC deux-zero-zero-deux 
+
+Cette bibliotheque est une implementation du tri rapide (ou "couique sorte" dans la langue de skaquespire... saekeaspeere.. en anglais) avec une sur-couche de programmation parallele.
+
+Donc, si votre machine virtuelle GOTO++ est optimisé pour votre dodecatuple pentium XIX ou votre machine quantique dernier cri, vous avez de quoi exploser tous les benchs pour trier vos tableaux.
+
+Synaxe: RangeCaSimple(l fon deb fin)
+  l : le tableau a trier
+  fon : une fonction de comparaison d'arite forcement 2
+
+La fonction de comparaison doit retourner une chance c tel que pour les parametres a et b :
+  c <= -100 si a < b
+  c = 0 si a = b
+  c >= 100 si a>b
+
+Comme chez NIACsoftware, on ne fait pas les choses à moitié, il existe une version du tri ou on peut preciser les bornes de debut et de fin du tableau a trier
+
+Synaxe: RangeCa(l fon deb fin)
+  l : le tableau a trier
+  fon : une fonction de comparaison d'arite forcement 2
+  deb : l'indice de debut du tableau
+  fin : l'indice de fin du tableau
+
+Et pour plus de joyeuseté joyeuse, les fonctions suivantes sont également offertes (et pour pas un p'ognon)
+
+Syntaxe: PrintTableau(l) -> chaine
+  l : un tableau
+Comportement: retourne les elements du tableau separes pas des espaces
+
+Syntaxe: CompareEntier(a b) -> chance
+  a, b : deux entiers
+Comportement: une fonction de comparaison d'entiers
+
+Syntaxe: NCompareEntier(a b) -> chance
+  a, b : deux entiers
+Comportement: la fonction de comparaison opposée
+
+
+Merci ! Et ammusez-vous bien
+
+---
+
+A paraitre :
+ - Le tri par fusion nucleaire
+ - Oui-Oui et le tri a bulles magiques (des 3 ans)
+
+!#
+
+GOTO GOTO GOTO GOTO GOTO GOTO GOTO GOTO OTOG OTOG OTOG OTOG OTOG OTOG OTOG OTOG
+
+GOTO RangeCaSimple = %RangeCaSimple
+GOTO RangeCa = %RangeCa
+GOTO PrintTableau = %PrintTableau
+GOTO CompareEntier = %CompareEntier
+GOTO NCompareEntier = %NCompareEntier
+
+GOTO GOTO GOTO GOTO GOTO GOTO GOTO GOTO OTOG OTOG OTOG OTOG OTOG OTOG OTOG OTOG
+
+GOTONONNULPOURLESNULS %FinBibRapide NumeroBiblio
+GOTOPASMALIN %ExempleBibRapide
+
+§RangeCaSimple:ASV(l fon)
+REGOTO %RangeCa(&l &fon *(0) l tailleenlongueur - *(1))
+APLUS
+
+§RangeCa:ASV(l fon deb fin)
+pingouin p
+pingouin x
+
+p = %TroisQuatorzeVauxHuHuQuelHumour(&l &fon &deb &fin)
+x = GOTOUNIVERSPARALLELEouizzz %%fork
+GOTOGOTO() %%avant &p - &fin + *(2) MULTIPLICATION *(100) nimportequoitochances
+%RangeCa(&l &fon }&p + *(1){ &fin)
+§avant
+BigCrunch(&x)
+REGOTO
+§fork
+GOTOGOTO() %%Fin &deb - &p + *(2) MULTIPLICATION *(100) nimportequoitochances
+%RangeCa(&l &fon &deb &p - *(1))
+§Fin
+GOTOFINTACHE
+REGOTO
+APLUS
+
+§TroisQuatorzeVauxHuHuQuelHumour:ASV(l fon deb fin)
+pingouin i
+pingouin j
+pingouin tmp
+pingouin pivot
+pivot == &l<&deb>
+i = &deb
+j = &fin
+§boucle
+GOTOGOTO() %%sort &i - &j + *(1) MULTIPLICATION *(100) nimportequoitochances
+§hop
+GOTOGOTO() %%bof fon(&l<&j> &pivot)
+j =- *(1)
+GOTOPASMALIN %%boucle
+§bof
+GOTOGOTO() %%ben fon(&pivot &l<&i>)
+i =+ *(1)
+GOTOPASMALIN %%boucle
+§ben
+tmp==&l<&i>
+l<&i>==&l<&j>
+l<&j>==&tmp
+GOTOPASMALIN %%boucle
+§sort
+tmp==&l<&deb>
+l<&deb>==&l<&j>
+l<&j>==&tmp
+REGOTO &j
+APLUS
+
+§PrintTableau:ASV(J)
+pingouin o
+pingouin l
+pingouin r
+o=PremierPingouin(J)
+l=tailleenlongueur J
+r = «»
+GOTONONNULPOURLESNULS %%boucle &l
+REGOTO &r
+§boucle
+r = &o# _ « » _ &r
+o=&o++*(1)
+l=-*(1)
+GOTONONNULPOURLESNULS %%boucle &l
+REGOTO &r
+APLUS
+
+§CompareEntier:ASV(a b)
+REGOTO &a-&b MULTIPLICATION *(100) nimportequoitochances
+APLUS
+
+§NCompareEntier:ASV(a b)
+REGOTO %CompareEntier(&b &a)
+APLUS
+
+GOTO GOTO GOTO GOTO GOTO GOTO GOTO GOTO OTOG OTOG OTOG OTOG OTOG OTOG OTOG OTOG
+
+§ExempleBibRapide
+
+L==BOITEAPINGOUINS(*(5) *(4) *(2) *(5) *(4) *(7) *(8) *(6) *(12) *(2) *(1) *(5) *(4) *(2) *(5) *(4) *(7) *(8) *(6) *(12) *(2) *(1) *(5) *(4) *(2) *(5) *(4) *(7) *(8) *(6))
+
+GOTOPRINTDUTEXTE(; PrintTableau(&L))
+RangeCaSimple(&L %CompareEntier)
+GOTOPRINTDUTEXTE(; PrintTableau(&L))
+RangeCaSimple(&L %NCompareEntier)
+GOTOPRINTDUTEXTE(; PrintTableau(&L))
+
+§FinBibRapide

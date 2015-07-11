@@ -1,0 +1,1 @@
+g++ -O -shared -o ../../lib/hachetml.so hachetml.cpp ../include/rienmodule.cpp

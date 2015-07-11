@@ -1,0 +1,215 @@
+$STOP
+desc=Met fin à l'exécution du programme ou de la tâche.
+$DEFINIR
+pile=valeur1,reference1
+desc=Assigne valeur1 à reference1.
+$AJOUTER
+pile=nombre1,nombre2
+desc=Mets dans la pile la somme de nombre1 et nombre2.
+$EXEC
+pile=fonction1,fonctionmodule1 ou etiquette1
+desc=Exécute la fonction1, fonctionmodule1 ou etiquette1.
+$CONSTANTE
+desc=Ajoute dans la pile la valeur inconnu2 dont le type est type1.
+$VARGLOBREF
+desc=Renvoie une référence sur la variable globale globale1.
+$VARGLOBVAL
+desc=Renvoie la valeur de la variable globale globale1.
+$DEBUTLIGNE
+desc=Vide la pile et indique qu'on est à la ligne entier1.
+$CHANCES
+desc=Empile le nombre flottant chances1.
+$SOUSTRAIRE
+pile=nombre1,nombre2
+desc=Soustrait nombre1 à nombre2 et empile le résultat.
+$CONVTYPE
+pile=valeur1
+desc=Change le type de valeur1 en type1.
+$FOIS
+pile=nombre1,nombre2
+desc=Fait le produit de nombre1 et nombre2 et empile le résultat.
+$SUR
+pile=nombre1,nombre2
+desc=Divise nombre2 par nombre1 et empile le résultat.
+$VALEUR
+pile=reference1
+desc=Empile la valeur référencée par reference1.
+$ABSOLUE
+pile=nombre1
+desc=Empile la valeur absolue de nombre1.
+$OPPOSE
+pile=nombre1
+desc=Empile l'opposé de nombre1.
+$REGOTO
+pile=[valeur1]
+desc=Retourne d'une fonction en renvoyant valeur1, si présente.
+$CONCAT
+pile=chaine1,chaine2
+desc=Concatène chaine1 (à gauche) et chaine2 (à droite) et empile le résultat.
+$TABLEAUREF
+pile=entier1,reference1
+desc=Renvoie une référence sur un élément d'indice entier1 dans un tableau référencé par reference1.
+$TABLEAUVAL
+pile=entier1,reference1
+desc=Renvoie la valeur d'un élément d'indice entier1 dans un tableau référencé par reference1.
+$CTABLEAUREF
+pile=reference1
+desc=Renvoie une référence sur un élément d'indice entier1 d'un tableau référencé par reference1.
+$CTABLEAUVAL
+pile=reference1
+desc=Renvoie la valeur d'un élément d'indice entier1 d'un tableau référencé par reference1.
+$DEBUTPARAM
+desc=Empile une valeur de type DebutParam, indiquant le début des paramètres d'une fonction.
+$DUPLIQUER
+pile=valeur1
+desc=Empile deux fois valeur1.
+$SUPPRIMER
+pile=valeur1
+desc=Ne fait que dépiler valeur1 et n'en fait rien.
+$VARLOCREF
+desc=Renvoie une référence sur la variable locale dont le numéro est passé en opérande.
+$VARLOCREF
+desc=Renvoie la valeur d'une variable locale dont le numéro est passé en opérande.
+$ETIQUETTE
+desc=Empile une étiquette.
+$GOTO
+desc=Se rend à l'étiquette entier1.
+$GOTONONZERO
+pile=entier2
+desc=Se rend à l'étiquette entier1 si la valeur entier2 est non nulle.
+$HACHAGEREF
+pile=chaine1,reference1
+desc=Renvoie une référence sur l'élément dont la clef est chaine1, dans un hachage référencé par reference1.
+$HACHAGEVAL
+pile=chaine1,reference1
+desc=Renvoie la valeur de l'élément dont la clef est chaine1, dans un hachage référencé par reference1.
+$SUPERPLUS
+pile=valeur1,valeur2
+desc=Un PLUS qui fonctionne sur tous les types de données.
+$INCREMENTER
+pile=nombre1,reference1
+desc=Augmente de nombre1 la valeur de la variable référencée par reference1.
+$DECREMENTER
+pile=nombre1,reference1
+desc=Diminue de nombre1 la valeur de la variable référencée par reference1.
+$DIVISEREGAL
+pile=nombre1,reference1
+desc=Divise par nombre1 la valeur de la variable référencée par reference1.
+$MULTIPLIEREGAL
+pile=nombre1,reference1
+desc=Multiplie par nombre1 la valeur de la variable référencée par reference1.
+$TAILLE
+pile=reference1
+desc=Renvoie la taille de l'élément référencé par reference1.
+$VALEURCLEF
+pile=reference1
+desc=Renvoie le nom de la clef associée à la valeur référencée par reference1 (ce doit être un élément d'une table de hachage).
+$THISREF
+desc=Renvoie une référence sur la propriété entier1 de la classe actuelle.
+$THISVAL
+desc=Renvoie la valeur de la propriété entier1 de la classe actuelle.
+$EXECTHIS
+pile=fonction ou étiquette, référence sur un troupeau
+desc=Execute la fonction en assignant à this la référence.
+$PROBASAUTERLIGNE
+desc=chances1 sont les chances sur 100 d'aller en entier2.
+$NOUVEAU
+desc=Empile la référence sur une nouvelle variable.
+$INSTANCEDE
+pile=valeur1, référence2
+desc=La variable référencée par référence2 sera une instance de valeur1.
+$GOTOTACHE
+desc=Crée une nouvelle tâche qui commence en entier1.
+$FINTACHE
+desc=Met fin à la tâche en cours.
+$EGAL
+pile=nombre1,nombre2
+desc=Empile 1 si nombre1 et nombre2 sont égaux, 0 sinon.
+$INFERIEUR
+pile=nombre1,nombre2
+desc=Empile 1 si nombre2 est inférieur à nombre1, 0 sinon.
+$SUPERIEUR
+pile=nombre1,nombre2
+desc=Empile 1 si nombre2 est supérieur à nombre1, 0 sinon.
+$INFEGAL
+pile=nombre1,nombre2
+desc=Empile 1 si nombre2 est inférieur ou égal à nombre1, 0 sinon.
+$SUPEGAL
+pile=nombre1,nombre2
+desc=Empile 1 si nombre2 est supérieur ou égal à nombre1, 0 sinon.
+$GOTOZERO
+pile=entier2
+desc=Se rend en entier1 si entier2 est nul.
+$DEFCONSTR
+desc=Initialise un troupeau de classe classe1 et de dimension entier2.
+$THIS
+desc=Empile une référence sur le troupeau this.
+$EXECTHISC
+pile=reference1
+desc=Execute la fonction intégrée de numéro entier1 en utilisant comme this l'objet référencé par reference1.
+$EXECTHISMODULE
+pile=reference1
+desc=Execute la fonction de module de numéro entier1 en utilisant comme this l'objet référencé par reference1.
+$NONOPPOSE
+pile=nombre1
+desc=Renvoie nombre1, en s'assurant que c'est un nombre si ce n'est pas le cas.
+$ENERREUR
+desc=Définie le numéro de l'instruction où se rendre en cas d'erreur.
+$ERREUR
+desc=Non implémenté. Utiliser la fonction correspondante.
+$OU
+pile=entier2
+desc=Si entier2 est non nul, se rend à l'instruction entier1 et empile 1.
+$ET
+pile=entier2
+desc=Si entier2 est nul, se rend à l'instruction entier2 et empiler 0.
+$FINOUET
+pile=entier2
+desc=Empile 1 si entier2 est non-nul, 0 sinon.
+$ENTIER
+desc=Empile entier1.
+$TYPEDE
+pile=reference1
+desc=Empile le numéro de classe de la variable référencée par reference1.
+$SWITCH
+pile=entier2
+desc=Recherche entier2 dans le tableau d'étiquettes indicé par entier1. Si il est trouvé, se rend à l'étiquette dite. Sinon, se rend à l'instruction de continuation associé à ce tableau d'étiquettes.
+$PARAMREF
+desc=Empile une référence sur le paramètre numéro entier1.
+$PARAMVAL
+desc=Empile la valeur du paramètre numéro entier1.
+$ESTREFVALIDE
+pile=valeur1
+desc=Si le type de valeur1 est «inconnu» empile 0 et 1 sinon.
+$EMPILER2
+pile=valeur1
+desc=Empile valeur1 dans la pile secondaire.
+$EMPILERTOUT2
+desc=Transfère le contenu de la pile vers la pile secondaire.
+$DEPILER2
+desc=Empile une valeur prise dans la pile secondaire.
+$DEPILERTOUT2
+desc=Transfère le contenu de la pile secondaire vers la pile.
+$VALEUR2
+desc=Copie une valeur prise en haut de la pile secondaire vers la pile.
+$VALEURTOUT2
+desc=Copie toutes les valeurs prises dans la pile secondaire vers la pile.
+$DECALG
+pile=entier1,entier2
+desc=Décale entier2 de entier1 bits vers la gauche et empile le résultat.
+$DECALD
+pile=entier1,entier2
+desc=Décale entier2 de entier1 bits vers la droite et empile le résultat.
+$MODULO
+pile=entier1,entier2
+desc=Empile le reste de la division de entier2 par entier1.
+$ETBIN
+pile=entier1,entier2
+desc=Empile le résultat d'un et binaire entre entier1 et entier2.
+$OUBIN
+pile=entier1,entier2
+desc=Empile le résultat d'un ou binaire entre entier1 et entier2.
+$EXISTE
+pile=reference1
+desc=Empile 1 si reference1 est une référence valide, 0 sinon.
+$

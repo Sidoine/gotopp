@@ -1,0 +1,222 @@
+#!
+
+	GOTOSNAKE
+	
+	2002
+	Sidoine De Wispelaere
+
+!#
+
+niveaugourou 0
+
+MontrerCurseur(*(0))
+
+entier x
+entier y
+entier vx
+entier vy
+
+troupeau Pomme
+	entier x
+	entier y
+fintroupeau
+
+troupeau Ecaille
+	entier x
+	entier y
+fintroupeau
+
+entier Phase
+entier Points
+
+§Debut
+
+Points=*(0)
+
+largeur=*(30)
+hauteur=*(20)
+
+Pomme Pommes<>
+Ecaille Serpent<>
+
+Pommes=*(0)
+Serpent=*(0)
+
+%ViderCarte()
+%AjouterPoints(*(0))
+
+%NouvellePomme()
+GOTO %NouvellePomme()
+GOTO %NouvellePomme()
+
+x=&largeur:*(2)
+y=&hauteur:*(2)
+
+Serpent=tab(tab(&x-*(2)$&y) $ tab(&x-*(1)$&y) $ tab(&x &y))
+vx=*(1)
+vy=*(0)
+
+Phase=*(0)
+GOTOUNIVERSPARALLELEouizzz %Jeu
+
+§Clavier
+	c=TapeUneTouche()
+	AUTOGOTOZ } &Phase eg *(1) {
+		GOTOMULTIPLE &c
+		?*`O' enentier?
+		?*`o' enentier?
+			GOTOPASMALIN %Debut
+		?*`N' enentier?
+		?*`n' enentier?
+			GOTOFIN
+		FINGOTOMULTIPLE
+	AC
+	ACAC
+		GOTOMULTIPLE &c
+		?&TOUCHEHAUT?
+			AUTOGOTOZ } &vy diff *(1) {
+				vx=*(0)
+				vy=*(-1)
+			AC
+			arret
+		?&TOUCHEBAS?
+			AUTOGOTOZ } &vy diff *(-1) {
+				vx=*(0)
+				vy=*(1)
+			AC
+			arret
+		?&TOUCHEDROITE?
+			AUTOGOTOZ } &vx diff *(-1) {
+				vx=*(1)
+				vy=*(0)
+			AC
+			arret
+		?&TOUCHEGAUCHE?
+			AUTOGOTOZ } &vx diff *(1) {
+				vx=*(-1)
+				vy=*(0)
+			AC
+		FINGOTOMULTIPLE
+	AC
+GOTOPASMALIN %Clavier
+
+§Jeu
+	%Afficher(&Pommes<*(0)>@x &Pommes<*(0)>@y «()»)
+	%Afficher(&x &y «[]»)
+	x=+&vx
+	y=+&vy
+	AUTOGOTOZ } &x inf *(0) { / x=+&largeur
+	AUTOGOTOZ } &x supeg &largeur { / x=-&largeur
+	AUTOGOTOZ } &y inf *(0) { / y=+&hauteur
+	AUTOGOTOZ } &y supeg &hauteur { / y=-&hauteur
+	%Afficher(&x &y «<>»)
+	entier coll
+	coll=%Collision(&x &y)
+	Pousse(Serpent $ tab(&x &y))
+	GOTOMULTIPLE &coll
+	?*(0)?
+		Ecaille derniere
+		derniere=EnleveDessous(Serpent)
+		%Afficher(&derniere@x &derniere@y «  »)
+		arret
+	?*(-1)?
+		GOTOPASMALIN %Perdu
+	?défaut?
+		EnleveMilieu(Pommes $ &coll-*(1))
+		%AjouterPoints(*(1))
+		%NouvellePomme()
+	FINGOTOMULTIPLE
+	DODO(*(100))
+GOTOPASMALIN %Jeu
+
+§Perdu
+	Phase=*(1)
+	NettoyerEcran()
+	InfosConsole(infos)
+	%CentrerPhrase(« points»_&Points_«Vous avez gagné » $ &infos<*(0)> $ &infos<*(1)>:*(2))
+	%CentrerPhrase(«Recommencer ? (O/N)» $ &infos<*(0)> $ }&infos<*(1)>:*(2){+*(1))
+	GOTOFINTACHE
+	
+§CentrerPhrase:ASV(texte x y)
+	entier zap x
+	entier zap y
+	
+	entier xx
+	xx=&x-}texte tailleenlongueur{ : *(2)
+	gotoXY(&xx &y)
+	GOTOPRINTDUTEXTE(&texte)
+APLUS
+
+§Collision:ASV(x y)
+	entier zap x
+	entier zap y
+	
+	entier i
+	i=*(0)
+	TantQue } &i inf } Pommes tailleenlongueur {{
+		AUTOGOTOZ } &Pommes<&i>@x eg &x et &Pommes<&i>@y eg &y {
+			REGOTO &i+*(1)
+		AC	
+		i=+*(1)		
+	FinTantQue
+
+	i=*(0)
+	TantQue } &i inf } Serpent tailleenlongueur {{
+		AUTOGOTOZ } &Serpent<&i>@x eg &x et &Serpent<&i>@y eg &y {
+			REGOTO *(-1)
+		AC			
+		i=+*(1)
+	FinTantQue
+	REGOTO *(0)
+APLUS
+
+§NouvellePomme:ASV
+	entier Continuer
+	entier x
+	entier y
+	
+	TantQue *(1)
+		INITIALISATION(x)
+		x=}}&x : ?100{MULTIPLICATION &largeur{enentier
+		INITIALISATION(y)
+		y=}}&y : ?100{MULTIPLICATION &hauteur{enentier
+		AUTOGOTOZ } %Collision(&x &y) eg *(0) { / arret
+	FinTantQue
+	%Afficher(&x &y «()»)
+	Pousse(Pommes $ tab(&x &y))
+APLUS
+
+§Afficher:ASV(x y quoi)
+	gotoXY(}&x MULTIPLICATION *(2){+*(1)$ &y+*(2))
+	GOTOPRINTDUTEXTE(&quoi)
+APLUS
+
+§AjouterPoints:ASV(combien)
+	entier zap combien
+	Points=+&combien
+	gotoXY(*(0) *(0))
+	GOTOPRINTDUTEXTE( « points» &Points)
+APLUS
+
+§ViderCarte:ASV
+	NettoyerEcran()
+	entier i
+	i=*(1)
+	entier largd
+	largd=&largeur+&largeur
+	TantQue }&i infeg &largd{
+		gotoXY(&i *(1))
+		GOTOPRINTDUTEXTE(«-»)
+		gotoXY(&i $ &hauteur+*(2))
+		GOTOPRINTDUTEXTE(«-»)
+		i=+*(1)
+	FinTantQue
+	i=*(1)
+	TantQue } &i infeg &hauteur {
+		gotoXY(*(0) $ &i + *(1))
+		GOTOPRINTDUTEXTE(«|»)
+		gotoXY(&largd+*(1)$ &i  + *(1))
+		GOTOPRINTDUTEXTE(«|»)
+		i=+*(1)
+	FinTantQue
+APLUS

@@ -1,0 +1,426 @@
+$Divers mots-clefs
+
+#titre
+existe
+titre#
+
+Certaines fonctions renvoie une valeur invalide en cas d'erreur. De même,
+les éléments non initialisés d'un tableau ou d'une table de hachage ont
+une valeur invalide. Ce mot-clef sert à vérifier la valaditié d'une valeur.
+
+#titre
+NPARAMS
+titre#
+
+Renvoie le nombre de paramètres d'une fonction.
+
+Vous pouvez utiliser ce mot-clef si vous voulez exploiter
+un nombre variable de paramètres dans votre fonction.
+
+#exemple
+%bidule(*(123) *(234) *(346))
+GOTOFIN 
+
+§bidule:ASV(x)
+	pingouin y
+	pingouin i
+	i=NPARAMS
+	y=x
+	§Debut
+	GOTOGOTO() %%Fin }}*(1)-&i{ MULTIPLICATION ?100{
+		!10 GOTOPRINTDUTEXTE(;&y#)
+		y=&y++*(1)
+		i=-*(1)
+	GOTOGOTO() %%Debut
+	§Fin
+APLUS
+exemple#
+
+#titre
+GOTOMODULE
+titre#
+
+Charge un module.
+
+#titre
+GOTOBIBLIOTHEQUE
+titre#
+
+Charge un autre code source (dont le nom suit).
+
+L'extension .gpp ou .gpt est rajoutée au nom. Le fichier source est rajouté
+à l'endroit exact où se trouve le GOTOBIBLIOTHEQUE, tel quel. C'est à dire
+que si ce code source contient des commandes, elles seront exécutées à l'endroit
+où le GOTOBIBLIOTHEQUE a été inséré.
+
+Remarquez que cette instruction est ignorée si ce fichier a déjà été chargé
+par un GOTOBIBLIOTHEQUE précédent.
+
+#titre
+estrefvalide
+titre#
+
+Permet de savoir si une référence est valide.
+
+Quand on se déplace dans un tableau ou une table de hachage
+avec une référence, il peut être nécessaire de savoir si la référence
+est valide.
+
+#titre
+BEBEPINGOUIN
+titre#
+
+Ce mot-clef sert surtout à rendre ce langage plus attractif auprès
+du jeune public féminin. Si c'est efficace, les mots-clefs PONEY, CHATON
+et POUPEE seront rajoutés.
+
+Accessoirement, il engendre une nouvelle variable (ou autrement dit un bébé
+pingouin).
+
+#exemple
+a=BEBEPINGOUIN
+&a=*(3)
+GOTOPRINTDUTEXTE() &a# GOTO Affiche 3
+exemple#
+
+#titre
+pastrespermissif
+titre#
+
+Interdit la déclaration implicite des variables.
+
+Par défaut, le simple fait de mentionner une variable la définit.
+Si on utilise le mot-clef, cette déclaration est interdite, il faut
+déclarer explicitement les variables comme dans l'exemple ci-dessous.
+
+#exemple
+pastrespermissif
+i=*(5) GOTO Ceci provoque une erreur, i n'est pas déclarée
+entier j
+j=*(5) GOTO Là c'est bon, j a été déclarée
+exemple#
+
+#titre
+tailleenlongueur
+titre#
+
+Renvoie la taille d'une variable. Faites précéder ce mot-clef d'une référence.
+
+Ce mot-clef permet de connaître la taille d'un tableau ou d'une table de hachage
+en nombre d'éléments ou d'une chaîne de caractères en nombre de caractères.
+
+#titre
+monpitipingouin
+titre#
+
+Renvoie la valeur du troupeau sur lequel une machine à pingouin est appliquée,
+à partir de cette machine à pingouin (pour donner une idée, dans certains
+langages concurrents, ça s'appelle this).
+
+#exemple
+troupeau Essai
+	pingouin a
+	machineapingouins b
+fintroupeau
+
+Essai essai
+essai@a=*(10)
+essai@b()
+GOTOFIN
+
+b:ASV:Essai
+	Essai local
+	local==monpitipingouin
+	GOTOPRINTDUTEXTE(;) local@a
+	GOTO Affiche 10
+APLUS
+exemple#
+
+#titre
+niveaugourou
+titre#
+
+Indique votre niveau de gourou : faites-le suivre d'un chiffre (0 ou plus), le défaut étant 2.
+Plus votre niveau est élevé, moins vous avez le droit à des mots-clefs.
+
+#titre
+`
+titre#
+
+Récupère le numéro d'un type de troupeau.
+
+A chaque type de troupeau (excepté les troupeaux prédéfinis, comme par exemple
+TuerOgre ou Chaussette) est associé un numéro unique qu'il est possible de
+récupérer pour vérifier le type d'un troupeau.
+
+$Goto, boucles et tout ça
+
+#titre
+PouCharque
+titre#
+
+Cette structure de haut niveau est une commodité pour parcourir les élements
+d'un troupeau. Elle serait parfaite si une erreur de frappe malheureuse
+n'avait pas altéré son nom.
+
+Elle crée trois variables locales à la boucle : la variable dont vous avez
+passé le nom en paramètre, une variable entière indice qui contiendra
+l'indice de l'élement actuel et la variable tableau qui est une instance
+du troupeau parcouru. Au cours de la boucle, indice vaudra donc de 0 à
+la taille du troupeau moins 1.
+
+Pour terminer une boucle, on peut utiliser le mot-clef $FinTantQue$. Remarquez
+au passage le soucis d'économie dont j'ai fait preuve.
+
+#exemple
+GOTO Un exemple qui montre tout ce qu'on peut faire avec PouCharque
+niveaugourou 0
+
+a=tab(*(10) *(5) *(8) *(2))
+
+PouCharque pingouin z &a
+	GOTOPRINTDUTEXTE(&z)
+	AUTOGOTOZ } &indice inf *(2) { /continue
+	GOTOPRINTDUTEXTE(&tableau<&indice>)
+	AUTOGOTOZ } &indice sup *(1) { /arret
+FinTantQue
+
+GOTO Et en très concis, un simple parcours :
+PouCharque pingouin z &a / GOTOPRINTDUTEXTE(&z)
+exemple#
+
+#titre
+costaud
+titre#
+
+La syntaxe de cette structure est un peu particulière. Après le mot-clef
+on doit mettre un bout de code qui sera exécuté avant la première boucle
+(terminé par / ou par une fin de ligne). Ensuite on met une condition :
+cette condition est vérifiée avant chaque itération. Si elle est fausse,
+la boucle se termine. Enfin, on met un troisième bout de code qui sera
+exécuté à la fin de chaque itération.
+
+Le bloc se termine par $faiblard$.
+
+La syntaxe peut paraître farfelue (j'entends déjà les « C'est n'importe
+quoi ça ! Pourquoi avoir saboté un langage si élégant !? ») mais
+elle est en fait héritée du C.
+
+#exemple
+niveaugourou 0
+costaud entier i=*(0) / &i inf *(10) / i=+*(1)
+	GOTOPRINTDUTEXTE() &i
+faiblard
+exemple#
+
+#titre
+GOTONONNULPOURLESNULS
+titre#
+
+Se rend à l'endroit marqué par une étiquette si le paramètre est non nul.
+
+Passez en paramètre une étiquette et un entier.
+
+Si l'entier vaut 0, l'exécution du programme continue à la ligne
+suivante, sinon elle continue à l'endroit marqué par l'étiquette.
+
+#exemple
+J=*(10)
+§1
+J=-(*1)
+GOTOPRINT()
+GOTONONNULPOURLESNULS %1 &J
+GOTO Affiche les nombres de 9 à 0.
+exemple#
+
+#titre
+GOTOPASMALIN
+titre#
+
+Se rend à l'endroit marqué par une étiquette.
+
+Ce mot-clef est la honte du GOTO++, il est d'une bêtise sans limite :
+le programme continue tout simplement à l'endroit indiqué par le paramètre qui suit.
+
+Pratique pour sauter des lignes qui contiennent $GOTOBIBLIOTHEQUE$.
+
+#titre
+encasderreurGOTO
+titre#
+
+Indique où le programme doit aller quand il rencontre une erreur générée
+par $GOTOerreur$. Il faut donc faire ce suivre ce mot-clef d'une étiquette.
+
+Remarquez que cette valeur n'est pas conservée après un REGOTO : la valeur
+qu'il y avait avant l'appel de fonction est restaurée.
+
+#titre
+REGOTO
+titre#
+
+Retourne à l'instruction appelante. Après un $GOTOCHEPA$ ou un appel de fonction, utilisez REGOTO pour revenir à la ligne qui suivait l'instruction qui a fait l'appel.
+
+Optionnellement, vous pouvez renvoyer une valeur en la mettant à la suite de REGOTO.
+
+#exemple
+J=GOTOCHEPA() %3
+GOTOPRINT() GOTO Affiche 5
+Z=%4(*(3) *(4))
+GOTOPRINT() GOTO Affiche 7
+GOTOFIN
+§3
+GOTOPRINTDUTEXTE() ; «On est après l'étiquette 3.»
+REGOTO *(5)
+§4:ASV(x y)
+	REGOTO &x+&y
+APLUS
+exemple#
+
+#titre
+GOTOUNIVERSPARALLELEouizzz
+titre#
+
+Crée une nouvelle tâche, renvoyant un troupeau de type universparallele.
+
+L'exécution du programme se sépare en deux : une partie du temps
+sera consacrée à la tâche exitante, et une autre partie à la nouvelle
+tâche. Dans la tâche actuelle, le programme continue à la ligne suivante.
+Dans la nouvelle tâche, le programme continue à la ligne indiquée par
+£cible£.
+
+Les éventuelles variables locales seront toujours accessibles à partir
+de la nouvelle tâche mais elles auront été dupliquées. Autrement dit,
+modifier une variable locale avec une tâche ne modifiera pas la variable
+locale du même nom pour une autre tâche. Notez que les paramètres
+et les variables déclarées à l'intérieur d'une boucle, d'un AUTOGOTOZ,
+voir d'un ASV sans étiquette, sont considérées comme des variables locales.
+Par ailleurs, toujours à partir de cette nouvelle tâche, il n'est pas possible 
+de faire un *REGOTO* pour revenir à la fonction qui a appelé la fonction contenant
+GOTOUNIVERSPARALLELEouizzz.
+
+#titre
+TantQue
+titre#
+
+Fait une boucle tant qu'une valeur est non nulle. Terminez par FinTantQue.
+
+#exemple
+niveaugourou 0
+i=*(0)
+TantQue } &i inf *(5) {
+	i=&i+*(1)
+	GOTOPRINT()
+FinTantQue
+exemple#
+
+#titre
+AUTOGOTOZ
+titre#
+
+Saute des instructions si le paramètre est nul. Terminez par AC. Peut être suivi de $ACAC$, qui permet d'exécuter des instructions si le paramètre passé à $AUTOGOTOZ$ était nul. Le tout se termine par AC.
+
+#exemple
+niveaugourou 0
+AUTOGOTOZ } &j inf *(50){
+	GOTOPRINTDUTEXTE(«j est inférieur à 50.;n»)
+AC
+ACAC/GOTOPRINTDUTEXTE(«j est supérieur à 50.;n»)
+exemple#
+
+#titre
+GOTOMULTIPLE
+titre#
+
+Permet de choisir entre plusieurs instructions en fonction de la valeur
+d'un entier.
+
+Dans le bloc, qui se termine par FINGOTOMULTIPLE, vous pouvez placer des
+?choix? au début d'une ligne, où choix est un entier. Si le paramètre
+est égal à cette valeur, le GOTOMULTIPLE saute directement à cette ligne.
+Si £critere£ ne correspond à aucune des choix, l'exécution continue à la ligne
+marquée par ?défaut? si elle existe. Sinon elle continue après le FINGOTOMULTIPLE.
+Vous pouvez placer des $arret$ n'importe où dans le bloc pour en sortir.
+
+#exemple
+a=*(10)
+GOTOMULTIPLE } &a {
+	?1? 
+		texte=«un»
+		arret
+	?2?
+		texte=«deux»
+		arret
+	?défaut?
+		texte=«ni un, ni deux»
+FINGOTOMULTIPLE
+GOTOPRINT()
+exemple#
+
+#titre
+arret
+titre#
+
+Permet de sortir immédiatement d'un bloc $GOTOMULTIPLE$ ou $TantQue$.
+
+$Manipulation de la pile
+
+#titre
+dup
+titre#
+
+Duplique la dernière valeur de la pile.
+
+Quand vous voulez utiliser deux fois le même paramètre,
+plutôt que le taper deux fois vous pouvez utiliser dup,
+ce qui est particulièrement utile si ce paramètre est
+complexe (indice de tableau...).
+
+#exemple
+J<*(3)>=*(5)
+x=J<*(3)> * dup
+GOTOPRINT() GOTO Affiche 25
+J<*(3)>= dup # + 3
+GOTOPRINT() GOTO Affiche 8
+exemple#
+
+#titre
+suppr
+titre#
+
+Supprime le dernier élément de la pile.
+
+Ce mot-clef a la particularité de prendre un
+paramètre et de ne rien faire avec. Autrement dit c'est du gâchi
+complet de temps processeur. La qualité d'un code GOTO++ se mesurant
+en nombre d'instructions nécessaires pour faire une tâche, plus il y
+a de suppr, plus le code est de qualité.
+
+#exemple
+x=*(1028) suppr *(18) suppr *(15)
+GOTOPRINT() GOTO Affiche 15.
+exemple#
+
+$Pile secondaire
+
+À côté de la pile normale des variables, il y a une pile secondaire qui n'est utilisée que par les vrais
+gourous.
+
+Les symboles qui permettent de la manipuler ont tous une priorité de 1 par rapport aux opérateurs.
+
+#table
+2
+@+
+Prend une valeur dans la pile et la rajoute en haut de la pile secondaire.
+@+*
+Transfère toutes les valeurs de la pile primaire vers la pile secondaire.
+@-
+Enlève une valeur du haut de la pile secondaire et la met dans la pile primaire.
+@-*
+Transfère le contenu de la pile secondaire vers la pile primaire.
+@:
+Copie la valeur du haut de la pile secondaire dans la pile primaire.
+@:*
+Copie le contenu de la pile secondaire dans la pile primaire.
+table#
+
+$

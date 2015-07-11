@@ -1,0 +1,22 @@
+GOTO Marche au hasard
+J=ENTREUNNOMBRE()
+GOTOPRINT()
+I=*(29)
+A=I
+B=A
+GOTOPRINTDUTEXTE() ; &I A ##
+J=*(0)
+
+§1
+GOTOGOTO() *(2) &I nimportequoitochances *(3) &I nimportequoitochances
+
+GOTOPRINT()
+GOTOFIN
+
+§2
+J=&J+*(1)
+GOTOGOTO() *(1) ?100
+
+§3
+J=&J-*(1)
+GOTOGOTO() *(1) ?100

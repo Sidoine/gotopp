@@ -1,0 +1,245 @@
+niveaugourou 0
+
+GOTOMODULE chaussettes
+
+Mois BOITEAPINGOUINS(«Jan» «Feb» «Mar» «Apr» «May» «Jun» «Jul» ^
+	«Aug» «Sep» «Oct» «Nov» «Dec»)
+
+MonIP=ResoudreIPvQ(MonNom())
+IPTxt=}&MonIP |> *(24){ _*`,'_ }}&MonIP |> *(16){|* *(255){ ^
+	_*`,'_ }}&MonIP |> *(8){|* *(255){ ^
+	_*`,'_ }&MonIP |* *(255){
+
+Chaussette Chauss
+Chaussure Serveur
+PortEnvoye=*(0)
+Port=*(10000)
+
+Chauss@Tricoter(«» «21»)
+
+Reponse=Chauss@Vider()
+AUTOGOTOZ }&Reponse diff *(220){ / GOTOerreur(&Reponse)
+
+Chauss@Remplir(«USER ;r;n»)
+Reponse=Chauss@Vider()
+AUTOGOTOZ }&Reponse diff *(331){ / GOTOerreur(&Reponse)
+
+Chauss@Remplir(«PASS ;r;n»)
+Reponse=Chauss@Vider()
+AUTOGOTOZ }&Reponse diff *(230){ / GOTOerreur(&Reponse)
+
+
+Chauss@Remplir(«TYPE I;r;n»)
+Reponse=Chauss@Vider()
+AUTOGOTOZ }&Reponse diff *(200){ / GOTOerreur(&Reponse)
+
+
+%Traiter(«»)
+
+GOTO %Traiter(«.»)
+
+Chauss@Remplir(«QUIT;r;n»)
+Reponse=Chauss@Vider()
+GOTOPRINTDUTEXTE(&Reponse)
+GOTOFIN
+
+§Traiter:ASV(rep)
+
+	GOTOPRINTDUTEXTE(; &rep «Traitement de »)
+	GOTO On lit le répertoire distant
+	
+	pingouin liste
+	%EnvoyerPort()
+	%LireFichier()
+	DODO(*(100))
+	
+	
+	Chauss@Remplir(«LIST;r;n»)
+	Chauss@Vider(Reponse)
+	GOTOPRINTDUTEXTE(&Reponse)
+	
+	AUTOGOTOZ }&Reponse diff *(150){ / GOTOerreur(&Reponse)
+	
+	AUTOGOTOZ }non }OUQUILESTLETEXTE(&Reponse «226»){{
+		Chauss@Vider(Reponse)
+		GOTOPRINTDUTEXTE(&Reponse)
+	AC
+	
+	BigCrunch(&tache)
+	liste=&FichierLu
+	
+	GOTO On crée deux hachages (Date et Rep)
+	
+	pingouin rcRep
+	GOTOPRINTDUTEXTE()&liste
+	rcRep==bananasplit(&liste ^/\r?\n/)
+	GOTOPRINTDUTEXTE(; rcRep tailleenlongueur)
+	pingouin prRep
+	prRep=rcRep<*(0)>
+	pingouin rDateRep
+	pingouin rRepRep
+	
+	TantQue } &prRep estrefvalide {
+		pingouin t
+		t==bananasplit(&prRep# ^/\s+/)
+		
+		pingouin mois
+		mois=&t<*(5)>
+		pingouin m
+		pingouin M
+		m=Mois<*(0)>
+		M=*(0)
+		TantQue }&m estrefvalide {
+			AUTOGOTOZ }ORDRALPHABETIX(&m# &mois)$ eg *(0){
+				t<*(5)>=&M
+				arret
+			AC
+			m=&m++*(1)
+			M=+*(1)
+		FinTantQue
+		
+		rDateRep[&t<*(8)>]=DateIncomprehensible(&t<*(6)> &t<*(5)> *(2002))
+		rRepRep[&t<*(8)>]=OUQUILESTLETEXTE(&t<*(0)> «d»)
+		prRep=&prRep++*(1)
+	FinTantQue
+	
+	GOTOPRINTDUTEXTE(«Parcours du rep loc;n»)
+	GOTO On parcourt le répertoire local
+	Repertoire local()
+	local@ChercherPremier(&rep)
+	TantQue }non local@Fini(){
+		pingouin f
+		f=&local@Nom
+		pingouin rajouter
+		pingouin modifier
+		rajouter=*(0)
+		modifier=*(0)
+		AUTOGOTOZ }&rDateRep[&f] existe{
+			AUTOGOTOZ }&rDateRep[&f] inf DateFichierEnDate(&local@DateModif)+*(86400){
+				modifier=*(1)
+			AC
+		AC
+		ACAC/^
+			rajouter=*(1)
+		
+		AUTOGOTOZ }&rajouter ou &modifier{
+			AUTOGOTOZ }&local@EstRepertoire{
+				AUTOGOTOZ }&rajouter{
+				GOTOPRINTDUTEXTE(; &f «Créer le répertoire »)
+					Chauss@Remplir(«;r;n»_&f_«MKD »)
+					Chauss@Vider(Reponse)
+					GOTOPRINTDUTEXTE(&Reponse)
+					AUTOGOTOZ }&Reponse diff *(257){ / GOTOerreur(&Reponse)
+				AC
+			AC
+			ACAC
+				GOTOPRINTDUTEXTE(; &f «Envoyer le fichier »)
+				%EnvoyerPort()
+				%EcrireFichier(ConcatRep(&rep &f))
+				GOTO DODO(*(2000))
+				Chauss@Remplir(«;r;n»_&f_«STOR »)
+				Chauss@Vider(Reponse)
+				GOTOPRINTDUTEXTE(&Reponse)
+				AUTOGOTOZ }non }OUQUILESTLETEXTE(&Reponse «226»){{
+					Chauss@Vider(Reponse)
+					GOTOPRINTDUTEXTE(&Reponse)
+				AC
+				BigCrunch(&tache)
+			AC
+		AC
+		
+		GOTO Si c'est un répertoire, on le parcourt récursivement
+		AUTOGOTOZ }&local@EstRepertoire{
+			Chauss@Remplir(«;r;n»_&f_«CWD »)
+			Chauss@Vider(Reponse)
+			AUTOGOTOZ }&Reponse diff *(250){ / GOTOerreur(&Reponse)
+			GOTOPRINTDUTEXTE(&Reponse)
+			
+			%Traiter(ConcatRep(&rep &f))
+			
+			Chauss@Remplir(«CDUP;r;n»)
+			Chauss@Vider(Reponse)
+			GOTOPRINTDUTEXTE(&Reponse)
+		AC
+		local@ChercherSuivant()
+	FinTantQue
+	GOTOPRINTDUTEXTE(;«Fin du parcours»)
+APLUS
+
+§EnvoyerPort:ASV
+	encasderreurGOTO %%reessayer
+	
+	§reessayer
+	Port=+*(1)
+	Serveur@Cordonnier(&Port)
+	
+	GOTOPRINTDUTEXTE(;&Port«Port=»)
+	encasderreurGOTO %%fin
+	TextePort=«;r;n»_}&Port |* *(255){_*`,'_}&Port |>*(8){_ ^
+		*`,'_&IPTxt_«PORT »
+	
+	Chauss@Remplir(&TextePort)
+	Chauss@Vider(Reponse)
+	GOTOPRINTDUTEXTE(&Reponse)
+	AUTOGOTOZ }&Reponse diff *(200){ / GOTOerreur(&Reponse)
+	§fin
+APLUS
+
+§ChercherPassif:ASV(Rep)
+	pingouin debut
+	pingouin fin
+	debut=OUQUILESTLETEXTE(&Rep «(»)
+	fin=OUQUILESTLETEXTE(&Rep «)»)
+	pingouin ip
+	ip=PrendsUnMorceau(&Rep }&debut+*(1){ }&fin{)
+	pingouin tip
+	tip=bananasplit(&ip «,»)
+	PsvServeur=&tip<*(3)>_«.»_&tip<*(2)>_«.»_&tip<*(1)>_«.»_&tip<*(0)>
+	PsvPort=}&tip<*(4)> MULTIPLICATION *(256){+&tip<*(5)>
+	GOTOPRINTDUTEXTE(; &PsvPort «:» &PsvServeur)
+APLUS
+
+§LireFichier:ASV
+	tache=GOTOUNIVERSPARALLELEouizzz %%ici
+	REGOTO
+	
+	§ici
+	Chaussette sauvage c
+	
+	pingouin Texte
+	FichierLu=«»
+	encasderreurGOTO %%Fin
+	GOTO Serveur@Tricoter(&PsvServeur &PsvPort)
+	c=Serveur@Chausser()
+	TantQue *(1)
+		c@Vider(Texte)
+		GOTO GOTOPRINTDUTEXTE(&Texte)
+		FichierLu=&FichierLu_&Texte
+		GOTO GOTOPRINTDUTEXTE(;tailleenlongueur Texte)
+		GOTO ENTRETONTEXTE()
+	FinTantQue
+	
+	§Fin
+	GOTOPRINTDUTEXTE(; «=>Fin» &TexteErreur)
+	GOTOFINTACHE
+APLUS
+
+§EcrireFichier:ASV(nom)
+	tache=GOTOUNIVERSPARALLELEouizzz %%ici
+	REGOTO
+	
+	§ici
+	Chaussette sauvage c
+	GOTOPRINTDUTEXTE(«Serveur prêt à se lancer;n»)
+	c=Serveur@Chausser()
+	GOTOPRINTDUTEXTE(«Serveur lancé;n»)
+	pingouin F
+	pingouin Contenu
+	F=OUVRIRFICHIER(&nom *(0) *(1))
+	Contenu=ENTRETONTEXTE(&F TailleFichier(&F))
+	GOTOPRINTDUTEXTE(; « octets» $ Contenu tailleenlongueur)
+	c@Remplir(&Contenu)
+	GOTOPRINTDUTEXTE(«Serveur fermé;n»)
+	c=*(0)	
+	GOTOFINTACHE
+APLUS

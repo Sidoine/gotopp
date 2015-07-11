@@ -1,0 +1,37 @@
+.\" Process this file with
+.\" groff -man -Tascii foo.1
+.\"
+.TH GPP 1 "Mars 2004" Linux "Manuel de l'utilisateur"
+.SH NAME
+gpp \- interpréteur GOTO++ en ligne de commande
+.SH SYNOPSIS
+.B gpp [-ahotvX]
+.I source
+.B [...]
+.SH DESCRIPTION
+Exécute un programme
+.I source
+en GOTO++.
+.SH OPTIONS
+.IP -i
+Mode interactif.
+.IP -s
+Demande l'appui d'une touche avant de quitter.
+.IP -X
+N'exécute pas le programme.
+.SH REPERTOIRES
+.I /usr/local/lib/gpp/
+.RS
+Où mettre les modules.
+.RE
+.I ~/.gpp/
+.RS
+Configuration de certains programmes.
+.SH ENVIRONMENT
+.IP GOTOPP
+Le répertoire où chercher les modules du GOTO++ (rajoute lib ou lib/gpp à la fin).
+.SH BUGS
+Y'a pas de bugs.
+.SH AUTEUR
+Sidoine De Wispelaere <sidoine at sidoine dot net>
+

@@ -1,0 +1,3 @@
+GOTOPRINTDUTEXTE («Entre ton nom : »)
+Ligne=ENTRETONTEXTE()
+GOTOPRINTDUTEXTE () ; &Ligne «Bonjour »

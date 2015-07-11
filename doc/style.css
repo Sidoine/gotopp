@@ -1,0 +1,107 @@
+body 
+{
+	font-size       : 10pt;
+	font-family	: "Tahoma",sans-serif;
+	color      : #000000;
+	margin:1cm;
+}
+td
+{
+	font-size       : 10pt;
+	font-family	: "Tahoma",sans-serif;
+	color      : #000000; 
+	background-color : #E0E0E0;
+	border-width:2pt;
+}
+
+tr
+{
+	font-size       : 10pt;
+	font-family	: "Tahoma",sans-serif;
+	color      : #000000; 
+	border-width:2pt;
+}
+
+p
+{
+	margin-left : 1cm;
+	text-align :justify;
+}
+h1
+{
+	font-size : 16pt;
+}
+h2
+{
+	font-size : 14pt;
+}
+h3
+{
+	font-size : 12pt; 
+}
+h4 
+{
+	font-size : 10pt; 
+	font-weight : bold;
+}
+pre.syntaxe 
+{
+	background : #D0D0D0;
+	font-size : 9pt;
+	font-weight : bold;
+	border : 0.2cm solid #D0D0D0;
+}
+pre.exemple
+{
+}
+dt
+{
+	font-style:italic;
+}
+.chaine
+{
+	color : #008000;
+}
+.nombre
+{
+	color:Blue;
+}
+.carac
+{
+	color:Red;
+}
+.etiquette
+{
+	color:Maroon;
+}
+.syntaxe
+{
+	font-weight:bold;
+}
+body.menu
+{
+	margin:0pt;
+}
+ul
+{
+	margin-left:15pt;
+	padding-left:0pt;
+}
+.fonction
+{
+	font-weight : bold;
+	color : #FF0000;
+}
+.commentaire
+{
+	color : #808000;
+	font-style :italic;
+}
+a
+{
+	text-decoration:none;
+}
+a:visited
+{
+	color : brown;
+}

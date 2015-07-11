@@ -1,0 +1,240 @@
+#!
+
+	gotoProxy++ http pro linux
+	
+	7 Avril 2003, en regardant Subway sur TF1
+	ça explique qq noms de variables...
+	
+	une implementation du protocole http en GOTO++
+	ça ça déchire grave !
+	
+	faites des blagues à vos potes !
+	branchez leur navigateur sur votre gotoProxy++ et changez qq mots dans les pages HTML !
+
+	putain, si je gagne pas le concours avec ça, j'arrete le goto++ et je me remet
+	à fortran !
+	
+!#
+
+#!
+	v0.0 :  7 avr 2003
+	v0.1 : 28 avr 2003 ajout rebond proxy
+!#
+
+GOTOMODULE chaussettes
+		
+		niveaugourou 0
+
+GOTO
+GOTO Ces 2 lignes sont à modifier en fonction de votre provider internet
+GOTO
+
+GOTO exemple avec proxy chez free
+GOTO vraiProxy = «proxy.free.fr»
+GOTO vraiPorc  = *(3128)
+
+GOTO exemple avec proxy perso
+GOTO vraiProxy = «www-cache»
+GOTO vraiPorc  = *(3128)
+
+GOTO si pas de proxy, enlever les GOTO en début des 2 lignes suivantes
+vraiProxy = «»
+vraiPorc  = *(0)
+
+debug=*(0)
+
+GOTO Paramétrage terminé, on y va !
+
+Chaussure Proxy
+Proxy@Cordonnier(*(8008))
+entier nbThread
+nbThread = *(0)
+
+GOTOPRINTDUTEXTE(«goto++Proxy http OK sur le port 8008;n»)
+AUTOGOTOZ } &vraiPorc diff *(0) {
+	GOTOPRINTDUTEXTE(«;n» &vraiPorc «:» &vraiProxy «Acces internet via »)
+AC
+ACAC
+	GOTOPRINTDUTEXTE(«Acces internet direct;n»)
+AC
+
+%MainLoop()
+GOTOFIN
+
+§MainLoop:ASV
+	Chaussette sauvage Reno
+	encasderreurGOTO %%End
+
+	§Begin
+		Reno=Proxy@Chausser()
+		%Start(&Reno)
+	GOTOPASMALIN %%Begin
+	
+	§End
+APLUS
+
+§Start:ASV(Reno)
+	Chaussette zap Reno
+	GOTOUNIVERSPARALLELEouizzz %%Subway
+	REGOTO
+	
+GOTO Attention, ce bout de code est threaded, donc si on fait des GOTOPRINTDUTEXTE on est pas sûr
+GOTO de l'ordre d'affichage ==> on evite les GOTOPRINTDUTEXTE (sauf si bug grave à trouver...)
+GOTO
+	§Subway
+ 	encasderreurGOTO %%Fini
+
+	nbThread =+ *(1)
+	pingouin nuThread = &nbThread
+	
+	GOTOPRINTDUTEXTE(« created;n» &nuThread «Thread »)
+	pingouin Adjani = «»
+	
+	pingouin host = «»
+	pingouin port = *(80)
+	
+	§Debut
+	pingouin Galabru = «»
+	Galabru=Reno@LireLigne()
+
+	AUTOGOTOZ &debug / GOTOPRINTDUTEXTE(&Galabru « : » &nuThread «From navigator »)
+		
+	pingouin pos = OUQUILESTLETEXTE(&Galabru «Host:»)
+	AUTOGOTOZ } &pos eg *(0) {
+		pos = OUQUILESTLETEXTE(&Galabru «host:»)
+	AC
+	
+	AUTOGOTOZ } &pos diff *(0) {
+		pingouin l
+		entier zap l
+		l = } Galabru tailleenlongueur {
+		pingouin lg
+		entier zap lg
+		lg = &l - *(7)
+		host = PrendsUnMorceau(&Galabru *(7) *(6) + &lg)
+		pos = OUQUILESTLETEXTE(&host «:»)
+		AUTOGOTOZ } &pos eg *(0) {
+			port = *(80)
+		AC
+		ACAC
+			pingouin pport = PrendsUnMorceau(&host &pos *(0))
+			port = PrendsUnMorceau(&pport *(2) *(0))
+			host = PrendsUnMorceau(&host *(1) &pos)
+		AC
+		GOTO GOTOPRINTDUTEXTE(«];n» &host «Host from navigator : [»)
+		GOTO GOTOPRINTDUTEXTE(«];n» &port «Port from navigator : [»)
+	AC
+
+	pingouin Carac = LeCaracNumero(&Galabru *(1))
+	pingouin fin = &Carac enentier
+		
+	Adjani = &Galabru _ &Adjani	
+		
+	AUTOGOTOZ } &fin eg *(13) {
+		Chaussette internet
+		pingouin pageHTML = «» 
+		
+	 	encasderreurGOTO %%Fin
+			
+		AUTOGOTOZ *(1) / GOTOPRINTDUTEXTE(«;n];n» &Adjani « :;n[;n» &nuThread «Header from navigator »)
+		AUTOGOTOZ } &vraiPorc diff *(0) {
+			GOTO GOTOPRINTDUTEXTE(«Try to connect to internet via proxy;n»)
+			internet@Tricoter(&vraiProxy &vraiPorc)
+			GOTO GOTOPRINTDUTEXTE(«Connected to internet via proxy;n»)
+		AC
+		ACAC
+			GOTO GOTOPRINTDUTEXTE(«Try to connect to internet;n»)
+			internet@Tricoter(&host &port)
+			GOTO GOTOPRINTDUTEXTE(«Connected to internet;n»)
+		AC
+		internet@Remplir(&Adjani)
+		AUTOGOTOZ &debug / GOTOPRINTDUTEXTE(«waiting response...;n»)
+			
+		pingouin alire = *(0)
+		§LireHeader
+		pingouin Bacri = «»
+		Bacri=internet@LireLigne()
+		AUTOGOTOZ &debug / GOTOPRINTDUTEXTE(&Bacri «Line from internet : »)
+	
+		pingouin pos = OUQUILESTLETEXTE(&Bacri «Content-Length:»)
+		AUTOGOTOZ } &pos eg *(0) {
+			pos = OUQUILESTLETEXTE(&Bacri «Content-length:»)
+		AC				
+		AUTOGOTOZ } &pos diff *(0) {
+			pingouin l
+			entier zap l
+			l = } Bacri tailleenlongueur {
+			pingouin lg
+			entier zap lg
+			lg = &l - *(18)
+			alire = PrendsUnMorceau(&Bacri *(17) *(17) + &lg)
+		AC
+			
+		pingouin Carac
+		Carac = LeCaracNumero(&Bacri *(1))
+		pingouin fin
+		entier zap fin
+		fin = &Carac enentier
+		pageHTML = &Bacri _ &pageHTML
+		AUTOGOTOZ } &fin diff *(13) {
+			GOTOPASMALIN %%LireHeader
+		AC
+	
+		pingouin lus = *(0)
+		AUTOGOTOZ &debug / GOTOPRINTDUTEXTE(«;n];n» &pageHTML «Header from internet :;n[;n»)
+		AUTOGOTOZ &debug / GOTOPRINTDUTEXTE(«;n];n» &alire «Reste a lire from internet :;n[;n»)
+
+		GOTOPRINTDUTEXTE(; &pageHTML « :;n»&nuThread «Réponse de »)
+		Reno@Remplir(&pageHTML)
+		AUTOGOTOZ &debug / GOTOPRINTDUTEXTE(«;n];n» &pageHTML «;n[;n»)
+		pageHTML = «»
+			
+		AUTOGOTOZ } &alire eg *(0) {
+			GOTOPASMALIN %%LireHeader
+		AC
+	
+		§Suite
+		pingouin Bacri = «»
+		Bacri=internet@Vider()
+		pingouin l = } Bacri tailleenlongueur {
+		pingouin lus =+ &l
+		
+		AUTOGOTOZ &debug / GOTOPRINTDUTEXTE(«;n» &lus «] total : » &l «nb lus : [»)
+		
+		pageHTML = &Bacri _ &pageHTML
+		AUTOGOTOZ } &lus inf &alire {
+			GOTOPASMALIN %%Suite
+		AC
+
+		§Fin	
+		GOTO internet@Fermer()
+		AUTOGOTOZ &debug / GOTOPRINTDUTEXTE(; &TexteErreur «Erreur : »)
+		AUTOGOTOZ &debug / GOTOPRINTDUTEXTE() ; &pageHTML «From internet :;n»
+		
+		§1
+		Markov() %%1 pageHTML *`0' *`1' «.microsoft.com» «.linux.org»
+		§2
+		Markov() %%2 pageHTML *`0' *`1' «microsoft» «linux»
+		§3
+		Markov() %%3 pageHTML *`0' *`1' «Microsoft» «Linux»
+		§4
+		Markov() %%4 pageHTML *`0' *`1' «MICROSOFT» «LINUX»
+		§5
+		Markov() %%5 pageHTML *`0' *`1' «windows» «kde»
+		§6
+		Markov() %%6 pageHTML *`0' *`1' «Windows» «KDE»
+		§7
+		Markov() %%7 pageHTML *`0' *`1' «Bill Gates» «Bill Gates (le merdeux)»
+
+		GOTO GOTOPRINTDUTEXTE(; «]» &pageHTML «Contenu=[»)
+		Reno@Remplir(&pageHTML)
+	AC
+	ACAC
+		GOTOPASMALIN %%Debut
+	AC
+		
+	§Fini
+	GOTOPRINTDUTEXTE(« ended;n» &nuThread «Thread »)
+	Reno@Fermer()
+	GOTOFINTACHE
+APLUS

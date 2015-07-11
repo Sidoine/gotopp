@@ -1,0 +1,36 @@
+niveaugourou 0
+GOTOMODULE chaussettes
+
+Chaussette Chauss
+
+Chauss@Tricoter(«ares» «23»)
+
+GOTOUNIVERSPARALLELEouizzz %Afficheur
+
+Chauss@Remplir(«log»)
+Chauss@Remplir(«in Sidoine gotopp;r;n»)
+Chauss@Remplir(«newegg Ducon;r;n»)
+
+TantQue *(1)
+	Ligne=ENTRETONTEXTE()
+	Chauss@Remplir(«;r;n»_&Ligne)
+FinTantQue
+
+GOTOFIN
+
+§Afficheur
+
+TantQue *(1)
+	Chauss@Vider(Reponse)
+	GOTOPRINTDUTEXTE(&Reponse)
+	AUTOGOTOZ }&PasEnvoyeLogin et OUQUILESTLETEXTE(&Reponse «login:»){
+		Chauss@Remplir(«sidoine;r;n»)
+		PasEnvoyeLogin=*(0)
+	AC
+	ACAC/AUTOGOTOZ }&PasEnvoyeMdp et OUQUILESTLETEXTE(&Reponse «password:»){
+		Chauss@Remplir(«;r;n»)
+		PasEnvoyeMdp=*(0)
+	AC
+	ACAC
+	AC
+FinTantQue

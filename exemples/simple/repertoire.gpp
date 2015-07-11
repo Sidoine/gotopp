@@ -1,0 +1,18 @@
+niveaugourou 0
+
+%dir(RepCourant())
+GOTOFIN
+
+§dir:ASV(base)
+	Repertoire rep()
+	rep@ChercherPremier(&base)
+	TantQue } non rep@Fini() {
+	
+		AUTOGOTOZ } OUQUILESTLETEXTE(&rep@LireNom() ^/\.[gc]pp$/) { /^
+			GOTOPRINTDUTEXTE(; ConcatRep(&base &rep@LireNom()))
+		
+		AUTOGOTOZ } &rep@LireEstRepertoire() { /^
+			%dir(ConcatRep(&base &rep@LireNom()))
+		rep@ChercherSuivant()
+	FinTantQue
+APLUS

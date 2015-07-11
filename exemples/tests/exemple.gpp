@@ -1,0 +1,115 @@
+niveaugourou 0
+pastrespermissif
+
+GOTOMODULE chaussettes
+
+Chaussette c
+
+GOTOPRINTDUTEXTE(; &MonNom())
+c@Tricoter(«localhost» *(80))
+c@Remplir(«GET /;r;n»)
+GOTOPRINTDUTEXTE() ; c@Vider()
+
+#!
+GOTOPASMALIN %debut
+
+troupeau A
+
+	pingouin a
+	
+	machineapingouins berger:ASV
+		a=*(4)
+	APLUS
+	
+	machineapingouins test:ASV
+		GOTOPRINTDUTEXTE(&a)
+	APLUS
+fintroupeau
+
+
+§debut 
+A b
+b@test()
+!#
+testobjet c()
+c@Set(*(3))
+GOTOPRINTDUTEXTE()«La valeur est : »
+GOTOPRINTDUTEXTE(c@Get())
+
+
+#!
+test( «bonjour»)
+
+#!
+niveaugourou 0
+bush b=*(7)
+bush a=*(2)+*(3)MULTIPLICATION&b
+GOTOPRINTDUTEXTE() &a
+
+GOTOPRINTDUTEXTE(Rxmplacxr(«bobobo» ^/o/g «la»))
+
+
+§1 test=«GOTOPRINTDUTEXTE() «Bonjour !;»
+§2  a=*(3)
+GOTOPRINTDUTEXTE() ;; &a»
+GOTODANSTEXTE(&test)
+GOTODANSTEXTE(«GOTOPASMALIN %2»)
+§4 GOTOPRINTDUTEXTE() &a
+
+
+#!
+test=«abcd;nababa»
+GOTOPRINTDUTEXTE(NombreDeLettres(&test))
+GOTOPRINTDUTEXTE(LeCaracNumero(&test *(3)))
+#!BLOC
+l=GOTOUNIVERSPARALLELEouizzz %%1
+BigCrunch(&l)
+GOTOPRINTDUTEXTE() «Fin»
+GOTOFIN
+
+§1
+entier i=*(0)
+TantQue }&i inf *(10) et &i inf *(20) {
+	GOTOPRINTDUTEXTE(&i «-»)
+	i=+*(1)
+FinTantQue
+
+FINBLOC
+
+GOTO encasderreurGOTO %Erreur
+#!
+GOTOMULTIPLE *(5)
+?*(1)?
+	GOTOPRINTDUTEXTE() «1»
+	arret
+?*(3)?
+	GOTOPRINTDUTEXTE() «3»
+	arret
+?*(5)?
+	GOTOPRINTDUTEXTE() «5»
+	arret
+?défaut?
+	GOTOPRINTDUTEXTE() «1»
+FINGOTOMULTIPLE
+
+%1()
+
+
+GOTOFIN
+
+§1:ASV
+	encasderreurGOTO %%Erreur
+	entier i=*(0)
+	TantQue }&i inf *(10) et &i inf *(20) {
+		GOTOPRINTDUTEXTE(&i «-»)
+		i=+*(1)
+		GOTOerreur(«oups»)
+	FinTantQue
+	
+	§Erreur
+		GOTOPRINTDUTEXTE() «Damnation !»
+APLUS
+
+§Erreur
+
+GOTOPRINTDUTEXTE() «erreur !»!#

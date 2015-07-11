@@ -1,0 +1,17 @@
+#!
+	Exemple montrant l'utilisation des fonctions pour les chaînes
+	
+	Toujours par Sidoine
+!#
+
+J=«Bonjour Monsieur Crapaud»
+K=OUQUILESTLETEXTE(&J «Monsieur»)
+GOTONONNULPOURLESNULS %1 &K
+GOTOFIN
+
+§1
+GOTOPRINTDUTEXTE(; PrendsUnMorceau(&J &K }&K+*(8){))
+GOTOPRINTDUTEXTE(; PrendsUnMorceau(&J &K *(0)))
+GOTOPRINTDUTEXTE(; }LeCaracNumero(&J &K){)
+GOTOPRINTDUTEXTE(; }NombreDeLettres(&J){)
+GOTOPRINTDUTEXTE(; }tailleenlongueur J{)

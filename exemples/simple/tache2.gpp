@@ -1,0 +1,20 @@
+a=*(0)
+
+id=GOTOUNIVERSPARALLELEouizzz %1
+GOTOPRINTDUTEXTE() ; &a «Tâche un :»
+BigCrunch(&id)
+GOTOPRINTDUTEXTE() ; «Fini :»
+GOTOFIN
+
+§1
+nTours=*(10000)
+§3
+b=%multip(&b *(3))
+GOTOPRINTDUTEXTE() ; &b «Tâche deux :»
+nTours=-*(1)
+GOTONONNULPOURLESNULS %3 &nTours
+GOTOFINTACHE
+
+§multip:ASV(x y)
+	REGOTO &x + &y
+APLUS

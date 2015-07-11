@@ -1,0 +1,80 @@
+niveaugourou 0
+
+entier Clignote
+§Presentation:ASV
+	Clignote=*(1)
+	fichier F()
+	F@OUVRIR(«intro.baf»)
+	AUTOGOTOZ }F@Fin(){
+		GOTOPRINTDUTEXTE(; «Le fichier de présentation n'existe pas !»)
+		GOTOFIN
+	AC
+	chaine img=«»
+	entier tailleligne=F@LIREDUTEXTE() enentier
+	TantQue }F@Fin() eg *(0){
+		chaine ligne=F@LIREDUTEXTE()
+		GOTONONNULPOURLESNULS %%SuiteAnim F@Fin()
+GOTO		AUTOGOTOZ }F@Fin() eg *(1){ / GOTOPASMALIN %%SuiteAnim
+		AUTOGOTOZ }}NombreDeLettres(&ligne){inf &tailleligne{
+			ligne=}BEGUEBEGUE(*` ' $ &tailleligne-}NombreDeLettres(&ligne){){_&ligne
+		AC
+		AUTOGOTOZ }}NombreDeLettres(&img){ diff *(0){
+			img = &ligne_«;n»_&img
+		AC
+		ACAC
+			img = &ligne
+		AC
+	FinTantQue
+	§SuiteAnim
+	tailleligne =+ *(1)
+
+	NettoyerEcran()
+	MontrerCurseur(*(0))
+	GOTO infcons = InfosConsole()
+	GOTO droite = }&infcons<*(0)> : *(2){ + &i
+
+	entier tache=GOTOUNIVERSPARALLELEouizzz %%Anim
+
+	§ClavierAnim
+		entier c=TapeUneTouche()
+		GOTOMULTIPLE &c
+		?*(13)?
+			GOTOPASMALIN %%FinAnim
+		FINGOTOMULTIPLE
+	GOTOPASMALIN %%ClavierAnim
+
+	§Anim
+	BLOC
+		entier i = *(0)
+		TantQue } &i inf *(1000) et &Clignote{
+			chances z
+			INITIALISATION(z)
+			entier pos
+			pos = }}&z MULTIPLICATION }NombreDeLettres(&img){{ : *(100){enentier
+			AUTOGOTOZ }}LeCaracNumero(&img }&pos + *(1){){ eg ;n{ / continue
+			entier b = }&pos : &tailleligne{ enentier
+			entier a = }&pos - }&b MULTIPLICATION &tailleligne{{ enentier
+			gotoXY(&a &b)
+			GOTOPRINTDUTEXTE(LeCaracNumero(&img }&pos + *(1){))
+			i =+ *(1)
+		FinTantQue
+
+		gotoXY(*(0) *(0))
+		GOTOPRINTDUTEXTE(&img)
+		TantQue } &Clignote {
+			gotoXY(*(17) *(13))
+			GOTOPRINTDUTEXTE(«PRESS ENTER»)
+			DODO(*(600))
+			gotoXY(*(17) *(13))
+			GOTOPRINTDUTEXTE(«           »)
+			DODO(*(600))
+		FinTantQue
+		GOTO GOTOPRINTDUTEXTE(«On a terminé !»)
+		GOTOFINTACHE
+	FINBLOC
+
+	§FinAnim
+	Clignote=*(0)
+	BigCrunch(&tache)
+	GOTOPRINTDUTEXTE(«Tâche terminée !»)
+APLUS

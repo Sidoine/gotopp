@@ -1,0 +1,36 @@
+$Lancement
+Le GOTO++ se lance dans un terminal (UNIX) ou la ligne de commande (Windows). Si vous utilisez UNIX, à priori vous savez comme faire. Si vous utilisez
+Windows et que vous ne savez pas comment utiliser la ligne de commande (MS-DOS, sous Windows 95, 98 et ME), je ne peux rien pour vous,
+regardez la documentation de votre système d'exploitation.
+
+Pour connaître les paramètres à passer dans la ligne de commande, tapez simplement gpp, une courte aide apparaît.
+
+Je la reproduis ici, par pure bonté d'âme :
+
+#exemple
+Syntaxe :
+  gpp [-ahotvX] source [...]
+
+Interprète le fichier 'source'
+
+Options
+  a : Affiche le code désassemblé
+  h : Affiche l'aide
+  o : Enregistre le code dans a.out
+  v : Affiche la liste des variables globales
+  X : N'exécute pas le programme
+exemple#
+  
+$Code désassemblé
+  
+Une petite explication peut s'avérer nécessaire : la machine virtuelle du GOTO++,
+qui se charge d'exécuter le programme, ne travaille pas directement sur le code
+source tel que vous l'avez tapé, mais sur un intermédiaire, écrit dans un langage
+qui lui est particulier. Ce code machine est créé à partie du code source
+à l'aide d'un compilateur GOTO++. Pour afficher ce code, utilisez l'option a.
+ 
+Remarquez que vous pouvez enregistrer ce code sur le disque, avec l'option o.
+Suite à quoi, vous pourrez directement charger ce code lors d'une utilisation ultérieure
+du programme, ce qui est bien pratique si vous trouvez que la compilation est longue.
+$
+ 

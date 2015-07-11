@@ -1,0 +1,33 @@
+#!
+	Tortue ivrogne 
+	Sidoine de Wispelaere (10 avril 2002)
+!#
+
+GOTOMODULE tortue
+
+Fenetre fentest()
+Tortue t
+fentest@Creer()
+t=fentest@CreerTortue()
+
+GOTOUNIVERSPARALLELEouizzz %Dessin
+GererFenetres()
+GOTOFIN
+
+§Dessin
+DODO(*(10))
+GOTOGOTO(%Effacer ?0,1 %Tourner ?50 %Avancer ?49,9)
+
+§Effacer
+GOTO t@Nettoyer()
+GOTOPASMALIN %Dessin
+
+§Tourner
+INITIALISATION(J)
+t@Tourner(}&J-*(30){:?5)
+GOTOPASMALIN %Dessin
+
+§Avancer
+INITIALISATION(J)
+t@Avancer(&J:?30)
+GOTOPASMALIN %Dessin
