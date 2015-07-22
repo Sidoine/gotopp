@@ -7,6 +7,7 @@
 
 #ifndef _INSTRCONST_H
 #define _INSTRCONST_H
+#include <gotopp/programme.h>
 
 namespace GotoPP
 {
@@ -57,7 +58,7 @@ namespace GotoPP
 				AjouterChances(v.v.f);
 				break;
 			case TYPE_CODE:
-				AjouterCode(code(v.v.i));
+				AjouterCode(Code(v.v.i));
 				break;
 			case TYPE_TYPE:
 				AjouterType(type(v.v.i));
@@ -155,12 +156,15 @@ namespace GotoPP
 		}
 		void AjouterType(type t)
 		{
-			AjouterCode(t);
+			Etendre();
+			*((type*)i) = static_cast<type>(t);
+			i += sizeof(type);
+			t += sizeof(type);
 		}
-		void AjouterCode(code c)
+		void AjouterCode(Code c)
 		{
 			Etendre();
-			*((code*)i)=c;
+			*((code*)i)=static_cast<code>(c);
 			i+=sizeof(code);
 			t+=sizeof(code);
 		}

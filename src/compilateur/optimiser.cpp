@@ -25,7 +25,7 @@ Alors là c'est vraiment du beau boulot. Ca permet d'optimiser le
 code.
 */
 #include <gotopp/base.h>
-#include <gotopp/compilateur.h>
+#include <gotopp/icompilateur.h>
 #include <gotopp/erreur.h>
 #include <gotopp/global.h>
 
@@ -203,7 +203,7 @@ void Compilateur::InsererChangementType(int posPile, Symbole * nouveauType)
 
 	SInstr &i=insTri.Inserer(PileType[posPile].instruction,2);
 
-	i.Code=I_CONVTYPE;
+	i.Code= Code::I_CONVTYPE;
 	insTri.val[i.pVal].Type=TYPE_TYPE;
 	insTri.val[i.pVal].v.i=PileType[posPile].Dernier()->pod;
 	insTri.val[i.pVal+1].Type=TYPE_TYPE;
@@ -277,28 +277,28 @@ void Compilateur::AjouterInstruction(uint i)
 	if (insTri.nIns>=2)
 		Val2=insTri.ins[insTri.nIns-2].pVal;
 
-	int Code=Instr[i].Code;
-	if (PosPileType<nMinParametres[Code])
-		throw CErreur(TXT("le code %s n'a pas assez de paramètres"),descCode[Code].Nom);
+	Code Code=Instr[i].Code;
+	if (PosPileType<nMinParametres[static_cast<code>(Code)])
+		throw CErreur(TXT("le code %s n'a pas assez de paramètres"),descCode[static_cast<code>(Code)].Nom);
 
 	bool aRetour=true;
 
 	//TODO: globalement tout ça est très pourri
 	switch(Code)
 	{
-	case I_DEFINIR:
+	case Code::I_DEFINIR:
 		{
 			PosPileType-=2;
 			aRetour=false;
 			break;
 		}
-	case I_EXEC:
-	case I_EXECVAL:
-	case I_EXECC:
-	case I_EXECTHIS:
-	case I_EXECMEMETHISVAL:
-	case I_EXECTHISC:
-	case I_EXECTHISMODULE:
+	case Code::I_EXEC:
+	case Code::I_EXECVAL:
+	case Code::I_EXECC:
+	case Code::I_EXECTHIS:
+	case Code::I_EXECMEMETHISVAL:
+	case Code::I_EXECTHISC:
+	case Code::I_EXECTHISMODULE:
 		{
 			CType * t=&PileType[--PosPileType];
 			Symbole * c=t->Depiler();
@@ -319,7 +319,7 @@ void Compilateur::AjouterInstruction(uint i)
 					&& c!=symboleMethodeC)
 					throw TXT("fonction attendue pour un I_EXEC");
 
-				Symbole * d;
+				Symbole * d = nullptr;
 				int nparams=1;
 				//Les paramètres définis
 				do
@@ -380,7 +380,7 @@ void Compilateur::AjouterInstruction(uint i)
 					c=t->Depiler();
 				}
 					
-				if (c!=d)
+				if (c != d)
 				{
 					if (c==symboleDebutParams)
 						throw TXT("trop de paramètres passés à la fonction");
@@ -406,23 +406,23 @@ void Compilateur::AjouterInstruction(uint i)
 			}
 			break;
 		}
-	/*case I_EXECTHISC:
+	/*case Code::I_EXECTHISC:
 		{
 			PileType[PosPileType++].Def(TYPE_PINGOUIN);
 			break;
 		}*/
 	
-	case I_CONSTANTE:
+	case Code::I_CONSTANTE:
 		{
 			PileType[PosPileType++].Def(Valeur[v].v.ptr);
 			break;
 		}
-	case I_EXPREG:
+	case Code::I_EXPREG:
 		{
 			PileType[PosPileType++].Def(symboleExpReg);
 			break;
 		}
-	case I_VARIABLE:
+	case Code::I_VARIABLE:
 		{
 			PileType[PosPileType]=Valeur[v].v.ptr->TypeAc;
 			//Valeur[v].v.i=GetSymbole(Valeur[v].v.i).indice;
@@ -430,26 +430,26 @@ void Compilateur::AjouterInstruction(uint i)
 			//AfficherType(PileType[PosPileType-1]);
 			break;
 		}
-	case I_VALEURVAR:
+	case Code::I_VALEURVAR:
 		{
 			PileType[PosPileType++]=Valeur[v].v.ptr->TypeAc;
 			//Valeur[v].v.i=GetSymbole(Valeur[v].v.i).indice;
 			break;
 		}
-	case I_CHANCES:
+	case Code::I_CHANCES:
 		{
 			PileType[PosPileType++].Def(symboleFlottant);
 			break;
 		}
-	case I_ENTIER:
+	case Code::I_ENTIER:
 		{
 			PileType[PosPileType++].Def(symboleEntier);
 			break;	
 		}
-	case I_DIVISE:
-	case I_FOIS:
-	case I_SOUSTRAIRE:
-	case I_AJOUTER:
+	case Code::I_DIVISE:
+	case Code::I_FOIS:
+	case Code::I_SOUSTRAIRE:
+	case Code::I_AJOUTER:
 		{
 			if (PosPileType<2)
 				throw TXT("pas assez de paramètres pour l'opérateur");
@@ -459,26 +459,26 @@ void Compilateur::AjouterInstruction(uint i)
 			//on les remplace par la bonne valeur
 			if (insTri.nIns>=2
 				&&
-				(insTri.ins[insTri.nIns-2].Code==I_ENTIER
-				|| insTri.ins[insTri.nIns-2].Code==I_CHANCES)
+				(insTri.ins[insTri.nIns-2].Code== Code::I_ENTIER
+				|| insTri.ins[insTri.nIns-2].Code== Code::I_CHANCES)
 				&&
-				(insTri.ins[insTri.nIns-1].Code==I_ENTIER
-				|| insTri.ins[insTri.nIns-1].Code==I_CHANCES))
+				(insTri.ins[insTri.nIns-1].Code== Code::I_ENTIER
+				|| insTri.ins[insTri.nIns-1].Code== Code::I_CHANCES))
 			{
 				//On fait l'opération
 				switch(Code)
 				{
-				case I_AJOUTER:
+				case Code::I_AJOUTER:
 					insTri.val[Val2]+=insTri.val[Val1];
 					break;
-				case I_SOUSTRAIRE:
+				case Code::I_SOUSTRAIRE:
 					insTri.val[Val2]-=insTri.val[Val1];
 					break;
-				case I_DIVISE:
+				case Code::I_DIVISE:
 					insTri.val[Val2]/=insTri.val[Val1];
 					break;
-				case I_FOISE:
-				case I_FOIS:
+				case Code::I_FOISE:
+				case Code::I_FOIS:
 					insTri.val[Val2]*=insTri.val[Val1];
 					break;
 				}	
@@ -487,9 +487,9 @@ void Compilateur::AjouterInstruction(uint i)
 				insTri.nIns--;
 				//On remplace l'avant-dernière par la bonne
 				if (insTri.val[Val2].Type==TYPE_ENTIER)
-					insTri.ins[insTri.nIns-1].Code=I_ENTIER;
+					insTri.ins[insTri.nIns-1].Code = Code::I_ENTIER;
 				else
-					insTri.ins[insTri.nIns-1].Code=I_CHANCES;
+					insTri.ins[insTri.nIns-1].Code = Code::I_CHANCES;
 				return;
 			}
 
@@ -511,17 +511,17 @@ void Compilateur::AjouterInstruction(uint i)
 					PileType[PosPileType-1].Def(symboleEntier);
 					switch (Code)
 					{
-					case I_AJOUTER:
-						Instr[i].Code=I_AJOUTERE;
+					case Code::I_AJOUTER:
+						Instr[i].Code= Code::I_AJOUTERE;
 						break;
-					case I_SOUSTRAIRE:
-						Instr[i].Code=I_SOUSTRAIREE;
+					case Code::I_SOUSTRAIRE:
+						Instr[i].Code= Code::I_SOUSTRAIREE;
 						break;
-					case I_FOIS:
-						Instr[i].Code=I_FOISE;
+					case Code::I_FOIS:
+						Instr[i].Code= Code::I_FOISE;
 						break;
-					case I_DIVISE:
-						Instr[i].Code=I_DIVISERE;
+					case Code::I_DIVISE:
+						Instr[i].Code= Code::I_DIVISERE;
 						break;
 					}
 				}
@@ -545,16 +545,16 @@ void Compilateur::AjouterInstruction(uint i)
 			
 			break;		
 		}
-	case I_CONVTYPE:
+	case Code::I_CONVTYPE:
 		{
 			PileType[PosPileType-1].Def(symboleValeur);
 			if (insTri.nIns)
 			{
 				if (Valeur[v+1].v.i==TYPE_ENTIER)
 				{
-					if (insTri.ins[insTri.nIns-1].Code==I_CARAC)
+					if (insTri.ins[insTri.nIns-1].Code== Code::I_CARAC)
 					{
-						insTri.ins[insTri.nIns-1].Code=I_ENTIER;
+						insTri.ins[insTri.nIns-1].Code= Code::I_ENTIER;
 						insTri.val[Val1].Type=TYPE_ENTIER;
 						PileType[PosPileType-1].Def(symboleEntier);
 						return;
@@ -563,7 +563,7 @@ void Compilateur::AjouterInstruction(uint i)
 			}					
 			break;
 		}
-	case I_VALEUR:
+	case Code::I_VALEUR:
 		{
 			if (!PileType[PosPileType-1].EstType(symboleValeur))
 			{
@@ -572,8 +572,8 @@ void Compilateur::AjouterInstruction(uint i)
 			}
 			break;
 		}
-	case I_NONOPPOSE:
-	case I_OPPOSE:
+	case Code::I_NONOPPOSE:
+	case Code::I_OPPOSE:
 		{
 			if (!PileType[PosPileType-1].EstType(symboleValeur))
 			{
@@ -582,21 +582,21 @@ void Compilateur::AjouterInstruction(uint i)
 			}
 			break;
 		}
-	case I_RETOUR:
+	case Code::I_RETOUR:
 		{
 			if (PosPileType)
 				PosPileType--;
 			aRetour=false;
 			break;
 		}
-	case I_CONCAT:
+	case Code::I_CONCAT:
 		{
 			PosPileType--;
 			PileType[PosPileType-1].Def(symboleChaine);
 			break;
 		}
-	case I_TABLEAUREF:
-	case I_TABLEAUVAL:
+	case Code::I_TABLEAUREF:
+	case Code::I_TABLEAUVAL:
 		{
 			Symbole * c=PileType[PosPileType-1].Depiler();
 			if (c!=symboleValeur && c!=symboleEntier)
@@ -627,7 +627,7 @@ void Compilateur::AjouterInstruction(uint i)
 				else
 					throw TXT("tableau attendu");
 			}
-			if (Code==I_TABLEAUREF)
+			if (Code== Code::I_TABLEAUREF)
 				PileType[PosPileType-1].Empiler(symboleReference);
 			
 /*			if (nInsTri>=1
@@ -636,10 +636,10 @@ void Compilateur::AjouterInstruction(uint i)
 			{
 				switch(Instr[i].Code)
 				{
-				case I_TABLEAUREF:
+				case Code::I_TABLEAUREF:
 					InsTri[nInsTri-1].Code=I_CTABLEAUREF;
 					break;
-				case I_TABLEAUVAL:
+				case Code::I_TABLEAUVAL:
 					InsTri[nInsTri-1].Code=I_CTABLEAUVAL;
 					break;
 				}
@@ -647,8 +647,8 @@ void Compilateur::AjouterInstruction(uint i)
 			}*/
 			break;
 		}
-	case I_CTABLEAUREF:
-	case I_CTABLEAUVAL:
+	case Code::I_CTABLEAUREF:
+	case Code::I_CTABLEAUVAL:
 		if (!PileType[PosPileType-1].EstType(symboleValeur))
 		{
 			Symbole * ty=PileType[PosPileType-1].Depiler();
@@ -684,43 +684,43 @@ void Compilateur::AjouterInstruction(uint i)
 			else
 				throw TXT("tableau attendu");
 		}
-		if (Code==I_CTABLEAUREF)
+		if (Code== Code::I_CTABLEAUREF)
 			PileType[PosPileType-1].Empiler(symboleReference);
 		break;
-	case I_DEBUTPARAM:
+	case Code::I_DEBUTPARAM:
 		PileType[PosPileType++].Def(symboleDebutParams);
 		break;
-	case I_DUPLIQUER:
+	case Code::I_DUPLIQUER:
 		{
 			PileType[PosPileType++]=PileType[PosPileType-1];
 			break;
 		}
-	case I_SUPPRIMER:
+	case Code::I_SUPPRIMER:
 		PosPileType--;
 		aRetour=false;
 		break;
-	case I_THISREF:
-	case I_VARIABLELOC:
+	case Code::I_THISREF:
+	case Code::I_VARIABLELOC:
 		PileType[PosPileType]=Valeur[v].v.ptr->TypeAc;
 		PileType[PosPileType++].Empiler(symboleReference);
 		break;
-	case I_THISVAL:
-	case I_VALEURVARLOC:
+	case Code::I_THISVAL:
+	case Code::I_VALEURVARLOC:
 		PileType[PosPileType++]=Valeur[v].v.ptr->TypeAc;
 		break;
-	case I_ETIQUETTELOC:
+	case Code::I_ETIQUETTELOC:
 		PileType[PosPileType++].Def(symboleFonctionGPP);
 		break;
-	case I_GOTO:
-	case I_GOTOR:
+	case Code::I_GOTO:
+	case Code::I_GOTOR:
 		aRetour=false;
 		break;
-	case I_GOTONONZERO:
-	case I_GOTONONZEROR:
+	case Code::I_GOTONONZERO:
+	case Code::I_GOTONONZEROR:
 		PosPileType--;
 		aRetour=false;
 		break;
-	case I_HACHAGEREF:
+	case Code::I_HACHAGEREF:
 		{
 			Symbole * c=PileType[PosPileType-1].Depiler();
 			if (c!=symboleValeur && c!=symboleChaine)
@@ -739,7 +739,7 @@ void Compilateur::AjouterInstruction(uint i)
 			}
 			break;
 		}
-	case I_HACHAGEVAL:
+	case Code::I_HACHAGEVAL:
 		{
 			Symbole * c=PileType[PosPileType-1].Depiler();
 			if (c!=symboleValeur && c!=symboleChaine)
@@ -758,124 +758,124 @@ void Compilateur::AjouterInstruction(uint i)
 			}
 			break;
 		}
-	case I_SUPERPLUS:
+	case Code::I_SUPERPLUS:
 		PosPileType--;
 		break;
-	case I_INCREMENTER:
-	case I_DECREMENTER:
-	case I_DIVISEREGAL:
-	case I_MULTIPLIEREGAL:
+	case Code::I_INCREMENTER:
+	case Code::I_DECREMENTER:
+	case Code::I_DIVISEREGAL:
+	case Code::I_MULTIPLIEREGAL:
 		PosPileType-=2;
 		aRetour=false;
 		break;
-	case I_TAILLE:
+	case Code::I_TAILLE:
 		PileType[PosPileType-1].Def(symboleEntier);
 		break;
-	case I_VALEURCLEF:
+	case Code::I_VALEURCLEF:
 		PileType[PosPileType-1].Def(symboleChaine);
 		break;
-	case I_PROBASAUTERLIGNE:
+	case Code::I_PROBASAUTERLIGNE:
 		aRetour=false;
 		break;
-	case I_NOUVEAU:
+	case Code::I_NOUVEAU:
 		PileType[PosPileType].Def(symboleValeur);
 		PileType[PosPileType++].Empiler(symboleReference);
 		break;
-	case I_INSTANCEDE:
+	case Code::I_INSTANCEDE:
 		PosPileType-=2;
 		aRetour=false;
 		break;
-	case I_GOTOTACHER:
-	case I_GOTOTACHE:
+	case Code::I_GOTOTACHER:
+	case Code::I_GOTOTACHE:
 		PileType[PosPileType++].Def(symboleEntier);
 		break;
-	case I_FINTACHE:
+	case Code::I_FINTACHE:
 		aRetour=false;
 		break;
-	case I_EGAL:
-	case I_DIFFERENT:
-	case I_INFERIEUR:
-	case I_SUPERIEUR:
-	case I_INFEGAL:
-	case I_SUPEGAL:
+	case Code::I_EGAL:
+	case Code::I_DIFFERENT:
+	case Code::I_INFERIEUR:
+	case Code::I_SUPERIEUR:
+	case Code::I_INFEGAL:
+	case Code::I_SUPEGAL:
 		PosPileType--;
 		PileType[PosPileType-1].Def(symboleEntier);
 		break;
-	case I_NON:
+	case Code::I_NON:
 		PileType[PosPileType-1].Def(symboleEntier);
 		break;
-	case I_GOTOZERO:
-	case I_GOTOZEROR:
+	case Code::I_GOTOZERO:
+	case Code::I_GOTOZEROR:
 		PosPileType--;
 		aRetour=false;
 		break;
-	case I_DEFCONSTR:
+	case Code::I_DEFCONSTR:
 		PosPileType--;
 		aRetour=false;
 		break;
-	case I_THIS:
-		PileType[PosPileType].Def(Bloc.Dernier()->symbole);
+	case Code::I_THIS:
+		PileType[PosPileType].Def(blocs.Dernier()->symbole);
 		PileType[PosPileType++].Empiler(symboleReference);
 		break;
-	case I_ENERREUR:
-	case I_ENERREURR:
+	case Code::I_ENERREUR:
+	case Code::I_ENERREURR:
 		aRetour=false;
 		break;
-	case I_ERREUR:
+	case Code::I_ERREUR:
 		PosPileType--;
 		aRetour=false;
 		break;
-	case I_OU:
-	case I_ET:
-	case I_FINOUET:
+	case Code::I_OU:
+	case Code::I_ET:
+	case Code::I_FINOUET:
 		PileType[PosPileType-1].Def(symboleEntier);
 		break;
-	case I_TYPEDE:
+	case Code::I_TYPEDE:
 		PileType[PosPileType-1].Def(symboleEntier);
 		break;
-	case I_SWITCH:
+	case Code::I_SWITCH:
 		PosPileType--;
 		aRetour=false;
 		break;
-	case I_PARAMREF:
+	case Code::I_PARAMREF:
 		PileType[PosPileType]=Valeur[v].v.ptr->TypeAc;
 		PileType[PosPileType++].Empiler(symboleReference);
 		break;
-	case I_PARAMVAL:
+	case Code::I_PARAMVAL:
 		PileType[PosPileType++]=Valeur[v].v.ptr->TypeAc;
 		break;
-	case I_ESTREFVALIDE:
+	case Code::I_ESTREFVALIDE:
 		PileType[PosPileType-1].Def(symboleEntier);
 		break;
-	case I_EMPILER2:
+	case Code::I_EMPILER2:
 		PosPileType--;
 		aRetour=false;
 		break;
-	case I_VALEUR2:
-	case I_DEPILER2:
+	case Code::I_VALEUR2:
+	case Code::I_DEPILER2:
 		PileType[PosPileType++].Def(symboleValeur);
 		break;
-	case I_DECALG:
-	case I_DECALD:
-	case I_MODULO:
-	case I_ETBIN:
-	case I_OUBIN:
+	case Code::I_DECALG:
+	case Code::I_DECALD:
+	case Code::I_MODULO:
+	case Code::I_ETBIN:
+	case Code::I_OUBIN:
 		PosPileType--;
 		PileType[PosPileType-1].Def(symboleEntier);
 		break;
-	case I_EXISTE:
+	case Code::I_EXISTE:
 		PileType[PosPileType-1].Def(symboleEntier);
 		break;
-	case I_NPARAMS:
+	case Code::I_NPARAMS:
 		PileType[PosPileType++].Def(symboleEntier);
 		break;
-	case I_CARAC:
+	case Code::I_CARAC:
 		PileType[PosPileType++].Def(symboleCarac);
 		break;
-	case I_STOP:
+	case Code::I_STOP:
 		aRetour=false;
 		break;
-	case I_CONSTVAR:
+	case Code::I_CONSTVAR:
 		{
 			Symbole * u=Valeur[v].v.ptr;
 			PosPileType--;
@@ -887,7 +887,7 @@ void Compilateur::AjouterInstruction(uint i)
 			{
 				switch (insTri.ins[insTri.nIns-1].Code)
 				{
-				case I_ENTIER:
+				case Code::I_ENTIER:
 					u->Valeur=insTri.val[Val1];
 					break;
 				default:
@@ -903,8 +903,8 @@ void Compilateur::AjouterInstruction(uint i)
 			break;
 		}
 
-	case I_FONCTIONC_THIS:
-	case I_FONCTIONC:
+	case Code::I_FONCTIONC_THIS:
+	case Code::I_FONCTIONC:
 		//PileType[PosPileType++].Def(TYPE_FONCTIONC);
 		//break;
 		{
@@ -914,18 +914,18 @@ void Compilateur::AjouterInstruction(uint i)
 			Valeur[v].v.fonctionC=symbole->Valeur.v.fonctionC;
 			break;
 		}
-	case I_FONCTIONMODULE:
+	case Code::I_FONCTIONMODULE:
 		//PileType[PosPileType++].Def(TYPE_FONCTIONMODULE);
 		//break;
-	case I_ETIQUETTE:
-	case I_ETIQUETTE_THIS:
+	case Code::I_ETIQUETTE:
+	case Code::I_ETIQUETTE_THIS:
 	//PileType[PosPileType++].Def(TYPE_ETIQUETTE_THIS);
 	{
 		Symbole * symbole=Valeur[v].v.ptr;
 		PileType[PosPileType++]=symbole->TypeAc;
 		break;
 	}
-	case I_ALLOCATION:
+	case Code::I_ALLOCATION:
 		{
 			//On transforme le type en taille à allouer
 			PileType[PosPileType++]=Valeur[v].v.ptr;

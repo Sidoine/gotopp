@@ -37,7 +37,7 @@ programmes.
 #endif
 
 #include <gotopp/base.h>
-#include <gotopp/compilateur.h>
+#include <gotopp/icompilateur.h>
 #include <gotopp/erreur.h>
 #include <gotopp/instruction.h>
 #include <gotopp/programme.h>

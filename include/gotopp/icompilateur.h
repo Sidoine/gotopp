@@ -20,6 +20,10 @@ namespace GotoPP
 	class ICompilateur
 	{
 	public:
+		virtual ~ICompilateur()
+		{
+		}
+
 		virtual BoutCode* Charger(const carac * fichier)=0;//Charge et compile ce fichier
 		virtual BoutCode* Compiler(const carac *CodeSource)=0;//Compile ce code source
 		

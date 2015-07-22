@@ -27,7 +27,7 @@ approchant.
 #include <gotopp/base.h>
 #include <gotopp/programme.h>
 #include <gotopp/instruction.h>
-#include <gotopp/compilateur.h>
+#include <gotopp/icompilateur.h>
 #include "gpp.h"
 
 
@@ -50,7 +50,7 @@ void Gpp::Desass(Programme *programme,bool UneLigne,  GotoPP::BoutCode & Ins)
 	while (!Ins.Fin())
 	{
 		code c=Ins.LireCode();
-		if (c==I_DEBUTLIGNE)
+		if (c == code(Code::I_DEBUTLIGNE))
 		{
 			nLignes++;
 			if (UneLigne && nLignes==2)
@@ -73,18 +73,17 @@ void Gpp::Desass(Programme *programme,bool UneLigne,  GotoPP::BoutCode & Ins)
 			{	
 			case TYPE_CARAC:
 				{
-					carac c=Ins.LireCarac();
-					if (byte(c)<32)
-						czoprintf(_T(" ^%c"),'A'+c);
+					carac caractere=Ins.LireCarac();
+					if (byte(caractere)<32)
+						czoprintf(_T(" ^%c"),'A'+caractere);
 					else
-						czoprintf(_T(" %c"),c);
+						czoprintf(_T(" %c"),caractere);
 					break;	
 				}
 			case TYPE_ETIQUETTE:
 				{
-					code * c=Ins.LireEtiquette();
-					czoprintf(_T(" :%p [%s]"),c,
-						programme->NomEtiquette(c));
+					code * code=Ins.LireEtiquette();
+					czoprintf(_T(" :%p [%s]"), code, programme->NomEtiquette(code));
 					break;
 				}
 			case TYPE_ENTIER:

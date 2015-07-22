@@ -1,5 +1,5 @@
 #include <gotopp/base.h>
-#include <gotopp/compilateur.h>
+#include <gotopp/icompilateur.h>
 #include <gotopp/programme.h>
 #include <gotopp/mutex.h>
 #include <gotopp/erreur.h>

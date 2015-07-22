@@ -64,6 +64,12 @@ namespace GotoPP
 
 	class CInterpreteur:public gc, public IInterpreteur
 	{
+	public:
+		~CInterpreteur() override 
+		{
+		}
+
+	private:
 		CPile Pile2;
 		index_t BasenParams;
 		tableauval * This;
@@ -98,7 +104,7 @@ namespace GotoPP
 		void Executer();
 		void ExecuterCatch(code * i);
 		void ExecuterCatch();
-		void ContenuPile();
+		// void ContenuPile();
 		void Sauver(FILE *F);
 		void Charger(FILE *F,int Taille);
 		void Reinit();
@@ -112,47 +118,48 @@ namespace GotoPP
 		void LireThis();
 		void AfficherErreur(CErreur & e);
 		void AfficherErreur(const carac *c);
+		void Depiler2(valeur & val);
 
 	public: //Implémentation de IInterpreteur
-		IObjet * GetThis();
-		virtual const chaineval * LireChaine();
-		virtual int LireEntier();
-		virtual float LireFlottant();
-		virtual void * LirePointeur();
-		virtual void * LireVariable(int v);
-		virtual IChaineA * LireChaineA();
-		virtual void FinParametres();
-		virtual IObjet * LireObjet();
-		virtual ITableauValeurs * LireTableauValeurs();
-		virtual regexp * LireRegExp();
-		virtual IValeur *LireValeur();
-		virtual entier64 LireEntier64();
-		virtual int GetNombreParametres();
+		IObjet * GetThis() override;
+		virtual const IChaine * LireChaine() override;
+		virtual int LireEntier() override;
+		virtual float LireFlottant() override;
+		virtual void * LirePointeur() override;
+		virtual void * LireVariable(int v) override;
+		virtual IChaineA * LireChaineA() override;
+		virtual void FinParametres() override;
+		virtual IObjet * LireObjet() override;
+		virtual ITableauValeurs * LireTableauValeurs() override;
+		virtual regexp * LireRegExp() override;
+		virtual IValeur *LireValeur() override;
+		virtual entier64 LireEntier64() override;
+		virtual int GetNombreParametres() override;
 		
-		virtual void RetournerChaine(carac * c);
-		virtual void RetournerChaineA(char * c);
-		virtual void RetournerEntier(int i);
-		virtual void RetournerFlottant(float f);
-		virtual void RetournerIndefini();
-		virtual void RetournerChaine(const IChaine * chaine);
-		virtual void RetournerCarac(carac c);
-		virtual void RetournerTableauValeurs(ITableauValeurs * tableau);
-		virtual void RetournerEntier64(entier64 i);
-		virtual void RetournerObjet(IObjet * o);
+		virtual void RetournerChaine(carac * c) override;
+		virtual void RetournerChaineA(char * c) override;
+		virtual void RetournerEntier(int i) override;
+		virtual void RetournerFlottant(float f) override;
+		virtual void RetournerIndefini() override;
+		virtual void RetournerChaine(const IChaine * chaine) override;
+		virtual void RetournerCarac(carac c) override;
+		virtual void RetournerTableauValeurs(ITableauValeurs * tableau) override;
+		virtual void RetournerEntier64(entier64 i) override;
+		virtual void RetournerObjet(IObjet * o) override;
 
-		virtual void Modifier(void * p, IObjet * o);
-		virtual void Modifier(void * p, int i);
-		virtual void Modifier(void * p, carac * c);
-		virtual void Modifier(void * p, carac * c, int l);
+		virtual void Modifier(void * p, IObjet * o) override;
+		virtual void Modifier(void * p, int i) override;
+		virtual void Modifier(void * p, carac * c) override;
+		virtual void Modifier(void * p, carac * c, int l) override;
 #ifdef _UNICODE
-		virtual void Modifier(void * p, char * c, int l);
+		virtual void Modifier(void * p, char * c, int l) override;
 #endif
 
 		virtual void Ajouter(void *p, const chaineval * clef, const chaineval * val, size_t lval);
 		
-		virtual void Exception(carac *Texte);
-		virtual void DebutParametres();
-		virtual void AppelerFonction(code* f);
+		virtual void Exception(carac *Texte) override;
+		virtual void DebutParametres() override;
+		virtual void AppelerFonction(code* f) override;
 	};
 
 	typedef void (CInterpreteur::*FonctionGPP)();

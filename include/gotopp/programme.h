@@ -1,9 +1,9 @@
-
 #ifndef _GPP_H
 #define _GPP_H
 
 #include "mutex.h"
 #include "gppmodule.h"
+#include <gotopp/base.h>
 
 namespace GotoPP
 {
@@ -17,7 +17,7 @@ namespace GotoPP
 	};
 
 	/// Les instructions de la machine virtuelle
-	enum Code
+	enum class Code : code
 	{
 		I_STOP,
 		I_DEFINIR,
@@ -198,7 +198,7 @@ namespace GotoPP
 	class Programme:public gc, public IProgramme
 	{
 	public://Implémentation de IProgramme
-		virtual float GetVersion();
+		virtual float GetVersion() override;
 		/*virtual Symbole * NouvellePropriete(carac *Nom, int Prive, 
 			voidf FonctionLire, voidf FonctionEcrire);*/
 		//virtual int NouvelleVariable(const carac *Nom);
@@ -219,24 +219,24 @@ namespace GotoPP
 		Symbole * symboleGlobal;
 
 		Symbole * NouvelleVariable(const carac *Nom, size_t lNom,
-								   CType type, Symbole * parent=0);
+								   CType type, Symbole * parent=nullptr);
 		Symbole * NouvelleVariable(const carac *Nom, CType type,
-								   Symbole * parent=0);
+								   Symbole * parent=nullptr);
 
 		Symbole * NouvelleVariable(const carac *Nom, Symbole * cl, 
-								   Symbole * parent=0);
+								   Symbole * parent=nullptr);
 
-		ISymbole * NouvelleFonctionC(voidf f,const carac *Nom, ISymbole * parent=0);
+		ISymbole * NouvelleFonctionC(voidf f,const carac *Nom, ISymbole * parent=nullptr) override;
 
-		ISymbole * NouvelleFonctionC(voidf f,const carac *Nom,carac*Type,ISymbole * parent=0);
+		ISymbole * NouvelleFonctionC(voidf f,const carac *Nom,carac*Type,ISymbole * parent=nullptr);
 
-		Symbole * NouveauSymbole(const carac *Nom, size_t lNom, CType type, Symbole * parent=0);
-		Symbole * ChercherClasse(const carac *Nom, Symbole * parent=0);
-		ISymbole * NouvelleClasseC(const carac *Nom, size_t lNom,voidf constructeur, ISymbole * parent=0);
-		ISymbole * NouvelleMethodeC(voidf Fonc, const carac *Nom,  ISymbole * parent=0);
+		Symbole * NouveauSymbole(const carac *Nom, size_t lNom, CType type, Symbole * parent=nullptr);
+		Symbole * ChercherClasse(const carac *Nom, Symbole * parent=nullptr);
+		ISymbole * NouvelleClasseC(const carac *Nom, size_t lNom,voidf constructeur, ISymbole * parent=nullptr);
+		ISymbole * NouvelleMethodeC(voidf Fonc, const carac *Nom,  ISymbole * parent=nullptr) override;
 		Symbole * NouvelleConstante(const carac *Nom, size_t lNom,
-										int val, Symbole * parent=0);
-		Symbole * NouvelleConstante(const carac * Nom, size_t lNom, Symbole * parent=0);
+										int val, Symbole * parent=nullptr);
+		Symbole * NouvelleConstante(const carac * Nom, size_t lNom, Symbole * parent=nullptr);
 		
 		carac * NomVarGlob(index_t i);
 		carac * NomEtiquette(code *c);
@@ -244,11 +244,11 @@ namespace GotoPP
 		void InitVarGlob();
 		code * ChercherEtiquette(int i);
 
-		ISymbole * NouvelleClasseC(const carac * Nom, voidf constructeur, ISymbole * parent=0)
+		ISymbole * NouvelleClasseC(const carac * Nom, voidf constructeur, ISymbole * parent=nullptr) override
 		{
 			return NouvelleClasseC(Nom,czlen(Nom),constructeur,parent);
 		}
-		Symbole * NouvelleConstante(const carac *Nom, int val, Symbole * parent=0)
+		Symbole * NouvelleConstante(const carac *Nom, int val, Symbole * parent=nullptr)
 		{
 			return NouvelleConstante(Nom,czlen(Nom),val,parent);
 		}

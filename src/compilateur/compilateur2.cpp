@@ -25,7 +25,7 @@ Des fonctions de Compilateur que je mets ici parce que sinon hein heu.
 */
 
 #include <gotopp/base.h>
-#include <gotopp/compilateur.h>
+#include <gotopp/icompilateur.h>
 #include <gotopp/erreur.h>
 #include <gotopp/instruction.h>
 #include <gotopp/global.h>

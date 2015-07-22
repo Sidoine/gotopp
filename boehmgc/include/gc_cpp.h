@@ -165,7 +165,11 @@ enum GCPlacement {UseGC,
                   NoGC, PointerFreeGC};
 
 class gc {public:
-    inline void* operator new( size_t size );
+	virtual ~gc()
+	{
+	}
+
+	inline void* operator new( size_t size );
     inline void* operator new( size_t size, GCPlacement gcp );
     inline void* operator new( size_t size, void *p );
     	/* Must be redefined here, since the other overloadings	*/

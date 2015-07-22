@@ -26,6 +26,7 @@ Pile de valeurs
 
 #ifndef _PILE_H
 #define _PILE_H
+#include <gotopp/base.h>
 
 namespace GotoPP
 {

@@ -197,10 +197,10 @@ void CInterpreteur::Reinit()
 	Pile2.Vider();
 }
 
-namespace DefBib
+/* namespace DefBib
 {
 	void RestaurerConsole();
-}
+} */
 
 void CInterpreteur::ExecuterCatch()
 {

@@ -26,7 +26,7 @@ Bref, des heures d'amusement en perspective.
 
 */
 #include <gotopp/base.h>
-#include <gotopp/compilateur.h>
+#include <gotopp/icompilateur.h>
 #include <gotopp/erreur.h>
 #include <gotopp/machine.h>
 #include <gotopp/programme.h>

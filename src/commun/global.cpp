@@ -1,6 +1,6 @@
 #define DEFINITIONS
 #include <gotopp/base.h>
-#include <gotopp/compilateur.h>
+#include <gotopp/icompilateur.h>
 #include <gotopp/programme.h>
 #include <gotopp/global.h>
 #include <time.h>

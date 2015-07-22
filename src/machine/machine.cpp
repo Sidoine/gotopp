@@ -53,16 +53,16 @@ void GotoPP::CInterpreteur::Executer()
 
 	while (Ins.i)
 	{
-		switch (Ins.LireCode())
+		switch (static_cast<Code>(Ins.LireCode()))
 		{
-		case I_STOP:
+		case Code::I_STOP:
 #ifdef _DEBUG
 	/*		clog << "Taille de PileF :" << uint(PileF.l)<<"\n";
 			clog << "Nombre d'appels :" << nAppels<<"\n";*/
 #endif
 			programme->mutex.Liberer();
 			return;
-		case I_DEFINIR:
+		case Code::I_DEFINIR:
 			{
 				valeur val;Pile.Depiler(val);
 				valeur var;Pile.Depiler(var);
@@ -74,7 +74,7 @@ void GotoPP::CInterpreteur::Executer()
 					printf("Définir %s=%d\n",Variable[var].Nom,val);*/
 				break;
 			}
-		case I_INSTANCEDE:
+		case Code::I_INSTANCEDE:
 			{
 				valeur val;Pile.Depiler(val);
 				valeur var;Pile.Depiler(var);
@@ -86,7 +86,7 @@ void GotoPP::CInterpreteur::Executer()
 					printf("Définir %s=%d\n",Variable[var].Nom,val);*/
 				break;
 			}
-		case I_INCREMENTER:
+		case Code::I_INCREMENTER:
 			{
 				valeur val;Pile.Depiler(val);
 				valeur var;Pile.Depiler(var);
@@ -96,7 +96,7 @@ void GotoPP::CInterpreteur::Executer()
 				*Deref(var.v.p)+=val;
 				break;
 			}
-		case I_DECREMENTER:
+		case Code::I_DECREMENTER:
 			{
 				valeur val;Pile.Depiler(val);
 				valeur var;Pile.Depiler(var);
@@ -106,7 +106,7 @@ void GotoPP::CInterpreteur::Executer()
 				*Deref(var.v.p)-=val;
 				break;
 			}
-		case I_MULTIPLIEREGAL:
+		case Code::I_MULTIPLIEREGAL:
 			{
 				valeur val;Pile.Depiler(val);
 				valeur var;Pile.Depiler(var);
@@ -116,7 +116,7 @@ void GotoPP::CInterpreteur::Executer()
 				*Deref(var.v.p)*=val;
 				break;
 			}
-		case I_DIVISEREGAL:
+		case Code::I_DIVISEREGAL:
 			{
 				valeur val;Pile.Depiler(val);
 				valeur var;Pile.Depiler(var);
@@ -127,13 +127,13 @@ void GotoPP::CInterpreteur::Executer()
 				break;
 			}
 
-		case I_EXEC:
+		case Code::I_EXEC:
 			{
 				AppelerEtiquette(Ins.LireEtiquette());
 				break;
 			}
 
-		case I_EXECVAL:
+		case Code::I_EXECVAL:
 			{
 				valeur var;Pile.Depiler(var);
 				if (var.Type==TYPE_ETIQUETTE)
@@ -149,19 +149,19 @@ void GotoPP::CInterpreteur::Executer()
 				break;
 			}
 
-		case I_EXECC:
+		case Code::I_EXECC:
 			{
 				AppelerFonctionC(Ins.LireFonctionC());
 				break;
 			}
 
-		case I_EXECTHIS:
+		case Code::I_EXECTHIS:
 			{
 				AppelerEtiquette(Ins.LireEtiquette(),true);
 				break;
 			}
 
-		case I_EXECMEMETHISVAL:
+		case Code::I_EXECMEMETHISVAL:
 			{
 				valeur var;Pile.Depiler(var);
 				if (var.Type==TYPE_ETIQUETTE_THIS)
@@ -171,51 +171,51 @@ void GotoPP::CInterpreteur::Executer()
 				break;
 			}
 
-		case I_EXECTHISC:
+		case Code::I_EXECTHISC:
 			{
 				throw TXT("EXECTHISC non implémenté");
 				break;
 			}
-		case I_EXECTHISMODULE:
+		case Code::I_EXECTHISMODULE:
 			{
 				throw TXT("EXECTHISMODULE non implémenté");
 				break;
 			}
 
-		case I_EXPREG:
+		case Code::I_EXPREG:
 			{
 				DerExpReg=(regexp*) Ins.LireObjet();
 				Pile.Ajouter(DerExpReg);
 				break;
 			}
-		case I_CONSTANTE:
+		case Code::I_CONSTANTE:
 			{
 				valeur val;
 				Ins.Lire(val);
 				Pile.Ajouter(val);
 				break;
 			}
-		case I_ENTIER:
+		case Code::I_ENTIER:
 			{
 				Pile.Ajouter(Ins.LireEntier());
 				break;
 			}
-		case I_CARAC:
+		case Code::I_CARAC:
 			{
 				Pile.Ajouter(Ins.LireCarac());
 				break;
 			}
-		case I_ETIQUETTE:
+		case Code::I_ETIQUETTE:
 			{
 				Pile.AjouterEtiquette(Ins.LireEtiquette());
 				break;
 			}
-		case I_ETIQUETTELOC:
+		case Code::I_ETIQUETTELOC:
 			{
 				Pile.AjouterEtiquette(Ins.i+Ins.LireEntier());
 				break;
 			}
-		case I_VARIABLELOC:
+		case Code::I_VARIABLELOC:
 			{
 				int n=Ins.LireVariable();
 /*				if (n>=int(PileF.l))
@@ -232,7 +232,7 @@ void GotoPP::CInterpreteur::Executer()
 				Pile.Ajouter(r);
 				break;
 			}
-		case I_VALEURVARLOC:
+		case Code::I_VALEURVARLOC:
 			{
 				int n=Ins.LireVariable();
 	/*			if (n>int(PileF.l))
@@ -245,7 +245,7 @@ void GotoPP::CInterpreteur::Executer()
 
 				break;
 			}
-		case I_PARAMREF:
+		case Code::I_PARAMREF:
 			{
 				int n=Ins.LireVariable();
 /*				if (n>=int(PileF.l))
@@ -260,7 +260,7 @@ void GotoPP::CInterpreteur::Executer()
 		                Pile.Ajouter(r);
 				break;
 			}
-		case I_PARAMVAL:
+		case Code::I_PARAMVAL:
 			{
 				int n=Ins.LireVariable();
 	/*			if (n>int(PileF.l))
@@ -272,7 +272,7 @@ void GotoPP::CInterpreteur::Executer()
 
 				break;
 			}
-		case I_VARIABLE:
+		case Code::I_VARIABLE:
 			{
 				areference r;
 				r.Type=RefType::Global;
@@ -280,12 +280,12 @@ void GotoPP::CInterpreteur::Executer()
 				Pile.Ajouter(r);
 				break;
 			}
-		case I_VALEURVAR:
+		case Code::I_VALEURVAR:
 			{
 				Pile.Ajouter(varGlob[Ins.LireVariable()]);
 				break;
 			}
-		case I_VALEUR:
+		case Code::I_VALEUR:
 			{
 				valeur v;Pile.Depiler(v);
 				if (v.Type!=TYPE_REFERENCE)
@@ -295,7 +295,7 @@ void GotoPP::CInterpreteur::Executer()
 				break;
 			}
 			
-		case I_DEBUTLIGNE:
+		case Code::I_DEBUTLIGNE:
 			{
 				programme->mutex.Liberer();
 				DebutLigne=Ins.i-sizeof(code);
@@ -306,12 +306,12 @@ void GotoPP::CInterpreteur::Executer()
 				//clog  << Ligne << '\n';
 				break;
 			}
-		case I_CHANCES:
+		case Code::I_CHANCES:
 			{
 				Pile.Ajouter(Ins.LireChances());
 				break;
 			}
-		case I_CONVTYPE:
+		case Code::I_CONVTYPE:
 			{
 				valeur * val=&Pile.Dernier();
 				type premier=Ins.LireType();
@@ -333,7 +333,7 @@ void GotoPP::CInterpreteur::Executer()
 				}
 				break;
 			}
-		case I_AJOUTER:
+		case Code::I_AJOUTER:
 			{
 				valeur a;Pile.Depiler(a);
 				valeur b;Pile.Depiler(b);
@@ -342,31 +342,31 @@ void GotoPP::CInterpreteur::Executer()
 					printf("Ajouter %d+%d\n",a,b);*/
 				break;
 			}
-		case I_AJOUTERE:
+		case Code::I_AJOUTERE:
 			{
 				valeur a;Pile.Depiler(a);
 				Pile.Dernier().v.i+=a.v.i;
 				break;
 			}
-		case I_SOUSTRAIREE:
+		case Code::I_SOUSTRAIREE:
 			{
 				valeur a;Pile.Depiler(a);
 				Pile.Dernier().v.i-=a.v.i;
 				break;
 			}
-		case I_FOISE:
+		case Code::I_FOISE:
 			{
 				valeur a;Pile.Depiler(a);
 				Pile.Dernier().v.i*=a.v.i;
 				break;
 			}
-		case I_DIVISERE:
+		case Code::I_DIVISERE:
 			{
 				valeur a;Pile.Depiler(a);
 				Pile.Dernier().v.i/=a.v.i;
 				break;
 			}
-		case I_SUPERPLUS:
+		case Code::I_SUPERPLUS:
 			{
 				valeur a;Pile.Depiler(a);
 				valeur b;Pile.Depiler(b);
@@ -374,86 +374,86 @@ void GotoPP::CInterpreteur::Executer()
 				Pile.Ajouter(b);
 				break;
 			}
-		case I_SOUSTRAIRE:
+		case Code::I_SOUSTRAIRE:
 			{
 				valeur a;Pile.Depiler(a);
 				valeur b;Pile.Depiler(b);
 				Pile.Ajouter(b-a);
 				break;
 			}
-		case I_FOIS:
+		case Code::I_FOIS:
 			{
 				valeur a;Pile.Depiler(a);
 				valeur b;Pile.Depiler(b);
 				Pile.Ajouter(a*b);
 				break;
 			}
-		case I_DIVISE:
+		case Code::I_DIVISE:
 			{
 				valeur a;Pile.Depiler(a);
 				valeur b;Pile.Depiler(b);
 				Pile.Ajouter(b/a);
 				break;
 			}
-		case I_EGAL:
+		case Code::I_EGAL:
 			{
 				valeur a;Pile.Depiler(a);
 				valeur b;Pile.Depiler(b);
 				Pile.Ajouter(b==a);
 				break;
 			}
-		case I_DIFFERENT:
+		case Code::I_DIFFERENT:
 			{
 				valeur a;Pile.Depiler(a);
 				valeur b;Pile.Depiler(b);
 				Pile.Ajouter(b!=a);
 				break;
 			}
-		case I_SUPERIEUR:
+		case Code::I_SUPERIEUR:
 			{
 				valeur a;Pile.Depiler(a);
 				valeur b;Pile.Depiler(b);
 				Pile.Ajouter(b>a);
 				break;
 			}
-		case I_INFERIEUR:
+		case Code::I_INFERIEUR:
 			{
 				valeur a;Pile.Depiler(a);
 				valeur b;Pile.Depiler(b);
 				Pile.Ajouter(a>b);
 				break;
 			}
-		case I_SUPEGAL:
+		case Code::I_SUPEGAL:
 			{
 				valeur a;Pile.Depiler(a);
 				valeur b;Pile.Depiler(b);
 				Pile.Ajouter(b>=a);
 				break;
 			}
-		case I_INFEGAL:
+		case Code::I_INFEGAL:
 			{
 				valeur a;Pile.Depiler(a);
 				valeur b;Pile.Depiler(b);
 				Pile.Ajouter(a>=b);
 				break;
 			}
-		case I_NON:
+		case Code::I_NON:
 			{
 				valeur a;Pile.Depiler(a);
 				Pile.Ajouter(!a);
 				break;
 			}
-		case I_OPPOSE:
+		case Code::I_OPPOSE:
 			{
 				Pile.Dernier().Oppose();
 				break;
 			}
-		case I_NONOPPOSE:
+		case Code::I_NONOPPOSE:
 			{
 				Pile.Dernier().EnNombre();
 				break;
 			}
-		case I_RETOUR:
+		case Code::I_RETOUR:
 			{
 				Retour();
 				if (nAppels<AppelDepart)
@@ -463,7 +463,7 @@ void GotoPP::CInterpreteur::Executer()
 				}
 				break;
 			}
-		case I_CONCAT:
+		case Code::I_CONCAT:
 			{
 				valeur a;Pile.Depiler(a);a.EnChaine();
 				valeur b;Pile.Depiler(b);b.EnChaine();
@@ -475,7 +475,7 @@ void GotoPP::CInterpreteur::Executer()
 				Pile.Ajouter(a);*/
 				break;
 			}
-		case I_HACHAGEREF:
+		case Code::I_HACHAGEREF:
 			{
 				valeur i;
 				Pile.Depiler(i);
@@ -491,7 +491,7 @@ void GotoPP::CInterpreteur::Executer()
 				Pile.Ajouter(r);
 				break;
 			}
-		case I_HACHAGEVAL:
+		case Code::I_HACHAGEVAL:
 			{
 				valeur i;
 				Pile.Depiler(i);
@@ -513,14 +513,14 @@ void GotoPP::CInterpreteur::Executer()
 					Pile.AjouterIndef();
 				break;
 			}
-		case I_THISREF:
+		case Code::I_THISREF:
 			{
 				areference r;
 				This->ObtRef(r,Ins.LireEntier());
 				Pile.Ajouter(r);
 				break;
 			}
-		case I_THISVAL:
+		case Code::I_THISVAL:
 			{
 				if (This->v)
 					Pile.Ajouter(This->Get(Ins.LireEntier()));
@@ -528,7 +528,7 @@ void GotoPP::CInterpreteur::Executer()
 					throw TXT("pas de this");
 				break;
 			}
-		case I_TABLEAUREF:
+		case Code::I_TABLEAUREF:
 			{
 				valeur i;
 				Pile.Depiler(i);
@@ -548,7 +548,7 @@ void GotoPP::CInterpreteur::Executer()
 				Pile.Ajouter(r);
 				break;
 			}
-		case I_TABLEAUVAL:
+		case Code::I_TABLEAUVAL:
 			{
 				valeur i;
 				Pile.Depiler(i);
@@ -572,7 +572,7 @@ void GotoPP::CInterpreteur::Executer()
 					Pile.AjouterIndef();
 				break;
 			}
-		case I_CTABLEAUREF:
+		case Code::I_CTABLEAUREF:
 			{
 				int i=Ins.LireEntier();
 				valeur var;
@@ -586,7 +586,7 @@ void GotoPP::CInterpreteur::Executer()
 				Pile.Ajouter(r);
 				break;
 			}
-		case I_CTABLEAUVAL:
+		case Code::I_CTABLEAUVAL:
 			{
 				int i=Ins.LireEntier();
 				valeur var;
@@ -606,34 +606,34 @@ void GotoPP::CInterpreteur::Executer()
 					Pile.AjouterIndef();
 				break;
 			}
-		case I_DEBUTPARAM:
+		case Code::I_DEBUTPARAM:
 			{
 				Pile.AjouterDebutParam();
 				break;
 			}
-		case I_DUPLIQUER:
+		case Code::I_DUPLIQUER:
 			{
 				Pile.Ajouter(Pile.Dernier());
 				break;
 			}
-		case I_SUPPRIMER:
+		case Code::I_SUPPRIMER:
 			{
 				Pile.EffacerDernier();
 				break;
 			}
-		case I_GOTO:
+		case Code::I_GOTO:
 			{
 				Pile.Vider();
 				Ins.Goto(Ins.LireEtiquette());
 				break;
 			}
-		case I_GOTOR:
+		case Code::I_GOTOR:
 			{
 				Pile.Vider();
 				Ins.GotoRel(Ins.LireEntier());
 				break;
 			}
-		case I_GOTONONZERO:
+		case Code::I_GOTONONZERO:
 			{
 				valeur var;
 				Pile.Depiler(var);
@@ -645,7 +645,7 @@ void GotoPP::CInterpreteur::Executer()
 				}
 				break;
 			}
-		case I_GOTONONZEROR:
+		case Code::I_GOTONONZEROR:
 			{
 				valeur var;
 				Pile.Depiler(var);
@@ -657,7 +657,7 @@ void GotoPP::CInterpreteur::Executer()
 				}
 				break;
 			}
-		case I_GOTOZERO:
+		case Code::I_GOTOZERO:
 			{
 				valeur var;
 				Pile.Depiler(var);
@@ -669,7 +669,7 @@ void GotoPP::CInterpreteur::Executer()
 				}
 				break;
 			}
-		case I_GOTOZEROR:
+		case Code::I_GOTOZEROR:
 			{
 				valeur var;
 				Pile.Depiler(var);
@@ -681,7 +681,7 @@ void GotoPP::CInterpreteur::Executer()
 				}
 				break;
 			}
-		case I_TAILLE:
+		case Code::I_TAILLE:
 			{
 				valeur var;
 				Pile.Depiler(var);
@@ -709,7 +709,7 @@ void GotoPP::CInterpreteur::Executer()
 				Pile.Ajouter(Taille);
 				break;
 			}
-		case I_VALEURCLEF:
+		case Code::I_VALEURCLEF:
 			{
 				valeur var;Pile.Depiler(var);
 				if (var.Type!=TYPE_REFERENCE ||
@@ -721,7 +721,7 @@ void GotoPP::CInterpreteur::Executer()
 				Pile.Ajouter(((pairehachage*)r->BaseH->v)[r->Decalage].Clef);
 				break;
 			}
-		case I_PROBASAUTERLIGNE:
+		case Code::I_PROBASAUTERLIGNE:
 			{
 				float Proba=Ins.LireChances();
 				code *Cible=Ins.LireEtiquette();
@@ -729,7 +729,7 @@ void GotoPP::CInterpreteur::Executer()
 					Ins.Goto(Cible);
 				break;
 			}
-		case I_NOUVEAU:
+		case Code::I_NOUVEAU:
 			{
 				areference r;
 				r.Type=RefType::Bebe;
@@ -738,25 +738,25 @@ void GotoPP::CInterpreteur::Executer()
 				break;
 			}
 
-		case I_GOTOTACHE:
+		case Code::I_GOTOTACHE:
 			{
 				code * Cible=Ins.LireEtiquette();
 				Pile.Ajouter((IObjet*)NouvelleTache(Cible));
 				break;
 			}
-		case I_GOTOTACHER:
+		case Code::I_GOTOTACHER:
 			{
 				int Cible=Ins.LireEntier();
 				Pile.Ajouter(NouvelleTache(Ins.i+Cible));
 				break;
 			}
 
-		case I_FINTACHE:
+		case Code::I_FINTACHE:
 			{
 				programme->mutex.Liberer();
 				return;
 			}
-		case I_DEFCONSTR:
+		case Code::I_DEFCONSTR:
 			{
 				Symbole * c=Ins.LireSymbole();				
 				int n=Ins.LireVariable();
@@ -768,7 +768,7 @@ void GotoPP::CInterpreteur::Executer()
 				PileF[DebutVarLoc+n].v.t->Dimensions=0;
 				break;
 			}
-		case I_THIS:
+		case Code::I_THIS:
 			{
 				valeur MonThis;
 				MonThis.Type=TYPE_TABLEAU;
@@ -776,18 +776,18 @@ void GotoPP::CInterpreteur::Executer()
 				Pile.Ajouter(MonThis);
 				break;
 			}
-		case I_ENERREUR:
+		case Code::I_ENERREUR:
 			{
 				Appel[nAppels].EnErreur=Ins.LireEtiquette();				
 				break;
 			}
-		case I_ENERREURR:
+		case Code::I_ENERREURR:
 			{
 				Appel[nAppels].EnErreur=Ins.i+Ins.LireEntier();				
 				break;
 			}
 	
-		case I_OU:
+		case Code::I_OU:
 			{
 				int Suite=Ins.LireEntier();
 				valeur v;
@@ -799,7 +799,7 @@ void GotoPP::CInterpreteur::Executer()
 				}
 				break;
 			}
-		case I_ET:
+		case Code::I_ET:
 			{
 				int Suite=Ins.LireEntier();
 				valeur v;
@@ -811,7 +811,7 @@ void GotoPP::CInterpreteur::Executer()
 				}
 				break;
 			}
-		case I_FINOUET:
+		case Code::I_FINOUET:
 			{
 				valeur v;
 				Pile.Depiler(v);
@@ -825,7 +825,7 @@ void GotoPP::CInterpreteur::Executer()
 				}
 				break;
 			}
-		case I_TYPEDE:
+		case Code::I_TYPEDE:
 			{
 				valeur v;
 				Pile.Depiler(v);
@@ -839,7 +839,7 @@ void GotoPP::CInterpreteur::Executer()
 					Pile.AjouterIndef();
 				break;
 			}
-		case I_SWITCH:
+		case Code::I_SWITCH:
 			{
 				valeur v;
 				Pile.Depiler(v);
@@ -854,7 +854,7 @@ void GotoPP::CInterpreteur::Executer()
 					Ins.Goto(c->PosDefaut);
 				break;
 			}
-		case I_ESTREFVALIDE:
+		case Code::I_ESTREFVALIDE:
 			{
 				valeur p;
 				Pile.Depiler(p);
@@ -880,7 +880,7 @@ void GotoPP::CInterpreteur::Executer()
 				}
 				break;					
 			}
-		case I_EMPILER2:
+		case Code::I_EMPILER2:
 			{
 				valeur v;
 				Pile.Depiler(v);
@@ -897,7 +897,7 @@ void GotoPP::CInterpreteur::Executer()
 				}
 				break;
 			}*/
-		case I_DEPILER2:
+		case Code::I_DEPILER2:
 			{
 				valeur v;
 				Pile2.Depiler(v);
@@ -914,7 +914,7 @@ void GotoPP::CInterpreteur::Executer()
 				}
 				break;
 			}*/
-		case I_VALEUR2:
+		case Code::I_VALEUR2:
 			{
 				Pile.Ajouter(Pile2.Dernier());
 				break;
@@ -927,7 +927,7 @@ void GotoPP::CInterpreteur::Executer()
 				}
 				break;
 			}*/
-		case I_DECALG:
+		case Code::I_DECALG:
 			{
 				valeur combien;
 				Pile.Depiler(combien);
@@ -935,7 +935,7 @@ void GotoPP::CInterpreteur::Executer()
 				Pile.Dernier().v.i<<=combien.Entier();
 				break;
 			}
-		case I_DECALD:
+		case Code::I_DECALD:
 			{
 				valeur combien;
 				Pile.Depiler(combien);
@@ -943,7 +943,7 @@ void GotoPP::CInterpreteur::Executer()
 				Pile.Dernier().v.i>>=combien.Entier();
 				break;
 			}
-		case I_MODULO:
+		case Code::I_MODULO:
 			{
 				valeur combien;
 				Pile.Depiler(combien);
@@ -951,7 +951,7 @@ void GotoPP::CInterpreteur::Executer()
 				Pile.Dernier().v.i%=combien.Entier();
 				break;
 			}
-		case I_ETBIN:
+		case Code::I_ETBIN:
 			{
 				valeur combien;
 				Pile.Depiler(combien);
@@ -959,7 +959,7 @@ void GotoPP::CInterpreteur::Executer()
 				Pile.Dernier().v.i&=combien.Entier();
 				break;
 			}
-		case I_OUBIN:
+		case Code::I_OUBIN:
 			{
 				valeur combien;
 				Pile.Depiler(combien);
@@ -967,14 +967,14 @@ void GotoPP::CInterpreteur::Executer()
 				Pile.Dernier().v.i|=combien.Entier();
 				break;
 			}
-		case I_EXISTE:
+		case Code::I_EXISTE:
 			{
 				valeur v;
 				Pile.Depiler(v);
 				Pile.Ajouter(v.Type!=TYPE_INCONNU);
 				break;
 			}
-		case I_NPARAMS:
+		case Code::I_NPARAMS:
 			{
 				if (nAppels)
 					Pile.Ajouter((int)Appel[nAppels-1].nParams);
@@ -982,22 +982,22 @@ void GotoPP::CInterpreteur::Executer()
 					throw TXT("impossible de connaître le nombre de paramètres quand on n'est pas dans une fonction");
 				break;
 			}
-		case I_FONCTIONC:
+		case Code::I_FONCTIONC:
 			{
 				Pile.AjouterType(TYPE_FONCTIONC,Ins.LireFonctionC());
 				break;
 			}
-		case I_FONCTIONC_THIS:
+		case Code::I_FONCTIONC_THIS:
 			{
 				Pile.AjouterType(TYPE_FONCTIONC_THIS,Ins.LireFonctionC());
 				break;
 			}
-		case I_FONCTIONMODULE:
+		case Code::I_FONCTIONMODULE:
 			{
 				Pile.AjouterType(TYPE_FONCTIONMODULE,Ins.LireEntier());
 				break;
 			}
-		case I_ETIQUETTE_THIS:
+		case Code::I_ETIQUETTE_THIS:
 			Pile.AjouterType(TYPE_ETIQUETTE_THIS,Ins.LireEntier());
 			break;
 		/*case I_DEPLACERHAUTPILE:
@@ -1007,7 +1007,7 @@ void GotoPP::CInterpreteur::Executer()
 				Pile.Pos+=diff;
 				break;
 			}*/
-		case I_ALLOCATION:
+		case Code::I_ALLOCATION:
 			{
 				Pile.Ajouter((IObjet*)GC_MALLOC(Ins.LireEntier()));
 				break;
@@ -1166,10 +1166,11 @@ void GotoPP::CInterpreteur::Retour()
 	Pile.Pos=uint(Appel[nAppels].lPile);
 	PileF.l=uint(Appel[nAppels].PosPileF);
 }
-namespace DefBib
+
+/*namespace DefBib
 {
 	void RestaurerConsole();
-}
+}*/
 
 void GotoPP::CInterpreteur::Exception()
 {
@@ -1182,11 +1183,11 @@ void GotoPP::CInterpreteur::Exception()
 	}
 	if (Appel[a].EnErreur==NULL)
 	{
-		DefBib::RestaurerConsole();
+	//	DefBib::RestaurerConsole();
 		czerr << "Exception non gérée : ";
 		varGlob[0].Ecrire(stderr);
 		czerr <<"\n";
-		Ins.Goto(NULL);
+		Ins.Goto(nullptr);
 	}
 	else
 		Ins.Goto(Appel[a].EnErreur);
@@ -1240,6 +1241,11 @@ void GotoPP::CInterpreteur::Goto(code *v)
 void GotoPP::CInterpreteur::AfficherErreur(const carac *c)
 {
 	::AfficherErreur(c,AcFichierSource(),Ligne,true);
+}
+
+void CInterpreteur::Depiler2(valeur& val)
+{
+	Pile2.Depiler(val);
 }
 
 void GotoPP::CInterpreteur::AfficherErreur(GotoPP::CErreur&e)

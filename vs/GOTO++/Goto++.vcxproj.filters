@@ -191,9 +191,6 @@
     <ClInclude Include="..\..\include\gotopp\base.h">
       <Filter>Fichiers d%27en-tête\gotopp</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\gotopp\compilateur.h">
-      <Filter>Fichiers d%27en-tête\gotopp</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\gotopp\configwin.h">
       <Filter>Fichiers d%27en-tête\gotopp</Filter>
     </ClInclude>
@@ -235,6 +232,12 @@
     </ClInclude>
     <ClInclude Include="..\..\src\compilateur\instrconstr.h">
       <Filter>Fichiers d%27en-tête\compilateur</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\compilateur\bloc.h">
+      <Filter>Fichiers d%27en-tête\compilateur</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\gotopp\icompilateur.h">
+      <Filter>Fichiers d%27en-tête\gotopp</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

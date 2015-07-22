@@ -57,7 +57,7 @@ void CInterpreteur::AppelerFonction(code* f)
 	Executer();
 }
 	
-const chaineval * CInterpreteur::LireChaine()
+const IChaine * CInterpreteur::LireChaine()
 {
 	valeur Chaine;
 	Pile.Depiler(Chaine);

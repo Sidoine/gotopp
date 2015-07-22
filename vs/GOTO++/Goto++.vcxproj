@@ -158,7 +158,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\include\gotopp\appelfonction.h" />
     <ClInclude Include="..\..\include\gotopp\base.h" />
-    <ClInclude Include="..\..\include\gotopp\compilateur.h" />
+    <ClInclude Include="..\..\include\gotopp\icompilateur.h" />
     <ClInclude Include="..\..\include\gotopp\configwin.h" />
     <ClInclude Include="..\..\include\gotopp\erreur.h" />
     <ClInclude Include="..\..\include\gotopp\global.h" />
@@ -186,6 +186,7 @@
     <ClInclude Include="..\..\src\commun\instr.h" />
     <ClInclude Include="..\..\src\commun\regmagic.h" />
     <ClInclude Include="..\..\src\commun\sauveur.h" />
+    <ClInclude Include="..\..\src\compilateur\bloc.h" />
     <ClInclude Include="..\..\src\compilateur\compriv.h" />
     <ClInclude Include="..\..\src\compilateur\instrconstr.h" />
   </ItemGroup>

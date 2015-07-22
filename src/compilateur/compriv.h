@@ -6,19 +6,19 @@
 #include "../commun/instr.h"
 #include "../commun/classe.h"
 #include "instrconstr.h"
+#include "bloc.h"
 
 namespace GotoPP
 {
 	class Programme;
 	class CErreur;
-
+	
 	const carac SEP_TAB_O='<';
 	const carac SEP_TAB_F='>';
 	const carac SEP_PROP='@';
 	const carac SEP_HAC_O='[';
 	const carac SEP_HAC_F=']';
 	const int NMAXINSTRPARLIGNE=256;
-
 
 	struct SEtiqA
 	{
@@ -41,19 +41,6 @@ namespace GotoPP
 		TV_GLOBALE,
 		TV_LOCALE,
 		TV_PARAMETRE
-	};
-
-	enum ETypeBloc
-	{
-		TB_SI,
-		TB_SINON,
-		TB_TANTQUE,
-		TB_SWITCH,
-		TB_FONCTION,
-		TB_RIEN,
-		TB_FOR,
-		TB_FOREACH,
-		TB_CLASSE
 	};
 
 	struct SVarLongue
@@ -104,7 +91,7 @@ namespace GotoPP
 		uint p; //Priorité
 		uint pVal,nVal; //Les valeurs faisant partie de l'instruction
 		EInstrSpec Special;
-		code Code;
+		Code Code;
 	};
 
 	struct LigneDeCode
@@ -117,22 +104,6 @@ namespace GotoPP
 		SInstr & Ajouter(uint nVals);
 		void Supprimer(int pos);
 		void Init(){nIns=0;nVals=0;}
-	};
-
-	struct CBloc:public gc
-	{
-		ETypeBloc Type;
-		bool BlocLigne;
-		int Depart;
-		Tableau<int> Break;
-		Tableau<int> Continue;
-		Symbole * symbole;
-		bool classeSpecifiee;//L'espace de nommage parent était
-			//spécifié dans la définition du bloc, on doit le supprimer aussi
-		LigneDeCode * PasDuFor;//Le i++ là dedans : for (i=0;i<10;i++)
-		Symbole * indice, * tableau, *iterateur;
-		CBloc():PasDuFor(0),BlocLigne(false),classeSpecifiee(false)
-			{}
 	};
 
 	struct SLabelL
@@ -162,22 +133,22 @@ namespace GotoPP
 		int AcLigne();
 		carac * AcFichier();
 
-		void AfficherErreur(CErreur & e);
-		void AfficherErreur(const carac *c);
+		void AfficherErreur(CErreur & e) override;
+		void AfficherErreur(const carac *c) override;
 		BoutCode* Compiler();
 		Programme * programme;
 		FichierSource * AcFichierSource;
 		InstrConstr Ins;
 		carac * Source;
 		Compilateur(Programme * programme);
-		GotoPP::BoutCode* Charger(const carac*fichier);
-		GotoPP::BoutCode* Compiler(const carac *CodeSource);
+		GotoPP::BoutCode* Charger(const carac*fichier) override;
+		GotoPP::BoutCode* Compiler(const carac *CodeSource) override;
 
 	private:
 		Tableau<int> RefEtiq;
 		Tableau<int> RefEtiqL; //Références à des étiquettes locales
 		Tableau<SEtiqA> RefEtiqA; //Références à des étiquettes automatiques
-		Tableau<CBloc*> Bloc;
+		Tableau<Bloc*> blocs;
 		index_t CibleAuto;//Numéro de la cible automatique que peuvent partager
 			//plusieurs GOTO automatiques
 		Tableau<int> EtOu;
@@ -207,7 +178,12 @@ namespace GotoPP
 		Tableau<Symbole*> useEspace;
 		Tableau<Symbole*>::Iterateur etaitPremierSymbole;
 
-		void PreparerInt(CInterpreteur *Int);
+		bool EstMotClef(const carac * y)
+		{
+			return lClef == sizeof(y) / sizeof(carac) - 1 && memcmp(MotClef, y, sizeof(y) - sizeof(carac)) == 0;
+		};
+
+		// void PreparerInt(CInterpreteur *Int);
 		
 		void LireType(CType &Type);
 
@@ -226,7 +202,7 @@ namespace GotoPP
 		void AjouterInstruction(uint j);
 		void InsererChangementType(int posPile, Symbole * nouveauType);
 		void CreerCodeFinal(LigneDeCode & insTri);
-		void DebutBloc(ETypeBloc Type,Symbole * espace=0);
+		void DebutBloc(TypeBloc Type,Symbole * espace=0);
 		void FinBloc();
 		void SauterEspaces();
 		void ChercherMotClef(bool avecChiffres=false);
@@ -234,7 +210,7 @@ namespace GotoPP
 		bool SymboleDisponible();//Vérifie que le symbole est disponible
 		Symbole * ChercherSymbole(bool creer=false);//Dans tout l'espace de nommage accessible
 		Symbole * ChercherSymboleDans(Symbole * espace);//Uniquement dans espace
-		Symbole * ChercherSymboleSimple(CBloc ** minEN=0);//Sans séparateur du style ::
+		Symbole * ChercherSymboleSimple(Bloc ** minEN=0);//Sans séparateur du style ::
 		Symbole * LireEtiquette(bool &local);
 		void InsererConstante(Symbole * fonction);
 	
@@ -259,7 +235,7 @@ namespace GotoPP
 		inline void AjParO(uint priorite); 
 		inline void AjParF();
 		inline void AjDebutParams();
-		inline void AjCode(code Code, uint Priorite);
+		inline void AjCode(Code code, uint priorite);
 		inline void AjEntier(int e);
 		inline void AjEntierType(int e, type Type);
 		inline void AjExpReg(carac *er, carac* modif);

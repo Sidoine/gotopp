@@ -26,7 +26,7 @@ combien de lignes. Bon courage pour comprendre tout ça.
 */
 
 #include <gotopp/base.h>
-#include <gotopp/compilateur.h>
+#include <gotopp/icompilateur.h>
 #include <gotopp/erreur.h>
 
 #include "compriv.h"
@@ -51,7 +51,7 @@ namespace GotoPP
 	{
 		return (czlen(x)==ly && memcmp(x,y,ly*sizeof(carac))==0);
 	}
-	#define EGALMC(y) ((lClef==sizeof(_T(y))/sizeof(carac)-1)&&(memcmp(MotClef,_T(y),sizeof(_T(y))-sizeof(carac))==0))
+	// #define EGALMC(_T(y) ((lClef==sizeof(_T(y))/sizeof(carac)-1)&&(memcmp(MotClef,_T(y),sizeof(_T(y))-sizeof(carac))==0))
 	
 	const int PRI_CONSTANTE=1;
 	const int PRI_TAILLE=2;
@@ -134,17 +134,17 @@ inline void Compilateur::AjDebutParams()
 	Instr[nInstr].p=PRI_CONSTANTE;
 	Instr[nInstr].pVal=nValeurs;
 	Instr[nInstr].nVal=0;
-	Instr[nInstr].Code=I_DEBUTPARAM;
+	Instr[nInstr].Code= Code::I_DEBUTPARAM;
 	Instr[nInstr++].Special=SPE_NORMAL;
 }
 
 
-inline void Compilateur::AjCode(code Code, uint Priorite=PRI_CONSTANTE)
+inline void Compilateur::AjCode(Code code, uint Priorite=PRI_CONSTANTE)
 {
 	Instr[nInstr].p=Priorite;
 	Instr[nInstr].pVal=nValeurs;
 	Instr[nInstr].nVal=0;
-	Instr[nInstr].Code=Code;
+	Instr[nInstr].Code = code;
 	Instr[nInstr++].Special=SPE_NORMAL;
 }
 
@@ -215,7 +215,7 @@ inline void Compilateur::AjPtrType(Symbole * ptr, type Type)
 
 inline bool Compilateur::EstNouveauSymbole(Symbole * s)
 {
-	return s==0;
+	return s == nullptr;
 }
 
 void Compilateur::SupprimerVarLongue()
@@ -237,11 +237,11 @@ bool Compilateur::CompilerOperateur()
 	{
 		Source++;
 		if (*Source=='+')
-			AjCode(I_EMPILER2);
+			AjCode(Code::I_EMPILER2);
 		else if (*Source=='-')
-			AjCode(I_DEPILER2);
+			AjCode(Code::I_DEPILER2);
 		else if (*Source==':')
-			AjCode(I_VALEUR2);
+			AjCode(Code::I_VALEUR2);
 		Source++;
 	}
 	else
@@ -262,13 +262,13 @@ bool Compilateur::CompilerOperateur()
 	{
 		Source++;
 		if (*Source=='*')
-			AjCode(I_ETBIN,PRI_ETBIN);
+			AjCode(Code::I_ETBIN,PRI_ETBIN);
 		else if (*Source=='+')
-			AjCode(I_OUBIN,PRI_OUBIN);
+			AjCode(Code::I_OUBIN,PRI_OUBIN);
 		else if (*Source=='<')
-			AjCode(I_DECALG,PRI_DECALAGEBIN);
+			AjCode(Code::I_DECALG,PRI_DECALAGEBIN);
 		else if (*Source=='>')
-			AjCode(I_DECALD,PRI_DECALAGEBIN);
+			AjCode(Code::I_DECALD,PRI_DECALAGEBIN);
 		else
 			throw TXT("opérateur binaire inconnu");
 		Source++;
@@ -310,24 +310,24 @@ bool Compilateur::CompilerOperateur()
 	if (*Source=='`')
 	{
 		Source++;
-		AjCode(I_TYPEDE,PRI_TYPEDE);
+		AjCode(Code::I_TYPEDE,PRI_TYPEDE);
 	}
 	else
 	if (*Source=='_')
 	{
 		Source++;
-		AjCode(I_CONCAT,PRI_CONCAT);
+		AjCode(Code::I_CONCAT,PRI_CONCAT);
 		InstrAc=IP_OPERATEUR;
 	}
 	else if (*Source=='"')
 	{
-		AjCode(I_VALEURCLEF);
+		AjCode(Code::I_VALEURCLEF);
 		Source++;
 		InstrAc=IP_OPERATEUR;
 	}
 	else if (*Source=='#')
 	{
-		AjCode(I_VALEUR);
+		AjCode(Code::I_VALEUR);
 		Source++;
 		InstrAc=IP_OPERATEUR;
 	}
@@ -347,11 +347,11 @@ bool Compilateur::CompilerOperateur()
 		Source++;
 		if (*Source=='~')
 		{
-			AjCode(I_NONOPPOSE,PRI_OPPOSE);
+			AjCode(Code::I_NONOPPOSE,PRI_OPPOSE);
 			Source++;
 		}
 		else
-			AjCode(I_OPPOSE,PRI_OPPOSE);
+			AjCode(Code::I_OPPOSE,PRI_OPPOSE);
 		InstrAc=IP_OPERATEUR;
 	}
 	else if (*Source=='=')
@@ -360,22 +360,22 @@ bool Compilateur::CompilerOperateur()
 		if (*Source=='-')
 		{
 			Source++;
-			AjCode(I_DECREMENTER,PRI_DEF);
+			AjCode(Code::I_DECREMENTER,PRI_DEF);
 		}
 		else
 		if (*Source=='+')
 		{
 			Source++;
-			AjCode(I_INCREMENTER,PRI_DEF);
+			AjCode(Code::I_INCREMENTER,PRI_DEF);
 		}
 		else
 		if (*Source=='=')
 		{
 			Source++;
-			AjCode(I_INSTANCEDE,PRI_DEF);
+			AjCode(Code::I_INSTANCEDE,PRI_DEF);
 		}
 		else
-			AjCode(I_DEFINIR,PRI_DEF);
+			AjCode(Code::I_DEFINIR,PRI_DEF);
 		InstrAc=IP_OPERATEUR;
 	}
 	else if (*Source==':')
@@ -383,17 +383,17 @@ bool Compilateur::CompilerOperateur()
 		Source++;
 		if (*Source=='=')
 		{
-			AjCode(I_DIVISEREGAL,PRI_DEF);
+			AjCode(Code::I_DIVISEREGAL,PRI_DEF);
 			Source++;
 		}
 		else
-			AjCode(I_DIVISE,PRI_FOIS);
+			AjCode(Code::I_DIVISE,PRI_FOIS);
 		InstrAc=IP_OPERATEUR;
 	}
 	else if ((*Source=='*')&&(Source[1]=='='))
 	{
 		Source+=2;
-		AjCode(I_MULTIPLIEREGAL,PRI_DEF);
+		AjCode(Code::I_MULTIPLIEREGAL,PRI_DEF);
 		InstrAc=IP_OPERATEUR;
 	}
 	else if (*Source=='+')
@@ -402,25 +402,25 @@ bool Compilateur::CompilerOperateur()
 		if (*Source=='+')
 		{
 			Source++;
-			AjCode(I_SUPERPLUS,PRI_PLUSMOINS);
+			AjCode(Code::I_SUPERPLUS,PRI_PLUSMOINS);
 		}
 		else
 		{
-			AjCode(I_AJOUTER,PRI_PLUSMOINS);
+			AjCode(Code::I_AJOUTER,PRI_PLUSMOINS);
 			//AjOperateurVV(OPVV_PLUS);
 		}
 		InstrAc=IP_OPERATEUR;
 	}
 	else if (*Source=='-')
 	{
-		AjCode(I_SOUSTRAIRE,PRI_PLUSMOINS);
+		AjCode(Code::I_SOUSTRAIRE,PRI_PLUSMOINS);
 		Source++;
 		InstrAc=IP_OPERATEUR;
 	}
 	else if (*Source=='(')
 	{
 		Source++;
-		AjCode(I_EXECVAL,PRI_EXEC);
+		AjCode(Code::I_EXECVAL,PRI_EXEC);
 		//On ferme la parenthèse qui *doit* avoir été ouverte
 		//avant de mettre la valeur dans la pile
 		AjParF();
@@ -445,16 +445,16 @@ bool Compilateur::CompilerOperateur()
 }
 
 
-void Compilateur::DebutBloc(ETypeBloc Type, Symbole * espace)
+void Compilateur::DebutBloc(TypeBloc Type, Symbole * espace)
 {
-	CBloc * bloc=new CBloc();
-	bloc->Type=Type;
-	bloc->Depart=(int)Ins.t;
+	Bloc * bloc=new Bloc();
+	bloc->type=Type;
+	bloc->depart=(int)Ins.t;
 	if (espace==0)
 	{
 		Symbole * parent;
-		if (Bloc.l>0)
-			parent=Bloc.Dernier()->symbole;
+		if (blocs.l>0)
+			parent=blocs.Dernier()->symbole;
 		else
 			parent=programme->symboleGlobal;
 		//On crée un symbole vide
@@ -464,23 +464,23 @@ void Compilateur::DebutBloc(ETypeBloc Type, Symbole * espace)
 		programme->symbole.Etendre(espace);
 	}
 	bloc->symbole=espace;
-	Bloc.Etendre(bloc);
+	blocs.Etendre(bloc);
 	LigneAc=LP_DEBUTBLOC;
 }
 
 void Compilateur::FinBloc()
 {
-	if (Bloc.l==0)
+	if (blocs.l==0)
 		throw TXT("pas de bloc ouvert");
 	bool Sinon=false;
 
-	switch(Bloc.Dernier()->Type)
+	switch(blocs.Dernier()->type)
 	{
-	case TB_RIEN:
+	case TypeBloc::Rien:
 		
 		break;
 		
-	case TB_SINON:
+	case TypeBloc::Sinon:
 		//clog << "bloc sinon terminé en ligne "<<Ligne<<'\n';
 		if (RefEtiqA.l==0)
 			throw TXT("un AC sans AUTOGOTOZ");
@@ -488,7 +488,7 @@ void Compilateur::FinBloc()
 		RefEtiqA.l--;
 		break;
 		
-	case TB_SI:
+	case TypeBloc::Si:
 		{
 			//clog << "bloc si terminé en ligne "<<Ligne<<'\n';
 		
@@ -523,7 +523,7 @@ void Compilateur::FinBloc()
 				//puis un AC
 				SauterEspaces();
 
-				Ins.AjouterCode(I_GOTOR);
+				Ins.AjouterCode(Code::I_GOTOR);
 				//Cible d'un AUTOGOTOZ qui crée un GOTOPASMALIN
 				int cible=RefEtiqA.Dernier().Etiq;
 				RefEtiqA.Dernier().Etiq=(int)Ins.t;
@@ -543,81 +543,81 @@ void Compilateur::FinBloc()
 			break;
 		}
 
-	case TB_FOREACH:
+	case TypeBloc::ForEach:
 		{
 			int Depart=(int)Ins.t;
-			Ins.AjouterCode(I_VARIABLELOC);
-			Ins.AjouterEntier(Bloc.Dernier()->indice->indice);
-			Ins.AjouterCode(I_ENTIER);
+			Ins.AjouterCode(Code::I_VARIABLELOC);
+			Ins.AjouterEntier(blocs.Dernier()->indice->indice);
+			Ins.AjouterCode(Code::I_ENTIER);
 			Ins.AjouterEntier(1);
-			Ins.AjouterCode(I_INCREMENTER);
-			Ins.AjouterCode(I_GOTOR);
-			Ins.AjouterGotoRel(Bloc.Dernier()->Depart);
+			Ins.AjouterCode(Code::I_INCREMENTER);
+			Ins.AjouterCode(Code::I_GOTOR);
+			Ins.AjouterGotoRel(blocs.Dernier()->depart);
 			
-			for (index_t e=0; e<Bloc.Dernier()->Continue.l;e++)
-				Ins.ChgGotoRel(Bloc.Dernier()->Continue[e],Depart);
-			for (index_t e=0; e<Bloc.Dernier()->Break.l;e++)
-				Ins.ChgGotoRel(Bloc.Dernier()->Break[e],(int)Ins.t);
+			for (index_t e=0; e<blocs.Dernier()->continues.l;e++)
+				Ins.ChgGotoRel(blocs.Dernier()->continues[e],Depart);
+			for (index_t e=0; e<blocs.Dernier()->breaks.l;e++)
+				Ins.ChgGotoRel(blocs.Dernier()->breaks[e],(int)Ins.t);
 			break;
 		}
 		
-	case TB_FOR:
+	case TypeBloc::For:
 		{
 			int Depart=(int)Ins.t;
-			if (Bloc.Dernier()->PasDuFor)
+			if (blocs.Dernier()->pasDuFor)
 			{
-				LigneDeCode * ldc=Bloc.Dernier()->PasDuFor;
+				LigneDeCode * ldc=blocs.Dernier()->pasDuFor;
 				CreerCodeFinal(*ldc);
 				delete ldc;
 			}
-			Ins.AjouterCode(I_GOTOR);
-			Ins.AjouterGotoRel(Bloc.Dernier()->Depart);
-			for (index_t e=0; e<Bloc.Dernier()->Continue.l;e++)
-				Ins.ChgGotoRel(Bloc.Dernier()->Continue[e],Depart);
-			for (index_t e=0; e<Bloc.Dernier()->Break.l;e++)
-				Ins.ChgGotoRel(Bloc.Dernier()->Break[e],(int)Ins.t);
+			Ins.AjouterCode(Code::I_GOTOR);
+			Ins.AjouterGotoRel(blocs.Dernier()->depart);
+			for (index_t e=0; e<blocs.Dernier()->continues.l;e++)
+				Ins.ChgGotoRel(blocs.Dernier()->continues[e],Depart);
+			for (index_t e=0; e<blocs.Dernier()->breaks.l;e++)
+				Ins.ChgGotoRel(blocs.Dernier()->breaks[e],(int)Ins.t);
 			break;
 		}
 
-	case TB_TANTQUE:
+	case TypeBloc::TantQue:
 		{
 			//clog << "bloc tantque terminé en ligne "<<Ligne<<'\n';
-			Ins.AjouterCode(I_GOTOR);
-			Ins.AjouterGotoRel(Bloc.Dernier()->Depart);
-			for (index_t e=0; e<Bloc.Dernier()->Continue.l;e++)
-				Ins.ChgGotoRel(Bloc.Dernier()->Continue[e],Bloc.Dernier()->Depart);
-			for (index_t e=0; e<Bloc.Dernier()->Break.l;e++)
-				Ins.ChgGotoRel(Bloc.Dernier()->Break[e],(int)Ins.t);
+			Ins.AjouterCode(Code::I_GOTOR);
+			Ins.AjouterGotoRel(blocs.Dernier()->depart);
+			for (index_t e=0; e<blocs.Dernier()->continues.l;e++)
+				Ins.ChgGotoRel(blocs.Dernier()->continues[e],blocs.Dernier()->depart);
+			for (index_t e=0; e<blocs.Dernier()->breaks.l;e++)
+				Ins.ChgGotoRel(blocs.Dernier()->breaks[e],(int)Ins.t);
 			break;
 		}
 
-	case TB_SWITCH:
+	case TypeBloc::Switch:
 		{
 			//clog << "bloc switch terminé en ligne "<<Ligne<<'\n';
 		
 			if (AcSwitch.l==0)
 				throw TXT("une fin de GOTOMULTIPLE sans GOTOMULTIPLE ouvert");
 			
-			if (programme->Switch[AcSwitch.Dernier()]->PosDefaut==NULL)
-				programme->Switch[AcSwitch.Dernier()]->PosDefaut=(code*)Ins.t;
+			if (programme->Switch[AcSwitch.Dernier()]->PosDefaut== nullptr)
+				programme->Switch[AcSwitch.Dernier()]->PosDefaut=reinterpret_cast<code*>(Ins.t);
 			//Trions les switchs
 			qsort(programme->Switch[AcSwitch.Dernier()]->Cas.t,
 				programme->Switch[AcSwitch.Dernier()]->Cas.l,sizeof(CCasSwitch),
 				CompCasSwitch);
 			AcSwitch.l--;
 
-			for (index_t e=0; e<Bloc.Dernier()->Break.l;e++)
-				Ins.ChgGotoRel(Bloc.Dernier()->Break[e],(int)Ins.t);
+			for (index_t e=0; e<blocs.Dernier()->breaks.l;e++)
+				Ins.ChgGotoRel(blocs.Dernier()->breaks[e],static_cast<int>(Ins.t));
 			break;
 		}
 
-	case TB_FONCTION:
+	case TypeBloc::Fonction:
 		//clog << "bloc fonction terminé en ligne "<<Ligne<<'\n';
 		
-		AjCode(I_RETOUR,PRI_EXEC);
+		AjCode(Code::I_RETOUR,PRI_EXEC);
 		break;
 
-	case TB_CLASSE:
+	case TypeBloc::Classe:
 		break;
 
 #ifdef _DEBUG
@@ -626,9 +626,9 @@ void Compilateur::FinBloc()
 #endif
 	}
 
-	Bloc.EffacerDernier();
+	blocs.EffacerDernier();
 
-	if (Bloc.l==0)
+	if (blocs.l==0)
 	{
 		/*//On fait le lien des étiquettes locales
 		qsort(&LabelL.Premier(),LabelL.l,sizeof(SLabel),CmpLabels);
@@ -645,15 +645,15 @@ void Compilateur::FinBloc()
 		LabelL.l=0;
 		RefEtiqL.l=0;*/
 	}
-	if (Bloc.Dernier()->classeSpecifiee)
-		Bloc.EffacerDernier();
+	if (blocs.Dernier()->classeSpecifiee)
+		blocs.EffacerDernier();
 	if (Sinon)
-		DebutBloc(TB_SINON);
+		DebutBloc(TypeBloc::Sinon);
 }
 
 bool Compilateur::CompilerMotClef0()
 {
-	if (EGALMC("bush") || EGALMC("deubeulyou"))
+	if (EstMotClef(_T("bush")) || EstMotClef(_T("deubeulyou")))
 	{
 		SauterEspaces();
 		ChercherMotClef();
@@ -666,111 +666,111 @@ bool Compilateur::CompilerMotClef0()
 		if (*Source!='=')
 			throw TXT("il manque le = après le nom de la constante");
 		Source++;
-		AjCode(I_CONSTVAR,PRI_DEF);
+		AjCode(Code::I_CONSTVAR,PRI_DEF);
 		AjPtrType(symb,TYPE_SYMBOLE);
 	}
 	else
-	if (EGALMC("BLOC"))
+	if (EstMotClef(_T("BLOC")))
 	{
-		DebutBloc(TB_RIEN);
+		DebutBloc(TypeBloc::Rien);
 	}
-	else if (EGALMC("FINBLOC"))
+	else if (EstMotClef(_T("FINBLOC")))
 	{
 		FinBloc();
 	}
 	else
-	if (EGALMC("FINGOTOMULTIPLE"))
+	if (EstMotClef(_T("FINGOTOMULTIPLE")))
 	{
-		if (Bloc.l==0 || Bloc.Dernier()->Type!=TB_SWITCH)
+		if (blocs.l==0 || blocs.Dernier()->type!= TypeBloc::Switch)
 			throw TXT("FINGOTOMULTIPLE doit fermer un GOTOMULTIPLE");
 		FinBloc();
 	}
 	else
-	if (EGALMC("GOTOMULTIPLE"))
+	if (EstMotClef(_T("GOTOMULTIPLE")))
 	{
-		AjCode(I_SWITCH,PRI_SWITCH);
+		AjCode(Code::I_SWITCH,PRI_SWITCH);
 		AjEntier((int)programme->Switch.l);
 		AcSwitch.Etendre((int)programme->Switch.l);
 		CSwitch * swit=new CSwitch();
 		programme->Switch.Etendre(swit);
 		CibleAuto++;//Pour les "arret"
-		DebutBloc(TB_SWITCH);
+		DebutBloc(TypeBloc::Switch);
 	}
 	else
-	if (EGALMC("et"))
+	if (EstMotClef(_T("et")))
 	{
-		AjCode(I_ET,PRI_ET);
+		AjCode(Code::I_ET,PRI_ET);
 		AjEntier((int)EtOu.l);
-		AjCode(I_FINOUET,PRI_ET);
-		AjEntier((int)EtOu.l);
-		EtOu.Etendre(-1);
-	}
-	else
-	if (EGALMC("ou"))
-	{
-		AjCode(I_OU,PRI_OU);
-		AjEntier((int)EtOu.l);
-		AjCode(I_FINOUET,PRI_OU);
+		AjCode(Code::I_FINOUET,PRI_ET);
 		AjEntier((int)EtOu.l);
 		EtOu.Etendre(-1);
 	}
 	else
-	if (EGALMC("eg"))
+	if (EstMotClef(_T("ou")))
 	{
-		AjCode(I_EGAL,PRI_COMP);
+		AjCode(Code::I_OU,PRI_OU);
+		AjEntier((int)EtOu.l);
+		AjCode(Code::I_FINOUET,PRI_OU);
+		AjEntier((int)EtOu.l);
+		EtOu.Etendre(-1);
 	}
 	else
-	if (EGALMC("diff"))
+	if (EstMotClef(_T("eg")))
 	{
-		AjCode(I_DIFFERENT,PRI_COMP);
+		AjCode(Code::I_EGAL,PRI_COMP);
 	}
 	else
-	if (EGALMC("inf"))
+	if (EstMotClef(_T("diff")))
 	{
-		AjCode(I_INFERIEUR,PRI_COMP);
+		AjCode(Code::I_DIFFERENT,PRI_COMP);
 	}
 	else
-	if (EGALMC("sup"))
+	if (EstMotClef(_T("inf")))
 	{
-		AjCode(I_SUPERIEUR,PRI_COMP);
+		AjCode(Code::I_INFERIEUR,PRI_COMP);
 	}
 	else
-	if (EGALMC("supeg"))
+	if (EstMotClef(_T("sup")))
 	{
-		AjCode(I_SUPEGAL,PRI_COMP);
+		AjCode(Code::I_SUPERIEUR,PRI_COMP);
 	}
 	else
-	if (EGALMC("infeg"))
+	if (EstMotClef(_T("supeg")))
 	{
-		AjCode(I_INFEGAL,PRI_COMP);
+		AjCode(Code::I_SUPEGAL,PRI_COMP);
 	}
 	else
-	if (EGALMC("non"))
+	if (EstMotClef(_T("infeg")))
 	{
-		AjCode(I_NON,PRI_NON);
+		AjCode(Code::I_INFEGAL,PRI_COMP);
 	}
 	else
-	if (EGALMC("AUTOGOTOZ"))
+	if (EstMotClef(_T("non")))
 	{
-		AjCode(I_GOTOZEROR,PRI_EXEC);
+		AjCode(Code::I_NON,PRI_NON);
+	}
+	else
+	if (EstMotClef(_T("AUTOGOTOZ")))
+	{
+		AjCode(Code::I_GOTOZEROR,PRI_EXEC);
 		AjEntierType(0,TYPE_ETIQAUTO);
-		DebutBloc(TB_SI);
+		DebutBloc(TypeBloc::Si);
 	}
 	else
-	if (EGALMC("TantQue"))
+	if (EstMotClef(_T("TantQue")))
 	{
-		DebutBloc(TB_TANTQUE);
-		AjCode(I_GOTOZEROR,PRI_EXEC);
-		AjEntierType((int)Bloc.l-1,TYPE_ETIQAUTOBREAK);
+		DebutBloc(TypeBloc::TantQue);
+		AjCode(Code::I_GOTOZEROR,PRI_EXEC);
+		AjEntierType((int)blocs.l-1,TYPE_ETIQAUTOBREAK);
 	}
 	else
-	if (EGALMC("costaud"))
+	if (EstMotClef(_T("costaud")))
 	{
-		DebutBloc(TB_FOR);
+		DebutBloc(TypeBloc::For);
 		LigneAc=LP_FOR_INIT;
 	}
 	else
-	if (EGALMC("PouCharque"))
+	if (EstMotClef(_T("PouCharque")))
 	{
 		SauterEspaces();
 		Symbole * classe=ChercherSymbole();
@@ -781,64 +781,64 @@ bool Compilateur::CompilerMotClef0()
 		if (lClef==0)
 			throw TXT("indiquez un nom pour la variable de parcours");
 		
-		DebutBloc(TB_FOREACH);
+		DebutBloc(TypeBloc::ForEach);
 
-		Symbole * s=Bloc.Dernier()->symbole;
+		Symbole * s=blocs.Dernier()->symbole;
 		
 		//On crée les trois variables locales utilisées
-		Bloc.Dernier()->indice=programme->NouveauSymbole(_T("indice"),6,CType(symboleEntier),s);
+		blocs.Dernier()->indice=programme->NouveauSymbole(_T("indice"),6,CType(symboleEntier),s);
 		DernierSymbole().type=Symbole::VariableLocale;
 		DernierSymbole().indice=(index_t)s->taille++;
 
-		Bloc.Dernier()->tableau=programme->NouveauSymbole(_T("tableau"),7,CType(classe),s);
+		blocs.Dernier()->tableau=programme->NouveauSymbole(_T("tableau"),7,CType(classe),s);
 		DernierSymbole().TypeAc.Empiler(symboleTableau);
 		DernierSymbole().type=Symbole::VariableLocale;
 		DernierSymbole().indice=(index_t)s->taille++;
 
-		Bloc.Dernier()->iterateur=programme->NouveauSymbole(MotClef,lClef,CType(classe),s);
+		blocs.Dernier()->iterateur=programme->NouveauSymbole(MotClef,lClef,CType(classe),s);
 		DernierSymbole().type=Symbole::VariableLocale;
 		DernierSymbole().indice=(index_t)s->taille++;
 
-		index_t svarLoc=(index_t)(Bloc[Bloc.l-2]->symbole->taille);
-		AjCode(I_VARIABLELOC,PRI_CONSTANTE);
-		AjPtrType(Bloc.Dernier()->indice,TYPE_VARIABLE);
-		AjCode(I_ENTIER,PRI_CONSTANTE);
+		index_t svarLoc=(index_t)(blocs[blocs.l-2]->symbole->taille);
+		AjCode(Code::I_VARIABLELOC,PRI_CONSTANTE);
+		AjPtrType(blocs.Dernier()->indice,TYPE_VARIABLE);
+		AjCode(Code::I_ENTIER,PRI_CONSTANTE);
 		AjEntier(0);
-		AjCode(I_DEFINIR,PRI_CONSTANTE);
-		AjCode(I_VARIABLELOC,PRI_CONSTANTE);
-		AjPtrType(Bloc.Dernier()->tableau,TYPE_VARIABLE);
-		AjCode(I_INSTANCEDE,PRI_MAX);
+		AjCode(Code::I_DEFINIR,PRI_CONSTANTE);
+		AjCode(Code::I_VARIABLELOC,PRI_CONSTANTE);
+		AjPtrType(blocs.Dernier()->tableau,TYPE_VARIABLE);
+		AjCode(Code::I_INSTANCEDE,PRI_MAX);
 		
 		LigneAc=LP_FOREACH_INIT;
 	}
 	else
-	if (EGALMC("arret"))
+	if (EstMotClef(_T("arret")))
 	{
-		AjCode(I_GOTOR,PRI_EXEC);
-		int Cible=int(Bloc.l)-1;
-		while (Cible>=0 && Bloc[Cible]->Type!=TB_FONCTION
-				&& Bloc[Cible]->Type!=TB_TANTQUE
-				&& Bloc[Cible]->Type!=TB_SWITCH
-				&& Bloc[Cible]->Type!=TB_FOR
-				&& Bloc[Cible]->Type!=TB_FOREACH)
+		AjCode(Code::I_GOTOR,PRI_EXEC);
+		int Cible=int(blocs.l)-1;
+		while (Cible>=0 && blocs[Cible]->type!= TypeBloc::Fonction
+				&& blocs[Cible]->type!= TypeBloc::TantQue
+				&& blocs[Cible]->type!= TypeBloc::Switch
+				&& blocs[Cible]->type!= TypeBloc::For
+				&& blocs[Cible]->type!= TypeBloc::ForEach)
 			Cible--;
-		if (Bloc[Cible]->Type==TB_FONCTION)
+		if (blocs[Cible]->type== TypeBloc::Fonction)
 			throw TXT("interdit de sortir d'une fonction avec arret");
 		if (Cible<0)
 			throw TXT("un arret doit se trouver dans un bloc");
 		AjEntierType(Cible,TYPE_ETIQAUTOBREAK);
 	}
 	else
-	if (EGALMC("continue"))
+	if (EstMotClef(_T("continue")))
 	{
-		AjCode(I_GOTOR,PRI_EXEC);
-		int Cible=int(Bloc.l)-1;
-		while (Cible>=0 && Bloc[Cible]->Type!=TB_FONCTION
-				&& Bloc[Cible]->Type!=TB_TANTQUE
-				&& Bloc[Cible]->Type!=TB_FOR
-				&& Bloc[Cible]->Type!=TB_FOREACH)
+		AjCode(Code::I_GOTOR,PRI_EXEC);
+		int Cible=int(blocs.l)-1;
+		while (Cible>=0 && blocs[Cible]->type!= TypeBloc::Fonction
+				&& blocs[Cible]->type!= TypeBloc::TantQue
+				&& blocs[Cible]->type!= TypeBloc::For
+				&& blocs[Cible]->type!= TypeBloc::ForEach)
 			Cible--;
-		if (Bloc[Cible]->Type==TB_FONCTION)
+		if (blocs[Cible]->type== TypeBloc::Fonction)
 			throw TXT("interdit de sortir d'une fonction avec continue");
 		if (Cible<0)
 			throw TXT("un continue doit se trouver dans un TantQue");
@@ -846,38 +846,38 @@ bool Compilateur::CompilerMotClef0()
 		AjEntierType(Cible,TYPE_ETIQAUTOCONTINUE);
 	}
 	else
-	if (EGALMC("AC"))
+	if (EstMotClef(_T("AC")))
 	{
 		if (nInstr)
 			throw TXT("AC doit être en début de ligne");
 
-		if ((Bloc.l==0 || (Bloc.Dernier()->Type!=TB_SI&&Bloc.Dernier()->Type!=TB_SINON)))
+		if ((blocs.l==0 || (blocs.Dernier()->type != TypeBloc::Si&&blocs.Dernier()->type != TypeBloc::Sinon)))
 			throw TXT("un AC doit terminer un AUTOGOTOZ");
 		FinBloc();
 	}
 	else
-	if (EGALMC("faiblard"))
+	if (EstMotClef(_T("faiblard")))
 	{
 		SauterEspaces();
 		if ((nInstr)||(*Source!='\n' && *Source!=0))
 			throw TXT("faiblard doit être seul sur la ligne");
-		if (Bloc.l==0 || Bloc.Dernier()->Type!=TB_FOR)
+		if (blocs.l==0 || blocs.Dernier()->type!= TypeBloc::For)
 			throw TXT("un faiblard doit terminer un costaud");
 		FinBloc();
 	}
 	else
-	if (EGALMC("FinTantQue"))
+	if (EstMotClef(_T("FinTantQue")))
 	{
 		SauterEspaces();
 		if ((nInstr)||(*Source!='\n' && *Source!=0))
 			throw TXT("FinTantQue doit être seul sur la ligne");
-		if (Bloc.l==0 || (Bloc.Dernier()->Type!=TB_TANTQUE
-				&& Bloc.Dernier()->Type!=TB_FOREACH))
+		if (blocs.l==0 || (blocs.Dernier()->type!= TypeBloc::TantQue
+				&& blocs.Dernier()->type!= TypeBloc::ForEach))
 			throw TXT("un FinTantQue doit terminer un TantQue ou un PouCharque");
 		FinBloc();
 	}
 	else
-	if (EGALMC("ACAC"))
+	if (EstMotClef(_T("ACAC")))
 	{
 			throw TXT("que fait ce ACAC ici ?");
 	}
@@ -888,7 +888,7 @@ bool Compilateur::CompilerMotClef0()
 
 bool Compilateur::CompilerMotClef1()
 {
-	if (EGALMC("GOTOPASMALIN"))
+	if (EstMotClef(_T("GOTOPASMALIN")))
 	{
 		SauterEspaces();
 		bool locale;
@@ -896,17 +896,17 @@ bool Compilateur::CompilerMotClef1()
 			
 		if (locale)
 		{
-			AjCode(I_GOTOR,PRI_CONSTANTE);
+			AjCode(Code::I_GOTOR,PRI_CONSTANTE);
 			AjPtrType(c,TYPE_ETIQLOC);
 		}
 		else
 		{
-			AjCode(I_GOTO,PRI_CONSTANTE);
+			AjCode(Code::I_GOTO,PRI_CONSTANTE);
 			AjPtrType(c,TYPE_ETIQUETTE);
 		}
 	}
 	else
-	if (EGALMC("GOTONULPOURLESNULS"))
+	if (EstMotClef(_T("GOTONULPOURLESNULS")))
 	{
 		SauterEspaces();
 		bool Locale;
@@ -914,29 +914,29 @@ bool Compilateur::CompilerMotClef1()
 	
 		if (Locale)
 		{
-			AjCode(I_GOTOZEROR,PRI_EXEC);
+			AjCode(Code::I_GOTOZEROR,PRI_EXEC);
 			AjPtrType(c,TYPE_ETIQLOC);
 		}
 		else
 		{
-			AjCode(I_GOTOZERO,PRI_EXEC);
+			AjCode(Code::I_GOTOZERO,PRI_EXEC);
 			AjPtrType(c,TYPE_ETIQUETTE);
 		}
 	}
 	else
-	if (EGALMC("GOTONONNULPOURLESNULS"))
+	if (EstMotClef(_T("GOTONONNULPOURLESNULS")))
 	{
 		SauterEspaces();
 		bool Locale;
 		Symbole * c=LireEtiquette(Locale);	
 		if (Locale)
 		{
-			AjCode(I_GOTONONZEROR,PRI_EXEC);
+			AjCode(Code::I_GOTONONZEROR,PRI_EXEC);
 			AjPtrType(c,TYPE_ETIQLOC);
 		}
 		else
 		{
-			AjCode(I_GOTONONZERO,PRI_EXEC);
+			AjCode(Code::I_GOTONONZERO,PRI_EXEC);
 			AjPtrType(c,TYPE_ETIQUETTE);
 		}
 	}
@@ -948,7 +948,7 @@ bool Compilateur::CompilerMotClef1()
 bool Compilateur::SymboleDisponible()
 {
 	Symbole * verifie=ChercherSymboleSimple();
-	if (!EstNouveauSymbole(verifie) && verifie->parent==Bloc.Dernier()->symbole)
+	if (!EstNouveauSymbole(verifie) && verifie->parent==blocs.Dernier()->symbole)
 		return false;
 	return true;
 }
@@ -956,39 +956,39 @@ bool Compilateur::SymboleDisponible()
 bool Compilateur::CompilerMotClef2()
 
 {
-	if (EGALMC("estrefvalide"))
+	if (EstMotClef(_T("estrefvalide")))
 	{
-		AjCode(I_ESTREFVALIDE,PRI_CONSTANTE);
+		AjCode(Code::I_ESTREFVALIDE,PRI_CONSTANTE);
 	}
 	else
-	if (EGALMC("RESTEDELADIVISIONPAR"))
+	if (EstMotClef(_T("RESTEDELADIVISIONPAR")))
 	{
-		AjCode(I_MODULO,PRI_MODULO);
+		AjCode(Code::I_MODULO,PRI_MODULO);
 	}
 	else
-	if (EGALMC("monpitipingouin"))
+	if (EstMotClef(_T("monpitipingouin")))
 	{
-		AjCode(I_THIS,PRI_CONSTANTE);
+		AjCode(Code::I_THIS,PRI_CONSTANTE);
 	}
 	else
-	if (EGALMC("encasderreurGOTO"))
+	if (EstMotClef(_T("encasderreurGOTO")))
 	{
 		SauterEspaces();
 		bool Locale;
 		Symbole * c=LireEtiquette(Locale);		
 		if (Locale)
 		{
-			AjCode(I_ENERREURR,PRI_CONSTANTE);
+			AjCode(Code::I_ENERREURR,PRI_CONSTANTE);
 			AjPtrType(c,TYPE_ETIQLOC);
 		}
 		else
 		{
-			AjCode(I_ENERREUR,PRI_CONSTANTE);
+			AjCode(Code::I_ENERREUR,PRI_CONSTANTE);
 			AjPtrType(c,TYPE_ETIQUETTE);
 		}
 	}
 	else
-	if (EGALMC("GOTOBIBLIOTHEQUE"))
+	if (EstMotClef(_T("GOTOBIBLIOTHEQUE")))
 	{
 		SauterEspaces();
 		ChercherMotClef();
@@ -1010,7 +1010,7 @@ bool Compilateur::CompilerMotClef2()
 		AcFichierSource=fichierSource;
 	}
 	else
-	if (EGALMC("GOTOMODULE"))
+	if (EstMotClef(_T("GOTOMODULE")))
 	{
 		SauterEspaces();
 		ChercherMotClef();
@@ -1019,44 +1019,44 @@ bool Compilateur::CompilerMotClef2()
 		programme->ChargerModule(MotClef,uint(lClef));
 	}
 	else
-	if (EGALMC("BEBEPINGOUIN"))
+	if (EstMotClef(_T("BEBEPINGOUIN")))
 	{
-		AjCode(I_NOUVEAU,PRI_NOUVEAU);
+		AjCode(Code::I_NOUVEAU,PRI_NOUVEAU);
 	}
 	else
-	if (EGALMC("tailleenlongueur"))
+	if (EstMotClef(_T("tailleenlongueur")))
 	{
-		AjCode(I_TAILLE,PRI_TAILLE);
+		AjCode(Code::I_TAILLE,PRI_TAILLE);
 	}
 	else
-	if (EGALMC("REGOTO"))
+	if (EstMotClef(_T("REGOTO")))
 	{
-		AjCode(I_RETOUR,PRI_REGOTO);
+		AjCode(Code::I_RETOUR,PRI_REGOTO);
 	}
 	else
-	if (EGALMC("GOTOUNIVERSPARALLELEouizzz"))
+	if (EstMotClef(_T("GOTOUNIVERSPARALLELEouizzz")))
 	{
 		SauterEspaces();
 		bool Locale;
 		Symbole * c=LireEtiquette(Locale);	
 		if (Locale)
 		{
-			AjCode(I_GOTOTACHER,PRI_CONSTANTE);
+			AjCode(Code::I_GOTOTACHER,PRI_CONSTANTE);
 			AjPtrType(c,TYPE_ETIQLOC);
 		}
 		else
 		{
-			AjCode(I_GOTOTACHE,PRI_CONSTANTE);
+			AjCode(Code::I_GOTOTACHE,PRI_CONSTANTE);
 			AjPtrType(c,TYPE_ETIQUETTE);
 		}
 	}
 	else
-	if (EGALMC("GOTOFINTACHE"))
+	if (EstMotClef(_T("GOTOFINTACHE")))
 	{
-		AjCode(I_FINTACHE,PRI_CONSTANTE);
+		AjCode(Code::I_FINTACHE,PRI_CONSTANTE);
 	}
 	else
-	if (EGALMC("troupeau"))
+	if (EstMotClef(_T("troupeau")))
 	{
 		if (nInstr)
 			throw TXT("la classe doit être définie en début de ligne");
@@ -1068,7 +1068,7 @@ bool Compilateur::CompilerMotClef2()
 			throw TXT("nom de classe attendu");
 
 		bool ClasseGivree;
-		if (EGALMC("GIVRE"))
+		if (EstMotClef(_T("GIVRE")))
 		{
 			if (NiveauGourou>1)
 				throw TXT("le mot-clef GIVRE est interdit aux gourous de niveau supérieur à 1");
@@ -1088,8 +1088,8 @@ bool Compilateur::CompilerMotClef2()
 
 		
 		Symbole * c=programme->NouveauSymbole(MotClef,lClef,CType(symboleValeur),
-			Bloc.Dernier()->symbole);
-		DebutBloc(TB_CLASSE,c);
+			blocs.Dernier()->symbole);
+		DebutBloc(TypeBloc::Classe,c);
 		c->type=Symbole::Classe;
 		c->defConstr=0;
 		if (ClasseGivree)
@@ -1129,33 +1129,33 @@ bool Compilateur::CompilerMotClef2()
 		Ligne++;
 	}
 	else
-	if (EGALMC("fintroupeau"))
+	if (EstMotClef(_T("fintroupeau")))
 	{
 		SauterEspaces();
 		if (*Source!='\n')
 			throw TXT("retour à la ligne attendu après finclasse");
 		Source++;
 		Ligne++;
-		if (Bloc.Dernier()->Type!=TB_CLASSE)
+		if (blocs.Dernier()->type!= TypeBloc::Classe)
 			throw TXT("fintroupeau devrait indiquer la fin de définition d'une classe");
 		FinBloc();
 	}
 	else
-	if (EGALMC("machineapingouins"))
+	if (EstMotClef(_T("machineapingouins")))
 	{
 		//Définition d'une fonction
 		SauterEspaces();
 		CompilerFonction();
 	}
 	else
-	if (EGALMC("NPARAMS"))
+	if (EstMotClef(_T("NPARAMS")))
 	{
-		AjCode(I_NPARAMS,PRI_CONSTANTE);
+		AjCode(Code::I_NPARAMS,PRI_CONSTANTE);
 	}
 	else
-	if (EGALMC("APLUS"))
+	if (EstMotClef(_T("APLUS")))
 	{
-		if (Bloc.l==0 || Bloc.Dernier()->Type!=TB_FONCTION)
+		if (blocs.l==0 || blocs.Dernier()->type!= TypeBloc::Fonction)
 			throw TXT("fin de bloc alors qu'aucun bloc n'a été ouvert");
 		FinBloc();
 	}
@@ -1167,12 +1167,12 @@ bool Compilateur::CompilerMotClef2()
 
 bool Compilateur::CompilerMotClef3()
 {
-	if (EGALMC("ASV"))
+	if (EstMotClef(_T("ASV")))
 	{
 		throw TXT("ASV est réservé pour les fonctions");
 	}
 	else
-	if (EGALMC("niveaugourou"))
+	if (EstMotClef(_T("niveaugourou")))
 	{
 		SauterEspaces();
 		NiveauGourou=*Source-'0';
@@ -1182,86 +1182,86 @@ bool Compilateur::CompilerMotClef3()
 		
 	}
 	else
-	if (EGALMC("enentier"))
+	if (EstMotClef(_T("enentier")))
 	{
-		AjCode(I_CONVTYPE,PRI_CONSTANTE);
+		AjCode(Code::I_CONVTYPE,PRI_CONSTANTE);
 		AjType(TYPE_PINGOUIN);
 		AjType(TYPE_ENTIER);
 	}
 	else
-	if (EGALMC("enfonction"))
+	if (EstMotClef(_T("enfonction")))
 	{
-		AjCode(I_CONVTYPE,PRI_CONSTANTE);
+		AjCode(Code::I_CONVTYPE,PRI_CONSTANTE);
 		AjType(TYPE_PINGOUIN);
 		AjType(TYPE_FONCTIONC);
 	}
 	else
-	if (EGALMC("encaractere"))
+	if (EstMotClef(_T("encaractere")))
 	{
-		AjCode(I_CONVTYPE,PRI_CONSTANTE);
+		AjCode(Code::I_CONVTYPE,PRI_CONSTANTE);
 		AjType(TYPE_PINGOUIN);
 		AjType(TYPE_CARAC);
 	}
 	else
-	if (EGALMC("envariable"))
+	if (EstMotClef(_T("envariable")))
 	{
-		AjCode(I_CONVTYPE,PRI_CONSTANTE);
+		AjCode(Code::I_CONVTYPE,PRI_CONSTANTE);
 		AjType(TYPE_PINGOUIN);
 		AjType(TYPE_VARIABLE);
 	}
 	else
-	if (EGALMC("nimportequoitochances"))
+	if (EstMotClef(_T("nimportequoitochances")))
 	{
-		AjCode(I_CONVTYPE,PRI_CONSTANTE);
+		AjCode(Code::I_CONVTYPE,PRI_CONSTANTE);
 		AjType(TYPE_PINGOUIN);
 		AjType(TYPE_CHANCES);
 	}
 	else
-	if (EGALMC("NOSTRADAMUS"))
+	if (EstMotClef(_T("NOSTRADAMUS")))
 	{
 		czerr<<TXT("Ce programme est béni par Nostradamus.\n");
 	}
 	else
-	if (EGALMC("SUPERPROLETAIRE"))
+	if (EstMotClef(_T("SUPERPROLETAIRE")))
 		throw TXT("la révolution humaine est en marche ! Maudit âne ! Ton disque dur vient d'être détruit !");
 	else 
-	if (EGALMC("NIAC"))
+	if (EstMotClef(_T("NIAC")))
 		throw TXT("la bêtise du NIAC est bête");
 	else
-	if (EGALMC("NumeroBiblio"))
+	if (EstMotClef(_T("NumeroBiblio")))
 	{
-		AjCode(I_ENTIER,PRI_CONSTANTE);
+		AjCode(Code::I_ENTIER,PRI_CONSTANTE);
 		AjEntier((int)(AcFichierSource!=programme->fichierSource[0]));//TODO: un truc qui veut dire quelque chose
 	}
 	else
-	if (EGALMC("MULTIPLICATION"))
+	if (EstMotClef(_T("MULTIPLICATION")))
 	{
-		AjCode(I_FOIS,PRI_FOIS);
+		AjCode(Code::I_FOIS,PRI_FOIS);
 	}
 	else
-	if (EGALMC("GOTOFIN"))
+	if (EstMotClef(_T("GOTOFIN")))
 	{
-		AjCode(I_STOP,PRI_CONSTANTE);
+		AjCode(Code::I_STOP,PRI_CONSTANTE);
 	}
 	else
-	if (EGALMC("dup"))
-	{
-		
-		AjCode(I_DUPLIQUER,PRI_CONSTANTE);
-	}
-	else
-	if (EGALMC("suppr"))
+	if (EstMotClef(_T("dup")))
 	{
 		
-		AjCode(I_SUPPRIMER,PRI_CONSTANTE);
+		AjCode(Code::I_DUPLIQUER,PRI_CONSTANTE);
 	}
 	else
-	if (EGALMC("existe"))
+	if (EstMotClef(_T("suppr")))
 	{
-		AjCode(I_EXISTE,PRI_CONSTANTE);
+		
+		AjCode(Code::I_SUPPRIMER,PRI_CONSTANTE);
 	}
 	else
-	if (EGALMC("pastrespermissif"))
+	if (EstMotClef(_T("existe")))
+	{
+		AjCode(Code::I_EXISTE,PRI_CONSTANTE);
+	}
+	else
+	if (EstMotClef(_T("pastrespermissif")))
 	{
 		DeclarationStricte=true;
 	}
@@ -1313,7 +1313,7 @@ bool Compilateur::CompilerMotClef()
 
 //Si posEN!=rien, on ne cherche pas dans les use
 //et uniquement à partir de Bloc[posEn]
-Symbole * Compilateur::ChercherSymboleSimple(CBloc ** posEN)
+Symbole * Compilateur::ChercherSymboleSimple(Bloc ** posEN)
 {
 	//TODO: un travail d'optimisation est faisable, notamment en
 	//utilisant un index pour les noms de symbole
@@ -1324,8 +1324,8 @@ Symbole * Compilateur::ChercherSymboleSimple(CBloc ** posEN)
 	Symbole * var=0;
 
 	//On commence par regarder dans tous les blocs à partir de posEn
-	CBloc ** fin=(posEN==0?Bloc.Debut():posEN+1);
-	for (CBloc ** en=Bloc.Fin()-1; en>=fin; en--)
+	Bloc ** fin=(posEN==0?blocs.Debut():posEN+1);
+	for (Bloc ** en=blocs.Fin()-1; en>=fin; en--)
 	{
 		Symbole * parent=(*en)->symbole;
 		for (Symbole * f=parent->fils; f!=0; f=f->suivant)
@@ -1393,10 +1393,10 @@ Symbole * Compilateur::ChercherSymbole(bool creer)
 		{
 			Source+=2;
 			//On ne cherche que dans cette fonction
-			CBloc ** en=Bloc.Fin()-1;
-			while (en>Bloc.Debut())
+			Bloc ** en=blocs.Fin()-1;
+			while (en>blocs.Debut())
 			{
-				if ((*en)->Type==TB_FONCTION)
+				if ((*en)->type== TypeBloc::Fonction)
 					break;
 				en--;
 			}
@@ -1407,7 +1407,7 @@ Symbole * Compilateur::ChercherSymbole(bool creer)
 			var=ChercherSymboleSimple(en);
 		}
 		else
-			var=Bloc.Premier()->symbole;
+			var=blocs.Premier()->symbole;
 	}
 	else
 	{
@@ -1467,25 +1467,25 @@ void Compilateur::InsererConstante(Symbole * var)
 	switch(var->type)
 	{
 	case Symbole::FonctionGPP:
-		AjCode(I_ETIQUETTE);
+		AjCode(Code::I_ETIQUETTE);
 		AjPtrType(var,TYPE_ETIQUETTE);//Vu qu'on ne saura que plus
 			//tard la vraie valeur (à l'édition de lien)
 		break;
 	case Symbole::MethodeGPP:
-		AjCode(I_ETIQUETTE_THIS);
+		AjCode(Code::I_ETIQUETTE_THIS);
 		AjPtrType(var,TYPE_ETIQUETTE);//Vu qu'on ne saura que plus
 			//tard la vraie valeur (à l'édition de lien)
 		break;
 	case Symbole::FonctionC:
-		AjCode(I_FONCTIONC);
+		AjCode(Code::I_FONCTIONC);
 		AjPtrType(var,TYPE_FONCTIONC);
 		break;
 	case Symbole::MethodeC:
-		AjCode(I_FONCTIONC_THIS);
+		AjCode(Code::I_FONCTIONC_THIS);
 		AjPtrType(var,TYPE_FONCTIONC_THIS);
 		break;
 	case Symbole::EtiquetteLocale:
-		AjCode(I_ETIQUETTELOC);
+		AjCode(Code::I_ETIQUETTELOC);
 		AjPtrType(var,TYPE_ETIQLOC);//Vu qu'on ne saura que plus
 			//tard la vraie valeur (à l'édition de lien)
 		break;
@@ -1495,23 +1495,23 @@ void Compilateur::InsererConstante(Symbole * var)
 			switch(var->Valeur.Type)
 			{
 			case TYPE_ENTIER:
-				AjCode(I_ENTIER);
+				AjCode(Code::I_ENTIER);
 				AjEntier(var->Valeur.v.i);
 				break;
 			case TYPE_FONCTIONC:
-				AjCode(I_FONCTIONC);
+				AjCode(Code::I_FONCTIONC);
 				AjPtrType(var,TYPE_FONCTIONC);
 				break;
 			case TYPE_FONCTIONMODULE:
-				AjCode(I_FONCTIONMODULE);
+				AjCode(Code::I_FONCTIONMODULE);
 				AjEntier(var->Valeur.v.i);
 				break;
 			case TYPE_ETIQUETTE_THIS:
-				AjCode(I_ETIQUETTE_THIS);
+				AjCode(Code::I_ETIQUETTE_THIS);
 				AjPtrType(var,TYPE_ETIQUETTE_THIS);
 				break;
 			case TYPE_FONCTIONC_THIS:
-				AjCode(I_FONCTIONC_THIS);
+				AjCode(Code::I_FONCTIONC_THIS);
 				AjPtrType(var,TYPE_FONCTIONC_THIS);
 				break;
 			case TYPE_INCONNU:
@@ -1582,7 +1582,7 @@ bool Compilateur::CompilerVariable(Symbole * var, bool Val)
 			if (var->type==Symbole::MethodeGPP && *Source=='(')
 			{
 				Source++;
-				AjCode(I_EXECMEMETHISVAL);
+				AjCode(Code::I_EXECMEMETHISVAL);
 				AjParF();
 				AjParO();
 				AjDebutParams();
@@ -1629,16 +1629,16 @@ bool Compilateur::CompilerVariable(Symbole * var, bool Val)
 			switch(var->type)
 			{
 			case Symbole::VariableGlobale:
-				AjCode(I_VALEURVAR,prio);
+				AjCode(Code::I_VALEURVAR,prio);
 				break;
 			case Symbole::VariableLocale:	
-				AjCode(I_VALEURVARLOC,prio);
+				AjCode(Code::I_VALEURVARLOC,prio);
 				break;
 			case Symbole::VariableParam:
-				AjCode(I_PARAMVAL,prio);
+				AjCode(Code::I_PARAMVAL,prio);
 				break;
 			case Symbole::VariableThis:
-				AjCode(I_THISVAL,prio);
+				AjCode(Code::I_THISVAL,prio);
 				break;
 			default:
 				throw TXT("hu ?");
@@ -1649,16 +1649,16 @@ bool Compilateur::CompilerVariable(Symbole * var, bool Val)
 			switch(var->type)
 			{
 			case Symbole::VariableLocale:
-				AjCode(I_VARIABLELOC);
+				AjCode(Code::I_VARIABLELOC);
 				break;
 			case Symbole::VariableGlobale:
-				AjCode(I_VARIABLE);
+				AjCode(Code::I_VARIABLE);
 				break;
 			case Symbole::VariableParam:
-				AjCode(I_PARAMREF);
+				AjCode(Code::I_PARAMREF);
 				break;
 			case Symbole::VariableThis:
-				AjCode(I_THISREF);
+				AjCode(Code::I_THISREF);
 				break;
 			default:
 				throw TXT("hein ?");
@@ -1673,7 +1673,7 @@ bool Compilateur::CompilerVariable(Symbole * var, bool Val)
 		{
 			//On continue
 			VarLongue[iVarLongue].Type=var->TypeAc;
-			AjCode(I_CTABLEAUREF);
+			AjCode(Code::I_CTABLEAUREF);
 			AjEntier(var->indice);
 		}
 		else
@@ -1684,7 +1684,7 @@ bool Compilateur::CompilerVariable(Symbole * var, bool Val)
 				//Propriété givrée
 				//On annule tout le code qui a conduit ici
 				SupprimerVarLongue();
-				AjCode(VarLongue[iVarLongue].Val?I_VALEURVAR:I_VARIABLE);
+				AjCode(VarLongue[iVarLongue].Val? Code::I_VALEURVAR: Code::I_VARIABLE);
 				AjPtrType(var,TYPE_VARIABLE);
 			}
 			/*TODO: implémentation des propriétés*/
@@ -1692,15 +1692,15 @@ bool Compilateur::CompilerVariable(Symbole * var, bool Val)
 			{
 				if (VarLongue[iVarLongue].Val)
 				{
-					AjCode(I_
+					AjCode(Code::I_
 			}*/
 			else
 			{
 				//Fin de la variable longue
 				if (VarLongue[iVarLongue].Val)
-					AjCode(I_CTABLEAUVAL);
+					AjCode(Code::I_CTABLEAUVAL);
 				else
-					AjCode(I_CTABLEAUREF);
+					AjCode(Code::I_CTABLEAUREF);
 				AjEntier(var->indice);
 				if (*Source!='(') //On change la priorité de la parenthèse qui a
 					//ouvert la variable, qu'on garde ouverte pour rajouter le I_EXEC
@@ -1787,7 +1787,7 @@ void Compilateur::FinOu()
 
 void Compilateur::CreerCodeFinal(LigneDeCode & insTri)
 {
-	code CodePrec=I_STOP,CodePrec2=I_STOP;
+	Code CodePrec= Code::I_STOP,CodePrec2= Code::I_STOP;
 	int CodePrecPos=0,CodePrec2Pos=0;
 
 	for (uint Ac=0; Ac<insTri.nIns; Ac++)
@@ -1795,24 +1795,24 @@ void Compilateur::CreerCodeFinal(LigneDeCode & insTri)
 		//if (ValTri[InsTri[Ac].pVal].Type==TYPE_CODE)
 		{
 			int j=insTri.ins[Ac].pVal;
-			if (CodePrec==I_FINOUET)
+			if (CodePrec== Code::I_FINOUET)
 			{
 				//Si le nouveau est un OU, on transforme
 				//le FINOU qu'il y avait avant en un OU
-				if ((insTri.ins[Ac].Code==I_OU)||(insTri.ins[Ac].Code==I_ET))
+				if ((insTri.ins[Ac].Code== Code::I_OU)||(insTri.ins[Ac].Code== Code::I_ET))
 				{
 					EtOu[insTri.val[j].v.i]=CodePrecPos;
-					*(code*)&Ins.c[CodePrecPos]=insTri.ins[Ac].Code;
+					*(code*)&Ins.c[CodePrecPos] = (code)insTri.ins[Ac].Code;
 				/*	Instr[Ac].Special=SPE_DEJAMIS;
 					Instr[Ac].nVal=0;
 					Ac=RIEN;*/
-					CodePrec=(code)insTri.val[j].v.i;
+					CodePrec = (Code)insTri.val[j].v.i;
 					continue;
 				}
 				else
 					FinOu();
 			}
-			else if ((insTri.ins[Ac].Code==I_OU)||(insTri.ins[Ac].Code==I_ET))
+			else if ((insTri.ins[Ac].Code== Code::I_OU)||(insTri.ins[Ac].Code== Code::I_ET))
 			{
 				EtOu[insTri.val[j].v.i]=(int)Ins.t;
 			}
@@ -1843,13 +1843,13 @@ void Compilateur::CreerCodeFinal(LigneDeCode & insTri)
 			case TYPE_ETIQAUTOCONTINUE:
 				{
 					int b=insTri.val[j].v.i;
-					Bloc[b]->Continue.Etendre((int)Ins.t);
+					blocs[b]->continues.Etendre((int)Ins.t);
 					break;
 				}
 			case TYPE_ETIQAUTOBREAK:
 				{
 					int b=insTri.val[j].v.i;
-					Bloc[b]->Break.Etendre((int)Ins.t);
+					blocs[b]->breaks.Etendre((int)Ins.t);
 					break;
 				}
 			case TYPE_VARIABLE:
@@ -1865,7 +1865,7 @@ void Compilateur::CreerCodeFinal(LigneDeCode & insTri)
 			Ins.Ajouter(insTri.val[j]);
 		}
 	}
-	if (CodePrec==I_FINOUET)
+	if (CodePrec== Code::I_FINOUET)
 		FinOu();
 }
 
@@ -2113,7 +2113,7 @@ bool Compilateur::CompilerSeparateur()
 			memcpy(ldc->val,insTri.val,insTri.nVals*sizeof(valeur));
 			for (index_t i=0; i<insTri.nVals; i++)
 				insTri.val[i].Effacer();
-			Bloc.Dernier()->PasDuFor=ldc;
+			blocs.Dernier()->pasDuFor=ldc;
 			insTri.Init();
 		}
 		
@@ -2123,7 +2123,7 @@ bool Compilateur::CompilerSeparateur()
 				throw TXT("cas vide");
 			if (insTri.nIns>1)
 				throw TXT("le cas ne se résoud pas en une constante");
-			if (insTri.ins[0].Code!=I_ENTIER)
+			if (insTri.ins[0].Code!= Code::I_ENTIER)
 				throw TXT("le cas doit être une constante entière");
 			CCasSwitch casSwitch((code*)Ins.t,insTri.val[0].v.i);
 			programme->Switch[AcSwitch.Dernier()]->Cas.Etendre(casSwitch);
@@ -2135,11 +2135,11 @@ bool Compilateur::CompilerSeparateur()
 
 		if (insTri.nIns)
 		{
-			Ins.AjouterCode(I_DEBUTLIGNE);
+			Ins.AjouterCode(Code::I_DEBUTLIGNE);
 			Ins.AjouterEntier(Ligne);
 			if (ProbaSauterLigne)
 			{
-				Ins.AjouterCode(I_PROBASAUTERLIGNE);
+				Ins.AjouterCode(Code::I_PROBASAUTERLIGNE);
 				Ins.AjouterChances(ProbaSauterLigne);
 				PosDebutLigne=int(Ins.t);
 				Ins.AjouterEntier(0);
@@ -2163,31 +2163,31 @@ bool Compilateur::CompilerSeparateur()
 			Source++;
 		if (LigneAc==LP_FOREACH_INIT)
 		{
-			index_t svarLoc=(index_t)Bloc[Bloc.l-2]->symbole->taille;
-			Bloc.Dernier()->Depart=(int)Ins.t;
-			Ins.AjouterCode(I_VALEURVARLOC);
+			index_t svarLoc=(index_t)blocs[blocs.l-2]->symbole->taille;
+			blocs.Dernier()->depart=(int)Ins.t;
+			Ins.AjouterCode(Code::I_VALEURVARLOC);
 			Ins.AjouterEntier(int(svarLoc));
-			Ins.AjouterCode(I_VARIABLELOC);
+			Ins.AjouterCode(Code::I_VARIABLELOC);
 			Ins.AjouterEntier(int(svarLoc+1));
-			Ins.AjouterCode(I_TAILLE);
-			Ins.AjouterCode(I_INFERIEUR);
-			Ins.AjouterCode(I_GOTOZEROR);
-			Bloc.Dernier()->Break.Etendre((int)Ins.t);
+			Ins.AjouterCode(Code::I_TAILLE);
+			Ins.AjouterCode(Code::I_INFERIEUR);
+			Ins.AjouterCode(Code::I_GOTOZEROR);
+			blocs.Dernier()->breaks.Etendre((int)Ins.t);
 			Ins.AjouterEntier(0);
-			Ins.AjouterCode(I_VARIABLELOC);
+			Ins.AjouterCode(Code::I_VARIABLELOC);
 			Ins.AjouterEntier(int(svarLoc+2));
-			Ins.AjouterCode(I_VARIABLELOC);
+			Ins.AjouterCode(Code::I_VARIABLELOC);
 			Ins.AjouterEntier(int(svarLoc+1));
-			Ins.AjouterCode(I_VALEURVARLOC);
+			Ins.AjouterCode(Code::I_VALEURVARLOC);
 			Ins.AjouterEntier(int(svarLoc));
-			Ins.AjouterCode(I_TABLEAUVAL);
-			Ins.AjouterCode(I_INSTANCEDE);
+			Ins.AjouterCode(Code::I_TABLEAUVAL);
+			Ins.AjouterCode(Code::I_INSTANCEDE);
 			LigneAc=LP_DEBUTBLOC;
 		}
 		
 		if ((TypeFinLigne=='/')&&(LigneAc==LP_DEBUTBLOC))
 		{
-			Bloc.Dernier()->BlocLigne=true;
+			blocs.Dernier()->blocLigne=true;
 			LignePrec=LigneAc;
 			LigneAc=LP_NORMALE;
 		}
@@ -2195,9 +2195,9 @@ bool Compilateur::CompilerSeparateur()
 		{
 			LignePrec=LigneAc;
 			LigneAc=LP_FOR_TEST;
-			Bloc.Dernier()->Depart=(int)Ins.t;
-			AjCode(I_GOTOZEROR,PRI_MAX);
-			AjEntierType((int)Bloc.l-1,TYPE_ETIQAUTOBREAK);
+			blocs.Dernier()->depart=(int)Ins.t;
+			AjCode(Code::I_GOTOZEROR,PRI_MAX);
+			AjEntierType((int)blocs.l-1,TYPE_ETIQAUTOBREAK);
 		}
 		else if (LigneAc==LP_FOR_TEST)
 		{
@@ -2209,13 +2209,13 @@ bool Compilateur::CompilerSeparateur()
 			LignePrec=LigneAc;
 			LigneAc=LP_NORMALE;
 			if (TypeFinLigne=='/')
-				Bloc.Dernier()->BlocLigne=true;
+				blocs.Dernier()->blocLigne=true;
 		}
 		else
 		{
 			LignePrec=LigneAc;
 			LigneAc=LP_NORMALE;
-			while (Bloc.l && Bloc.Dernier()->BlocLigne)
+			while (blocs.l && blocs.Dernier()->blocLigne)
 				FinBloc();
 		}
 
@@ -2297,7 +2297,7 @@ bool Compilateur::CompilerTableau()
 		if (*Source==SEP_TAB_O || *Source==SEP_PROP || *Source==SEP_HAC_O)
 		{
 			//On continue la variable longue
-			AjCode(Hac?I_HACHAGEREF:I_TABLEAUREF);
+			AjCode(Hac? Code::I_HACHAGEREF: Code::I_TABLEAUREF);
 		}
 		else
 		{
@@ -2305,7 +2305,7 @@ bool Compilateur::CompilerTableau()
 			VarLongue[iVarLongue].Type.Vider();
 			if (*Source=='(')
 			{
-				AjCode(Hac?I_HACHAGEVAL:I_TABLEAUVAL);
+				AjCode(Hac? Code::I_HACHAGEVAL: Code::I_TABLEAUVAL);
 				//On change la priorité de la variable longue
 				//Instr[VarLongue[iVarLongue].Depart].p=PRI_EXEC;
 				//et on ne ferme pas la parenthèse...
@@ -2313,9 +2313,9 @@ bool Compilateur::CompilerTableau()
 			else
 			{
 				if (VarLongue[iVarLongue].Val)
-					AjCode(Hac?I_HACHAGEVAL:I_TABLEAUVAL);
+					AjCode(Hac? Code::I_HACHAGEVAL: Code::I_TABLEAUVAL);
 				else
-					AjCode(Hac?I_HACHAGEREF:I_TABLEAUREF);
+					AjCode(Hac? Code::I_HACHAGEREF: Code::I_TABLEAUREF);
 				AjParF();
 			}
 		}
@@ -2336,7 +2336,7 @@ void Compilateur::CompilerFonction()
 		Source++;
 	}
 
-	Symbole * classeParent=Bloc.Dernier()->symbole;
+	Symbole * classeParent=blocs.Dernier()->symbole;
 	while (!classeParent->PeutContenirFonction())
 		classeParent=classeParent->parent;
 
@@ -2398,7 +2398,7 @@ void Compilateur::CompilerFonction()
 	{
 		//On crée le symbole
 		syFonction=programme->NouveauSymbole(MotClef,lClef,CType(symboleValeur),
-			Bloc.Dernier()->symbole);
+			blocs.Dernier()->symbole);
 		syFonction->attributs|=Symbole::constante;
 	}
 
@@ -2449,11 +2449,11 @@ void Compilateur::CompilerFonction()
 			Source++;
 			ChercherSymbole();//on fait ça, mais on la connait déjà évidemment
 
-			DebutBloc(TB_CLASSE,classeParent);
-			Bloc.Dernier()->classeSpecifiee=true;
+			DebutBloc(TypeBloc::Classe,classeParent);
+			blocs.Dernier()->classeSpecifiee=true;
 		}
 		
-		DebutBloc(TB_FONCTION,syFonction);
+		DebutBloc(TypeBloc::Fonction,syFonction);
 		
 		if (classeParent!=programme->symboleGlobal)
 		{
@@ -2513,7 +2513,7 @@ void Compilateur::CompilerFonction()
 	ChercherMotClef();
 	if (lClef)
 	{
-		if (EGALMC("GIVRE"))
+		if (EstMotClef(_T("GIVRE")))
 		{
 			fnthis=false;
 		}
@@ -2574,7 +2574,7 @@ bool Compilateur::CompilerConstante()
 			if (*Source)
 				*(Source++)=0;
 		}
-		AjCode(I_EXPREG);
+		AjCode(Code::I_EXPREG);
 		AjExpReg(ExpReg,modif);
 	}
 	else if (*Source==';')//Constante de caractère de contrôle
@@ -2603,7 +2603,7 @@ bool Compilateur::CompilerConstante()
 			}
 			Source++;
 		}
-		AjCode(I_CARAC,PRI_CONSTANTE);
+		AjCode(Code::I_CARAC,PRI_CONSTANTE);
 		AjCarac(car);
 	}
 	else if (*Source==_T('«'))
@@ -2629,7 +2629,7 @@ bool Compilateur::CompilerConstante()
 			throw TXT("une chaîne doit se terminer par »");
 		Source++;
 		//achaine c(dep,l);
-		AjCode(I_CONSTANTE,PRI_CONSTANTE);
+		AjCode(Code::I_CONSTANTE,PRI_CONSTANTE);
 		AjType(TYPE_CHAINE);
 		AjChaine(dep,l);
 	}
@@ -2730,7 +2730,7 @@ bool Compilateur::CompilerConstante()
 		}
 		if (Negatif)
 			c=-c;
-		AjCode(I_CHANCES,PRI_CONSTANTE);
+		AjCode(Code::I_CHANCES,PRI_CONSTANTE);
 		AjChances(c);
 	}
 	else if ((*Source=='*')&&(Source[1]=='`'))//Constante de caractère
@@ -2740,7 +2740,7 @@ bool Compilateur::CompilerConstante()
 		if (*Source!='\'')
 			throw TXT("les caractères doivent être entre ` et '");
 		Source++;
-		AjCode(I_CARAC,PRI_CONSTANTE);
+		AjCode(Code::I_CARAC,PRI_CONSTANTE);
 		AjCarac(c);
 	}
 	else if ((*Source=='*')&&(Source[1]=='('))//Constante entière
@@ -2767,7 +2767,7 @@ bool Compilateur::CompilerConstante()
 		if (*Source!=')')
 			throw TXT("les nombres entiers doivent se terminer par )");
 		Source++;
-		AjCode(I_ENTIER,PRI_CONSTANTE);
+		AjCode(Code::I_ENTIER,PRI_CONSTANTE);
 		AjEntier(c);
 	}
 	else
@@ -2798,7 +2798,7 @@ bool Compilateur::CompilerClasse(Symbole * cla)
 	if (*Source=='`')
 	{
 		Source++;
-		AjCode(I_ENTIER,PRI_CONSTANTE);
+		AjCode(Code::I_ENTIER,PRI_CONSTANTE);
 		AjEntier((int)size_t(cla));//TODO : un truc qui veut dire quelquechose
 		return true;
 	}
@@ -2812,7 +2812,7 @@ bool Compilateur::CompilerClasse(Symbole * cla)
 
 		if (!EstNouveauSymbole(prop))
 		{
-			AjCode(I_ENTIER,PRI_CONSTANTE);
+			AjCode(Code::I_ENTIER,PRI_CONSTANTE);
 			AjEntier((int)prop->indice);
 			return true;
 		}
@@ -2823,7 +2823,7 @@ bool Compilateur::CompilerClasse(Symbole * cla)
 	bool Redef=false;
 	bool Constructeur=true;
 	bool givre;
-	if (Bloc.Dernier()->symbole->attributs & Symbole::filsglob)
+	if (blocs.Dernier()->symbole->attributs & Symbole::filsglob)
 		givre=true;
 	else
 		givre=false;
@@ -2833,17 +2833,17 @@ bool Compilateur::CompilerClasse(Symbole * cla)
 	ChercherMotClef();
 	while (lClef)
 	{
-		if (EGALMC("sauvage"))
+		if (EstMotClef(_T("sauvage")))
 		{
 			Redef=false;
 			Constructeur=false;
 		}
-		else if (EGALMC("zap"))
+		else if (EstMotClef(_T("zap")))
 		{
 			Redef=true;
 			Constructeur=false;
 		}
-		else if (EGALMC("GIVRE"))
+		else if (EstMotClef(_T("GIVRE")))
 			givre=true;
 		else
 			break;
@@ -2852,12 +2852,12 @@ bool Compilateur::CompilerClasse(Symbole * cla)
 		ChercherMotClef();
 	}
 
-	Symbole * var=ChercherSymboleDans(Bloc.Dernier()->symbole);
+	Symbole * var=ChercherSymboleDans(blocs.Dernier()->symbole);
 
 	if (EstNouveauSymbole(var)) //Nouvelle variable
 	{
 		var=programme->NouveauSymbole(MotClef,lClef,CType(symboleValeur),
-			Bloc.Dernier()->symbole);
+			blocs.Dernier()->symbole);
 	}
 
 	if (!Redef)
@@ -2870,7 +2870,7 @@ bool Compilateur::CompilerClasse(Symbole * cla)
 		}
 		else
 		{
-			Symbole * parent=Bloc.Dernier()->symbole;
+			Symbole * parent=blocs.Dernier()->symbole;
 			var->indice=(index_t)parent->taille++;
 			if (parent->attributs & Symbole::filsthis)
 				var->type=Symbole::VariableThis;
@@ -2890,7 +2890,7 @@ bool Compilateur::CompilerClasse(Symbole * cla)
 		if (cla->type==Symbole::ClasseC)
 		{
 			//On alloue l'objet
-			AjCode(I_ALLOCATION);
+			AjCode(Code::I_ALLOCATION);
 			AjPtrType(cla,TYPE_TYPE);
 			
 		}
@@ -2911,14 +2911,14 @@ bool Compilateur::CompilerClasse(Symbole * cla)
 		if (var->TypeAc.l!=1)
 			throw TXT("le berger ne peut pas être exécuté avec les troupeaux anonymes de troupeaux");
 
-		AjCode(givre?I_VARIABLE:I_VARIABLELOC);
+		AjCode(givre? Code::I_VARIABLE: Code::I_VARIABLELOC);
 		AjPtrType(var,TYPE_VARIABLE);
 
-		AjCode(I_INSTANCEDE,PRI_DEF);
+		AjCode(Code::I_INSTANCEDE,PRI_DEF);
 
 		AjParO(PRI_EXEC);
 		InsererConstante(cla->defConstr);
-		AjCode(I_EXECVAL,PRI_CONSTANTE);
+		AjCode(Code::I_EXECVAL,PRI_CONSTANTE);
 		AjParF();
 		AjParO();
 		AjDebutParams();
@@ -2962,8 +2962,8 @@ GotoPP::BoutCode* Compilateur::Compiler()
 	//useEspace.Dernier()=rien;
 
 	//On crée le bloc global
-	Bloc.Vider();
-	DebutBloc(TB_CLASSE,programme->symboleGlobal);
+	blocs.Vider();
+	DebutBloc(TypeBloc::Classe,programme->symboleGlobal);
 
 	/*
 		% <= symbole global, peut contenir des chiffres
@@ -3029,7 +3029,7 @@ GotoPP::BoutCode* Compilateur::Compiler()
 				}
 		}
 	}
-	Ins.AjouterCode(I_STOP);
+	Ins.AjouterCode(Code::I_STOP);
 	if (AcSwitch.l)
 		throw TXT("un GOTOMULTIPLE n'a pas été fermé");
 
@@ -3071,7 +3071,7 @@ GotoPP::BoutCode* Compilateur::Compiler()
 	}
 
 	//clog << "Taille du code : "<<Ins.t<<" octets\n";
-	if (Bloc.l>1)
+	if (blocs.l>1)
 		throw TXT("tous les blocs d'instructions n'ont pas été fermés");
 
 	if (RefEtiqA.l)

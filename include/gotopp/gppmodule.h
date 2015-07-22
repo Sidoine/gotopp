@@ -146,6 +146,10 @@ namespace GotoPP
 	class IInterpreteur
 	{
 	public:
+		virtual ~IInterpreteur()
+		{
+		}
+
 		template<class T>
 		T Lire(){return (T)LireObjet();}
 				
@@ -243,12 +247,16 @@ namespace GotoPP
 	class IProgramme
 	{
 	public:
+		virtual ~IProgramme()
+		{
+		}
+
 		virtual float GetVersion()=0;
-		virtual ISymbole * NouvelleClasseC(const carac *Nom, voidf allocateur, ISymbole * parent=0)=0;
-		virtual ISymbole * NouvelleMethodeC(voidf Fonc, const carac *Nom, ISymbole * parent=0)=0;
+		virtual ISymbole * NouvelleClasseC(const carac *Nom, voidf allocateur, ISymbole * parent=nullptr)=0;
+		virtual ISymbole * NouvelleMethodeC(voidf Fonc, const carac *Nom, ISymbole * parent=nullptr)=0;
 		/*virtual void NouvellePropriete(void *c, carac *Nom, int Prive, 
 			voidf FonctionLire, voidf FonctionEcrire)=0;*/
-		virtual ISymbole * NouvelleFonctionC(voidf Fonc, const carac *Nom, ISymbole * parent=0)=0;
+		virtual ISymbole * NouvelleFonctionC(voidf Fonc, const carac *Nom, ISymbole * parent=nullptr)=0;
 		//virtual int NouvelleVariable(const carac *Nom)=0;
 	};
 
