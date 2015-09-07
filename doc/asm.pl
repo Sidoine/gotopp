@@ -27,15 +27,15 @@ while ($l=<F>)
 close(F);
 
 undef $/;
-open(F,'../interpreteur/princ/desass.cpp') || die "Impossible de trouver desass.cpp";
+open(F,'../src/commun/global.cpp') || die "Impossible de trouver global.cpp";
 $truc=<F>;
 close(F);
 $/="\n";
-$truc=~/Code\[\]=\s+\{\s*(.*?)\s*\};/s;
+$truc=~/Code\[\d+\]=\s+\{\s*(.*?)\s*\};/s;
 $chose=$1;
 @chose=split(/\n/,$chose);
 
-open(F,'>$base/chm/html/Code+machine.html');
+open(F,">$base/chm/html/Code+machine.html");
 print F <<"ENTETE";
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -92,13 +92,19 @@ ENTETE
 	'TYPE_TYPE' => 'type',
 	'TYPE_VARIABLE' => 'numéro de variable globale',
 	'TYPE_VARIABLELOC' => 'numéro de variable locale',
-	'TYPE_CLASSE' => 'numéro de classe');
+	'TYPE_CLASSE' => 'numéro de classe',
+	'TYPE_ETIQUETTE' => 'étiquette',
+	'TYPE_ETIQLOC' => 'étiquette locale',
+	'TYPE_CARAC' => 'caractère',
+	'TYPE_FONCTIONC' => 'fonction C',
+	'TYPE_FONCTIONMODULE' => 'fonction module',
+	'TYPE_OBJETC' => 'objet');
 
 $n=0;
 foreach $i (@chose)
 {
 #print $i,"\n";
-	if ($i!~/"(.*?)"(?:,\s*(\d+))?(?:,\s*\{\s*(.*?)\s*\})?/)
+	if ($i!~/_T\("(.*?)"\)(?:,\s*(\d+))?(?:,\s*\{\s*(.*?)\s*\})?/)
 	{
 		die "$i au mauvais format";
 	}
