@@ -15,7 +15,7 @@ En gros, vous n'avez pas le droit de distribuer le GOTO++ avec une application q
 # Divers
 
 Vous pouvez m'écrire à [gotopp@sidoine.net](mailto:gotopp@sidoine.net).<br>
-Aux dernières nouvelles, le site officiel se trouve à l'adresse [www.sidoine.net/gpp/](www.sidoine.net/gpp/)
+Aux dernières nouvelles, le site officiel se trouve à l'adresse http://gotopp.org
 
 # Auteurs
 
