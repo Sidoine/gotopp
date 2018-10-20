@@ -4,8 +4,8 @@ Voilà, vous avez téléchargé les sources de cette petite merveille.
 
 # Installation
 
-Pour le compiler, utiliser [CMake](https://cmake.org/).<br>
-Sous Unix, créez un dossier quelconque, genre `plop`, puis `cd plop`, `cmake` .., `make` et `make install`.
+Pour le compiler, utilisez [CMake](https://cmake.org/).<br>
+Sous Unix, créez un dossier quelconque, genre `plop`, puis `cd plop`, `cmake ..`, `make` et `make install`.
 
 # Licence
 
